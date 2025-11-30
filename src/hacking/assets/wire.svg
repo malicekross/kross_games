@@ -1,0 +1,49 @@
+<svg width="96" height="32" viewBox="0 0 96 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .neon-green { fill: #00FF00; }
+    </style>
+    <rect id="p" width="2" height="2" class="neon-green"/>
+  </defs>
+
+  <g id="frame1">
+    <use href="#p" x="0" y="14"/><use href="#p" x="2" y="14"/>
+    <use href="#p" x="0" y="16"/><use href="#p" x="2" y="16"/>
+    <use href="#p" x="4" y="12"/><use href="#p" x="6" y="12"/>
+    <use href="#p" x="4" y="14"/><use href="#p" x="6" y="14"/>
+    <use href="#p" x="8" y="10"/><use href="#p" x="10" y="10"/>
+    <use href="#p" x="8" y="12"/><use href="#p" x="10" y="12"/>
+    <use href="#p" x="12" y="12"/><use href="#p" x="14" y="12"/>
+    <use href="#p" x="12" y="14"/><use href="#p" x="14" y="14"/>
+    <use href="#p" x="16" y="14"/><use href="#p" x="18" y="14"/>
+    <use href="#p" x="16" y="16"/><use href="#p" x="18" y="16"/>
+    <use href="#p" x="20" y="16"/><use href="#p" x="22" y="16"/>
+    <use href="#p" x="20" y="18"/><use href="#p" x="22" y="18"/>
+    <use href="#p" x="24" y="18"/><use href="#p" x="26" y="18"/>
+    <use href="#p" x="24" y="20"/><use href="#p" x="26" y="20"/>
+    <use href="#p" x="28" y="16"/><use href="#p" x="30" y="16"/>
+    <use href="#p" x="28" y="18"/><use href="#p" x="30" y="18"/>
+  </g>
+
+  <g id="frame2" transform="translate(32, 0)">
+    <use href="#p" x="0" y="18"/><use href="#p" x="2" y="18"/><use href="#p" x="0" y="20"/><use href="#p" x="2" y="20"/>
+    <use href="#p" x="4" y="16"/><use href="#p" x="6" y="16"/><use href="#p" x="4" y="18"/><use href="#p" x="6" y="18"/>
+    <use href="#p" x="8" y="14"/><use href="#p" x="10" y="14"/><use href="#p" x="8" y="16"/><use href="#p" x="10" y="16"/>
+    <use href="#p" x="12" y="12"/><use href="#p" x="14" y="12"/><use href="#p" x="12" y="14"/><use href="#p" x="14" y="14"/>
+    <use href="#p" x="16" y="10"/><use href="#p" x="18" y="10"/><use href="#p" x="16" y="12"/><use href="#p" x="18" y="12"/>
+    <use href="#p" x="20" y="12"/><use href="#p" x="22" y="12"/><use href="#p" x="20" y="14"/><use href="#p" x="22" y="14"/>
+    <use href="#p" x="24" y="14"/><use href="#p" x="26" y="14"/><use href="#p" x="24" y="16"/><use href="#p" x="26" y="16"/>
+    <use href="#p" x="28" y="16"/><use href="#p" x="30" y="16"/><use href="#p" x="28" y="18"/><use href="#p" x="30" y="18"/>
+  </g>
+
+  <g id="frame3" transform="translate(64, 0)">
+    <use href="#p" x="0" y="12"/><use href="#p" x="2" y="12"/><use href="#p" x="0" y="14"/><use href="#p" x="2" y="14"/>
+    <use href="#p" x="4" y="14"/><use href="#p" x="6" y="14"/><use href="#p" x="4" y="16"/><use href="#p" x="6" y="16"/>
+    <use href="#p" x="8" y="16"/><use href="#p" x="10" y="16"/><use href="#p" x="8" y="18"/><use href="#p" x="10" y="18"/>
+    <use href="#p" x="12" y="18"/><use href="#p" x="14" y="18"/><use href="#p" x="12" y="20"/><use href="#p" x="14" y="20"/>
+    <use href="#p" x="16" y="16"/><use href="#p" x="18" y="16"/><use href="#p" x="16" y="18"/><use href="#p" x="18" y="18"/>
+    <use href="#p" x="20" y="14"/><use href="#p" x="22" y="14"/><use href="#p" x="20" y="16"/><use href="#p" x="22" y="16"/>
+    <use href="#p" x="24" y="12"/><use href="#p" x="26" y="12"/><use href="#p" x="24" y="14"/><use href="#p" x="26" y="14"/>
+    <use href="#p" x="28" y="10"/><use href="#p" x="30" y="10"/><use href="#p" x="28" y="12"/><use href="#p" x="30" y="12"/>
+  </g>
+</svg>
