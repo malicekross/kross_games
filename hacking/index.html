@@ -105,41 +105,26 @@
         <!-- Help Button -->
         <button id="help-btn" onclick="document.getElementById('help-modal').style.display = 'flex'"
             style="position: absolute; top: 20px; right: 20px; pointer-events: auto; background: rgba(0,0,0,0.5); border: 1px solid #00ff9d; color: #00ff9d; width: 40px; height: 40px; border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: 'Courier New', monospace;">?</button>
+        <li><strong>Connect:</strong> Drag from your node to another to stream packets.</li>
+        <li><strong>Cut Wire:</strong> Drag across an existing wire to sever it.</li>
+        <li><strong>Reverse:</strong> Drag a wire in the opposite direction to swap it.</li>
+        </ul>
 
-        <!-- Help Modal -->
-        <div id="help-modal" onclick="if(event.target === this) this.style.display = 'none'"
-            style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; pointer-events: auto; z-index: 100;">
-            <div
-                style="background: #050510; border: 2px solid #00ff9d; padding: 40px; max-width: 600px; color: #ffffff; font-family: 'Courier New', monospace; position: relative; box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);">
-                <button onclick="document.getElementById('help-modal').style.display = 'none'"
-                    style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #ff3333; font-size: 24px; cursor: pointer;">×</button>
-                <h2 style="color: #00ff9d; text-align: center; margin-top: 0;">HACKING MANUAL</h2>
+        <h3 style="color: #00ff9d; border-bottom: 1px solid #333; padding-bottom: 5px;">SYSTEM SPECS</h3>
+        <ul style="line-height: 1.6;">
+            <li><strong>Level 1:</strong> 1 Wire Max. Speed: 1.1x</li>
+            <li><strong>Level 2:</strong> (15 Packets) 2 Wires Max. Speed: 2.2x</li>
+            <li><strong>Level 3:</strong> (30 Packets) 3 Wires Max. Speed: 3.3x</li>
+        </ul>
+        document.body.appendChild(canvas);
 
-                <h3 style="color: #00ff9d; border-bottom: 1px solid #333; padding-bottom: 5px;">OBJECTIVE</h3>
-                <p>Overwhelm the enemy system (Red) with your packets (Green). Reduce their score to 0 to win.</p>
+        const game = new Game(canvas);
 
-                <h3 style="color: #00ff9d; border-bottom: 1px solid #333; padding-bottom: 5px;">CONTROLS</h3>
-                <ul style="line-height: 1.6;">
-                    <li><strong>Connect:</strong> Drag from your node to another to stream packets.</li>
-                    <li><strong>Cut Wire:</strong> Drag across an existing wire to sever it.</li>
-                    <li><strong>Reverse:</strong> Drag a wire in the opposite direction to swap it.</li>
-                </ul>
+        // Generate Random Level
+        game.generateLevel();
 
-                <h3 style="color: #00ff9d; border-bottom: 1px solid #333; padding-bottom: 5px;">SYSTEM SPECS</h3>
-                <ul style="line-height: 1.6;">
-                    <li><strong>Level 1:</strong> 1 Wire Max. Speed: 1.1x</li>
-                    <li><strong>Level 2:</strong> (15 Packets) 2 Wires Max. Speed: 2.2x</li>
-                    <li><strong>Level 3:</strong> (30 Packets) 3 Wires Max. Speed: 3.3x</li>
-                </ul>
-                document.body.appendChild(canvas);
-
-                const game = new Game(canvas);
-
-                // Generate Random Level
-                game.generateLevel();
-
-                game.start();
-                </script>
+        game.start();
+        </script>
 </body>
 
 </html>
