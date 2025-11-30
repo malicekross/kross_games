@@ -79,8 +79,6 @@
             transition: width 0.2s linear;
         }
     </style>
-  <script type="module" crossorigin src="/kross_games/assets/hacking-B4G0cV5F.js"></script>
-  <link rel="modulepreload" crossorigin href="/kross_games/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 
 <body>
@@ -133,23 +131,15 @@
                     <li><strong>Level 2:</strong> (15 Packets) 2 Wires Max. Speed: 2.2x</li>
                     <li><strong>Level 3:</strong> (30 Packets) 3 Wires Max. Speed: 3.3x</li>
                 </ul>
+                document.body.appendChild(canvas);
 
-                <p style="text-align: center; color: #888; margin-top: 20px; font-size: 14px;"><i>"Data is power.
-                        Control the flow."</i></p>
-            </div>
-        </div>
+                const game = new Game(canvas);
 
-        <!-- Debug Log -->
-        <div id="debug-log"
-            style="position: absolute; bottom: 10px; left: 10px; width: 300px; height: 150px; overflow-y: auto; color: #00ff00; font-family: monospace; font-size: 10px; background: rgba(0,0,0,0.5); pointer-events: none; z-index: 999;">
-        </div>
+                // Generate Random Level
+                game.generateLevel();
 
-        <!-- Version Footer -->
-        <div id="version"
-            style="position: absolute; bottom: 10px; right: 10px; color: rgba(0, 255, 157, 0.5); font-family: 'Courier New', monospace; font-size: 12px; pointer-events: none;">
-            v0.2.14</div>
-    </div>
-
+                game.start();
+                </script>
 </body>
 
 </html>
