@@ -1,0 +1,78 @@
+<svg width="576" height="64" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(0,0)">
+    <rect x="10" y="14" width="44" height="36" rx="4" fill="#1a1a1a" stroke="#00ff00" stroke-width="2"/>
+    <rect x="14" y="18" width="36" height="20" fill="#000" />
+    <rect x="22" y="52" width="20" height="4" fill="#00ff00" />
+    <path d="M16,22 h4 m-4,4 h12" stroke="#00ff00" stroke-width="2" stroke-linecap="round" />
+  </g>
+
+  <g transform="translate(64,0)">
+    <rect x="10" y="8" width="44" height="48" rx="4" fill="#1a1a1a" stroke="#22ff22" stroke-width="2" />
+    <rect x="14" y="12" width="36" height="12" fill="#000" />
+    <rect x="14" y="28" width="36" height="12" fill="#000" />
+    <rect x="14" y="44" width="36" height="8" fill="#000" />
+    <path d="M16,16 h4 m-4,4 h12 M16,32 h8 m-8,4 h12 M16,48 h4" stroke="#22ff22" stroke-width="2" stroke-linecap="round" />
+    <circle cx="32" cy="48" r="2" fill="#22ff22" />
+    <rect x="28" y="58" width="8" height="2" fill="#22ff22" />
+  </g>
+
+  <g transform="translate(128,0)">
+    <rect x="8" y="4" width="48" height="56" rx="4" fill="#1a1a1a" stroke="#44ff44" stroke-width="3" />
+    <circle cx="32" cy="32" r="12" fill="#44ff44" opacity="0.3" />
+    <rect x="12" y="8" width="16" height="8" fill="#000" />
+    <rect x="36" y="8" width="16" height="8" fill="#000" />
+    <rect x="12" y="48" width="16" height="8" fill="#000" />
+    <rect x="36" y="48" width="16" height="8" fill="#000" />
+    <path d="M14,12 h4 m-4,4 h8 M38,12 h4 m-4,4 h8 M14,52 h4 M38,52 h4" stroke="#44ff44" stroke-width="2" stroke-linecap="round" />
+    <path d="M24,32 l8,-8 l8,8 l-8,8 z" fill="#44ff44" />
+    <path d="M32,20 v-4 m0,28 v4 M20,32 h-4 m28,0 h4" stroke="#44ff44" stroke-width="2" stroke-linecap="round" />
+  </g>
+
+  <g transform="translate(192,0)">
+    <rect x="10" y="14" width="44" height="36" rx="4" fill="#1a0a0a" stroke="#ff0000" stroke-width="2" />
+    <rect x="14" y="18" width="36" height="20" fill="#000" />
+    <path d="M22,52 l20,0 l-4,4 l-12,0 z" fill="#ff0000" />
+    <path d="M16,22 h4 m-4,4 h12 M18,26 l4,4 M28,26 l-4,4" stroke="#ff0000" stroke-width="2" stroke-linecap="round" />
+    <path d="M8,14 l4,-4 m36,0 l4,4 M8,50 l4,4 m36,0 l4,-4" stroke="#ff0000" stroke-width="1" opacity="0.6" />
+  </g>
+
+  <g transform="translate(256,0)">
+    <rect x="10" y="8" width="44" height="48" rx="4" fill="#1a0a0a" stroke="#ff2222" stroke-width="2" />
+    <rect x="14" y="12" width="36" height="12" fill="#000" />
+    <rect x="14" y="28" width="36" height="12" fill="#000" />
+    <rect x="14" y="44" width="36" height="8" fill="#000" />
+    <path d="M16,16 h4 m-4,4 h12 M16,32 h8 m-8,4 h12 M16,48 h4" stroke="#ff2222" stroke-width="2" stroke-linecap="round" />
+    <circle cx="32" cy="48" r="2" fill="#ff2222" />
+    <path d="M28,58 l8,0 l-4,2 z" fill="#ff2222" />
+    <path d="M8,8 l4,-4 m40,0 l4,4 M8,56 l4,4 m40,0 l4,-4 M4,32 l8,-4 m-8,8 l8,4 M52,32 l8,-4 m-8,8 l8,4" stroke="#ff2222" stroke-width="2" stroke-linecap="round" />
+  </g>
+
+  <g transform="translate(320,0)">
+    <circle cx="32" cy="32" r="24" fill="#1a0a0a" stroke="#ff4444" stroke-width="3" />
+    <circle cx="32" cy="32" r="12" fill="#ff4444" opacity="0.3" />
+    <path d="M24,32 l8,-8 l8,8 l-8,8 z" fill="#ff4444" />
+    <path d="M32,8 l-4,8 m8,0 l4,-8 M32,56 l-4,-8 m8,0 l4,8 M8,32 l8,-4 m0,8 l-8,4 M56,32 l-8,-4 m0,8 l8,4" stroke="#ff4444" stroke-width="2" stroke-linecap="round" />
+    <path d="M20,20 l-6,-6 m30,0 l6,6 M20,44 l-6,6 m30,0 l6,-6" stroke="#ff4444" stroke-width="2" stroke-linecap="round" />
+    <path d="M28,16 l-4,-4 m16,0 l4,4 M28,48 l-4,4 m16,0 l4,-4" stroke="#ff4444" stroke-width="1" opacity="0.6" />
+  </g>
+
+  <g transform="translate(384,0)">
+    <rect x="10" y="14" width="44" height="36" rx="4" fill="#1a1a1a" stroke="#888888" stroke-width="2"/>
+    <rect x="14" y="18" width="36" height="20" fill="#000" />
+    <rect x="22" y="52" width="20" height="4" fill="#888888" />
+    <circle cx="32" cy="28" r="6" fill="none" stroke="#888888" stroke-width="2" />
+    <rect x="30" y="24" width="4" height="8" fill="#888888" />
+  </g>
+
+  <g transform="translate(448,0)">
+    <path d="M16,32 l12,-12 l20,0 l-12,24 l-20,0 z" fill="#00ff00" />
+    <path d="M18,32 l8,0 M22,28 l4,8" stroke="#000" stroke-width="2" stroke-linecap="round" />
+    <path d="M8,36 l8,-4 m-8,4 l4,4 m0,-8 l-4,4 M4,34 l4,-2 m-4,2 l2,2" stroke="#00ff00" stroke-width="1" opacity="0.6" />
+  </g>
+
+  <g transform="translate(512,0)">
+    <path d="M16,32 l16,-16 l16,16 l-16,16 z" fill="#ff0000" />
+    <path d="M32,24 l-4,8 l4,8 M28,32 l8,0" stroke="#000" stroke-width="2" stroke-linecap="round" />
+    <path d="M8,32 l8,-4 m-8,4 l8,4 m-8,0 l4,-4 m4,4 l-4,-4 M10,26 l4,6 m-4,6 l4,-6" stroke="#ff0000" stroke-width="1" opacity="0.6" />
+  </g>
+</svg>
