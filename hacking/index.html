@@ -77,23 +77,18 @@
             width: 50%;
             transition: width 0.2s linear;
         }
-    </style>
-  <script type="module" crossorigin src="/kross_games/assets/hacking-yBi9vSvF.js"></script>
-  <link rel="modulepreload" crossorigin href="/kross_games/assets/modulepreload-polyfill-B5Qt9EMX.js">
-</head>
 
-<body>
-    <div id="ui">
-        <a href="../index.html" class="back-btn">Back to Home</a>
-        <div id="score-panel">
-            <div id="player-score">0</div>
-            <div id="score-bar-container">
-                <div id="score-bar-fill"></div>
-            </div>
-            <div id="enemy-score">0</div>
-        </div>
-    </div>
-    <canvas id="gameCanvas"></canvas>
-</body>
+        const canvas=document.getElementById('gameCanvas');
+        const game=new Game(canvas);
 
-</html>
+        // Setup Level 1
+        game.nodes.push(new Node(200, 300, 'player'));
+        game.nodes.push(new Node(600, 300, 'enemy'));
+        game.nodes.push(new Node(400, 150, 'neutral'));
+        game.nodes.push(new Node(400, 450, 'neutral'));
+
+        // Boost player start for testing upgrades
+        game.nodes[0].value=10;
+
+        game.start();
+        </script></body></html>
