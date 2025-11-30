@@ -79,8 +79,6 @@
             transition: width 0.2s linear;
         }
     </style>
-  <script type="module" crossorigin src="/kross_games/assets/hacking-Eou3jklw.js"></script>
-  <link rel="modulepreload" crossorigin href="/kross_games/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 
 <body>
@@ -402,79 +400,50 @@
 
                                             <!-- Help Modal -->
                                             <div id="help-modal"
-                                                onclick="if(event.target === this) this.style.display = 'none'"
-                                                style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; pointer-events: auto; z-index: 100;">
-                                                <div
-                                                    style="background: #050510; border: 2px solid #00ff9d; padding: 40px; max-width: 600px; color: #ffffff; font-family: 'Courier New', monospace; position: relative; box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);">
-                                                    <button
-                                                        onclick="document.getElementById('help-modal').style.display = 'none'"
-                                                        style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #ff3333; font-size: 24px; cursor: pointer;">×</button>
-                                                    <h2 style="color: #00ff9d; text-align: center; margin-top: 0;">
-                                                        HACKING MANUAL</h2>
+                                                onclick="if(event.target === this) this.style.display = 'none'" Reduce
+                                                their score to 0 to win. </p>
 
-                                                    <h3
-                                                        style="color: #00ff9d; border-bottom: 1px solid #333; padding-bottom: 5px;">
-                                                        OBJECTIVE</h3>
-                                                    <p>Overwhelm the enemy system (Red) with your packets (Green).
-                                                        Reduce their score to 0 to win.
-                                                    </p>
+                                                <h3
+                                                    style="color: #00ff9d; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                                                    CONTROLS</h3>
+                                                <ul style="line-height: 1.6;">
+                                                    <li><strong>Connect:</strong> Drag from your node to another to
+                                                        stream packets.</li>
+                                                    <li><strong>Cut Wire:</strong> Drag across an existing wire to
+                                                        sever it.</li>
+                                                    <li><strong>Reverse:</strong> Drag a wire in the opposite
+                                                        direction to swap it.</li>
+                                                </ul>
 
-                                                    <h3
-                                                        style="color: #00ff9d; border-bottom: 1px solid #333; padding-bottom: 5px;">
-                                                        CONTROLS</h3>
-                                                    <ul style="line-height: 1.6;">
-                                                        <li><strong>Connect:</strong> Drag from your node to another to
-                                                            stream packets.</li>
-                                                        <li><strong>Cut Wire:</strong> Drag across an existing wire to
-                                                            sever it.</li>
-                                                        <li><strong>Reverse:</strong> Drag a wire in the opposite
-                                                            direction to swap it.</li>
-                                                    </ul>
+                                                <h3
+                                                    style="color: #00ff9d; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                                                    SYSTEM SPECS
+                                                </h3>
+                                                <ul style="line-height: 1.6;">
+                                                    <li><strong>Level 1:</strong> 1 Wire Max. Speed: 1.1x</li>
+                                                    <li><strong>Level 2:</strong> (15 Packets) 2 Wires Max. Speed:
+                                                        2.2x</li>
+                                                    <li><strong>Level 3:</strong> (30 Packets) 3 Wires Max. Speed:
+                                                        3.3x</li>
+                                                </ul>
 
-                                                    <h3
-                                                        style="color: #00ff9d; border-bottom: 1px solid #333; padding-bottom: 5px;">
-                                                        SYSTEM SPECS
-                                                    </h3>
-                                                    <ul style="line-height: 1.6;">
-                                                        <li><strong>Level 1:</strong> 1 Wire Max. Speed: 1.1x</li>
-                                                        <li><strong>Level 2:</strong> (15 Packets) 2 Wires Max. Speed:
-                                                            2.2x</li>
-                                                        <li><strong>Level 3:</strong> (30 Packets) 3 Wires Max. Speed:
-                                                            3.3x</li>
-                                                    </ul>
+                                                <p
+                                                    style="text-align: center; color: #888; margin-top: 20px; font-size: 14px;">
+                                                    <i>"Data is
+                                                        <script>
+                                                            window.onerror = function (msg, url, lineNo, columnNo, error) {
+                                                                const div = document.createElement('div');
+                                                                div.style.position = 'absolute';
+                                                                div.style.top = '0';
+                                                                div.style.left = '0';
+                                                                div.style.width = '100%';
+                                                                div.style.background = 'red';
+                                                                div.style.color = 'white';
+                                                                div.style.padding = '10px';
+                                                                div.style.zIndex = '10000';
 
-                                                    <p
-                                                        style="text-align: center; color: #888; margin-top: 20px; font-size: 14px;">
-                                                        <i>"Data is
-                                                            <script>
-                                                                window.onerror = function (msg, url, lineNo, columnNo, error) {
-                                                                    const div = document.createElement('div');
-                                                                    div.style.position = 'absolute';
-                                                                    div.style.top = '0';
-                                                                    div.style.left = '0';
-                                                                    div.style.width = '100%';
-                                                                    div.style.background = 'red';
-                                                                    div.style.color = 'white';
-                                                                    div.style.padding = '10px';
-                                                                    div.style.zIndex = '10000';
-                                                                    div.innerText = 'Error: ' + msg + '\nURL: ' + url + '\nLine: ' + lineNo + '\nCol: ' + columnNo + '\nStack: ' + (error ? error.stack : 'N/A');
-                                                                    document.body.appendChild(div);
-                                                                    return false;
-                                                                };
-                                                                window.addEventListener('unhandledrejection', function (event) {
-                                                                    const div = document.createElement('div');
-                                                                    div.style.position = 'absolute';
-                                                                    div.style.top = '50px';
-                                                                    div.style.left = '0';
-                                                                    div.style.width = '100%';
-                                                                    div.style.background = 'orange';
-                                                                    div.style.color = 'black';
-                                                                    div.style.padding = '10px';
-                                                                    div.style.zIndex = '10000';
-                                                                    div.innerText = 'Unhandled Rejection: ' + event.reason;
-                                                                    document.body.appendChild(div);
-                                                                });
-                                                            </script>
+                                                                game.start();
+                                                        </script>
                                     </body>
 
                                     </html>
