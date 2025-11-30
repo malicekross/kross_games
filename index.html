@@ -47,6 +47,24 @@
         }
 
         .subtitle {
+            font-size: 1.5rem;
+            color: #a8a8b3;
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+        }
+
+        .games-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
             padding: 2rem;
             text-decoration: none;
             color: white;
@@ -54,6 +72,7 @@
             position: relative;
             overflow: hidden;
             display: block;
+            width: 300px;
         }
 
         .game-card:hover {
@@ -136,6 +155,9 @@
 
         <footer>
             <p>&copy; 2025 Kross Games. All Systems Nominal.</p>
+            <p
+                style="color: rgba(0, 255, 157, 0.5); font-family: 'Courier New', monospace; font-size: 12px; margin-top: 10px;">
+                v0.2.6</p>
         </footer>
     </div>
 </body>
