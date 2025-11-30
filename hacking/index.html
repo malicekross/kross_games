@@ -79,8 +79,6 @@
             transition: width 0.2s linear;
         }
     </style>
-  <script type="module" crossorigin src="/kross_games/assets/hacking-Cgso1Yg9.js"></script>
-  <link rel="modulepreload" crossorigin href="/kross_games/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 
 <body>
@@ -276,17 +274,12 @@
                         </ul>
 
                         <p style="text-align: center; color: #888; margin-top: 20px; font-size: 14px;"><i>"Data is
-                                power.
-                                Control the flow."</i></p>
-                    </div>
-                </div>
 
-                <!-- Version Footer -->
-                <div id="version"
-                    style="position: absolute; bottom: 10px; right: 10px; color: rgba(0, 255, 157, 0.5); font-family: 'Courier New', monospace; font-size: 12px; pointer-events: none;">
-                    v0.2.7</div>
-            </div>
-            <canvas id="gameCanvas"></canvas>
+                                // Generate Random Level
+                                game.generateLevel();
+
+                                game.start();
+                                </script>
         </body>
 
         </html>
