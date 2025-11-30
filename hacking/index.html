@@ -139,12 +139,154 @@
             </div>
         </div>
 
-        <!-- Version Footer -->
-        <div id="version"
-            style="position: absolute; bottom: 10px; right: 10px; color: rgba(0, 255, 157, 0.5); font-family: 'Courier New', monospace; font-size: 12px; pointer-events: none;">
-            v0.2.7</div>
-    </div>
-    <canvas id="gameCanvas"></canvas>
-</body>
+        <!doctype html>
+        <html lang="en">
 
-</html>
+        <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Hacking Wars</title>
+            <link rel="icon" type="image/svg+xml" href="/kross_games/favicon.svg" />
+            <style>
+                body {
+                    margin: 0;
+                    overflow: hidden;
+                    background: #050510;
+                }
+
+                canvas {
+                    display: block;
+                }
+
+                #ui {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    pointer-events: none;
+                }
+
+                .back-btn {
+                    position: absolute;
+                    top: 20px;
+                    left: 20px;
+                    pointer-events: auto;
+                    color: #00ff9d;
+                    text-decoration: none;
+                    font-family: 'Outfit', sans-serif;
+                    border: 1px solid #00ff9d;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    background: rgba(0, 0, 0, 0.5);
+                }
+
+                #score-panel {
+                    position: absolute;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    font-family: 'Courier New', monospace;
+                    font-weight: bold;
+                    font-size: 24px;
+                    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+                }
+
+                #player-score {
+                    color: #00ff9d;
+                }
+
+                #enemy-score {
+                    color: #ff3333;
+                }
+
+                #score-bar-container {
+                    width: 300px;
+                    height: 20px;
+                    background: #330000;
+                    border: 2px solid #ffffff;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    position: relative;
+                }
+
+                #score-bar-fill {
+                    height: 100%;
+                    background: #00ff9d;
+                    width: 50%;
+                    transition: width 0.2s linear;
+                }
+            </style>
+        </head>
+
+        <body>
+            <div id="ui">
+                <a href="../index.html" class="back-btn">Back to Home</a>
+
+                <div id="score-panel">
+                    <div id="player-score">0</div>
+                    <div id="score-bar-container">
+                        <div id="score-bar-fill"></div>
+                    </div>
+                    <div id="enemy-score">0</div>
+                </div>
+
+                <div id="victory-screen"
+                    style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); flex-direction: column; justify-content: center; align-items: center; color: #00ff9d; font-family: 'Courier New', monospace; pointer-events: auto;">
+                    <h1 style="font-size: 64px; text-shadow: 0 0 20px #00ff9d;">SYSTEM HACKED</h1>
+                    <p style="font-size: 24px;">ENEMY NEUTRALIZED</p>
+                    <button onclick="location.reload()"
+                        style="margin-top: 20px; padding: 15px 30px; font-size: 20px; background: transparent; color: #00ff9d; border: 2px solid #00ff9d; cursor: pointer; font-family: inherit;">REBOOT
+                        SYSTEM</button>
+                </div>
+
+                <!-- Help Button -->
+                <button id="help-btn" onclick="document.getElementById('help-modal').style.display = 'flex'"
+                    style="position: absolute; top: 20px; right: 20px; pointer-events: auto; background: rgba(0,0,0,0.5); border: 1px solid #00ff9d; color: #00ff9d; width: 40px; height: 40px; border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: 'Courier New', monospace;">?</button>
+
+                <!-- Help Modal -->
+                <div id="help-modal" onclick="if(event.target === this) this.style.display = 'none'"
+                    style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; pointer-events: auto; z-index: 100;">
+                    <div
+                        style="background: #050510; border: 2px solid #00ff9d; padding: 40px; max-width: 600px; color: #ffffff; font-family: 'Courier New', monospace; position: relative; box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);">
+                        <button onclick="document.getElementById('help-modal').style.display = 'none'"
+                            style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #ff3333; font-size: 24px; cursor: pointer;">×</button>
+                        <h2 style="color: #00ff9d; text-align: center; margin-top: 0;">HACKING MANUAL</h2>
+
+                        <h3 style="color: #00ff9d; border-bottom: 1px solid #333; padding-bottom: 5px;">OBJECTIVE</h3>
+                        <p>Overwhelm the enemy system (Red) with your packets (Green). Reduce their score to 0 to win.
+                        </p>
+
+                        <h3 style="color: #00ff9d; border-bottom: 1px solid #333; padding-bottom: 5px;">CONTROLS</h3>
+                        <ul style="line-height: 1.6;">
+                            <li><strong>Connect:</strong> Drag from your node to another to stream packets.</li>
+                            <li><strong>Cut Wire:</strong> Drag across an existing wire to sever it.</li>
+                            <li><strong>Reverse:</strong> Drag a wire in the opposite direction to swap it.</li>
+                        </ul>
+
+                        <h3 style="color: #00ff9d; border-bottom: 1px solid #333; padding-bottom: 5px;">SYSTEM SPECS
+                        </h3>
+                        <ul style="line-height: 1.6;">
+                            <li><strong>Level 1:</strong> 1 Wire Max. Speed: 1.1x</li>
+                            <li><strong>Level 2:</strong> (15 Packets) 2 Wires Max. Speed: 2.2x</li>
+                            <li><strong>Level 3:</strong> (30 Packets) 3 Wires Max. Speed: 3.3x</li>
+                        </ul>
+
+                        <p style="text-align: center; color: #888; margin-top: 20px; font-size: 14px;"><i>"Data is
+                                power.
+                                Control the flow."</i></p>
+                    </div>
+                </div>
+
+                <!-- Version Footer -->
+                <div id="version"
+                    style="position: absolute; bottom: 10px; right: 10px; color: rgba(0, 255, 157, 0.5); font-family: 'Courier New', monospace; font-size: 12px; pointer-events: none;">
+                    v0.2.7</div>
+            </div>
+            <canvas id="gameCanvas"></canvas>
+        </body>
+
+        </html>
