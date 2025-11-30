@@ -129,7 +129,7 @@
             }
         }
     </style>
-  <script type="module" crossorigin src="/kross_games/assets/hacking-CRpau2H0.js"></script>
+  <script type="module" crossorigin src="/kross_games/assets/hacking-DIwVm2pc.js"></script>
   <link rel="modulepreload" crossorigin href="/kross_games/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 
@@ -199,10 +199,31 @@
     </div>
 
     <!-- Version Footer -->
-    <div id="version"
-        style="position: absolute; bottom: 10px; right: 10px; color: #00ff9d; font-family: 'Courier New', monospace; font-size: 14px; font-weight: bold; pointer-events: none; z-index: 9999; text-shadow: 0 0 5px #000;">
+    <div id="version" onclick="document.getElementById('future-modal').style.display = 'flex'"
+        style="position: absolute; bottom: 10px; right: 10px; color: #00ff9d; font-family: 'Courier New', monospace; font-size: 14px; font-weight: bold; pointer-events: auto; cursor: pointer; z-index: 9999; text-shadow: 0 0 5px #000; text-decoration: underline;">
         v0.0.0
         (PixiJS)
+    </div>
+
+    <!-- Future Plans Modal -->
+    <div id="future-modal" onclick="if(event.target === this) this.style.display = 'none'"
+        style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; pointer-events: auto; z-index: 100;">
+        <div
+            style="background: #050510; border: 2px solid #00ff9d; padding: 40px; max-width: 600px; color: #ffffff; font-family: 'Courier New', monospace; position: relative; box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);">
+            <button onclick="document.getElementById('future-modal').style.display = 'none'"
+                style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #ff3333; font-size: 24px; cursor: pointer;">×</button>
+            <h2 style="color: #00ff9d; text-align: center; margin-top: 0;">FUTURE PLANS</h2>
+
+            <ul style="line-height: 1.8; list-style-type: square; color: #ccc;">
+                <li><strong style="color: #fff;">Leveling System:</strong> Increase node strength, speed, etc.</li>
+                <li><strong style="color: #fff;">AI Difficulties:</strong> Easy, Medium, Hard modes.</li>
+                <li><strong style="color: #fff;">Visual Overhaul:</strong> Better sprites and particle effects.</li>
+                <li><strong style="color: #fff;">Multiplayer Mode:</strong> Challenge friends in real-time PVP.</li>
+                <li><strong style="color: #fff;">Power-ups:</strong> Deploy Firewalls, Viruses, and Speed Boosts.</li>
+                <li><strong style="color: #fff;">Campaign Mode:</strong> Story-driven levels with unique challenges.
+                </li>
+            </ul>
+        </div>
     </div>
 
 </body>
