@@ -1,0 +1,97 @@
+<svg width="320" height="64" viewBox="0 0 320 64" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+  <!-- 
+    Sprite Sheet Layout:
+    Slot 1 (x=0):   Player Node (Green/Cyan)
+    Slot 2 (x=64):  Enemy Node (Red/Orange Glitch)
+    Slot 3 (x=128): Neutral Node (Grey/Offline)
+    Slot 4 (x=192): Player Unit (Data Packet)
+    Slot 5 (x=256): Enemy Unit (Virus Spike)
+  -->
+
+  <!-- SHARED DEFINITIONS (Pixels) -->
+  <defs>
+    <!-- A single 4x4 "pixel" unit -->
+    <rect id="p" width="4" height="4" />
+  </defs>
+
+  <!-- SPRITE 1: PLAYER NODE (Active Server) -->
+  <g id="player-node" transform="translate(0,0)">
+    <!-- Terminal Base -->
+    <path d="M8 48 h48 v16 h-48 z" fill="#005500" /> 
+    <path d="M12 52 h40 v8 h-40 z" fill="#00FF00" />
+    <!-- Monitor Frame -->
+    <path d="M12 4 h40 v40 h-40 z" fill="#005500" />
+    <!-- Screen (Black bg) -->
+    <path d="M16 8 h32 v32 h-32 z" fill="#001100" />
+    <!-- Screen Data (Cyan Lines) -->
+    <rect x="20" y="12" width="24" height="4" fill="#00FFFF" />
+    <rect x="20" y="20" width="16" height="4" fill="#00FFFF" opacity="0.7" />
+    <rect x="20" y="28" width="20" height="4" fill="#00FFFF" opacity="0.7" />
+    <!-- Status LED -->
+    <rect x="44" y="52" width="4" height="4" fill="#00FFFF" />
+  </g>
+
+  <!-- SPRITE 2: ENEMY NODE (Corrupted Server) -->
+  <g id="enemy-node" transform="translate(64,0)">
+    <!-- Corrupted Base (Jagged) -->
+    <path d="M8 48 h48 v16 h-48 z" fill="#550000" />
+    <path d="M12 52 h8 v8 h8 v-4 h12 v8 h12 v-12 z" fill="#FF0000" />
+    <!-- Monitor Frame -->
+    <path d="M12 4 h40 v40 h-40 z" fill="#550000" />
+    <!-- Screen (Dark Red bg) -->
+    <path d="M16 8 h32 v32 h-32 z" fill="#220000" />
+    <!-- Glitch Artifacts (Orange/Red) -->
+    <rect x="20" y="12" width="24" height="4" fill="#FF4500" />
+    <rect x="24" y="20" width="4" height="4" fill="#FFA500" />
+    <rect x="36" y="24" width="12" height="4" fill="#FF0000" />
+    <rect x="18" y="30" width="8" height="4" fill="#FFA500" />
+    <!-- Broken LED -->
+    <rect x="44" y="52" width="4" height="4" fill="#FF4500" />
+  </g>
+
+  <!-- SPRITE 3: NEUTRAL NODE (Offline Server) -->
+  <g id="neutral-node" transform="translate(128,0)">
+    <!-- Base -->
+    <path d="M8 48 h48 v16 h-48 z" fill="#333333" />
+    <path d="M12 52 h40 v8 h-40 z" fill="#666666" />
+    <!-- Monitor Frame -->
+    <path d="M12 4 h40 v40 h-40 z" fill="#333333" />
+    <!-- Screen (Off - Dark Grey) -->
+    <path d="M16 8 h32 v32 h-32 z" fill="#111111" />
+    <!-- Reflection (Subtle Grey) -->
+    <path d="M40 12 h4 v4 h-4 z M36 16 h4 v4 h-4 z" fill="#444444" opacity="0.5" />
+    <!-- Dark LED -->
+    <rect x="44" y="52" width="4" height="4" fill="#222222" />
+  </g>
+
+  <!-- SPRITE 4: PLAYER UNIT (Data Packet) -->
+  <g id="player-unit" transform="translate(192,0)">
+    <!-- Outer Shell -->
+    <path d="M16 16 h32 v32 h-32 z" fill="#005500" />
+    <!-- Inner Core -->
+    <rect x="20" y="20" width="24" height="24" fill="#000000" />
+    <!-- Binary "101" Pattern -->
+    <rect x="24" y="24" width="4" height="16" fill="#00FF00" /> <!-- 1 -->
+    <rect x="32" y="24" width="4" height="16" fill="#003300" /> <!-- 0 (Dim) -->
+    <rect x="40" y="24" width="4" height="16" fill="#00FF00" /> <!-- 1 -->
+    <!-- Data Bits Floating -->
+    <rect x="12" y="28" width="4" height="4" fill="#00FFFF" />
+    <rect x="48" y="32" width="4" height="4" fill="#00FFFF" />
+  </g>
+
+  <!-- SPRITE 5: ENEMY UNIT (Virus Spike) -->
+  <g id="enemy-unit" transform="translate(256,0)">
+    <!-- Central Core -->
+    <rect x="24" y="24" width="16" height="16" fill="#FF0000" />
+    <!-- Spikes (Top/Bottom/Left/Right) -->
+    <rect x="28" y="12" width="8" height="12" fill="#FF4500" />
+    <rect x="28" y="40" width="8" height="12" fill="#FF4500" />
+    <rect x="12" y="28" width="12" height="8" fill="#FF4500" />
+    <rect x="40" y="28" width="12" height="8" fill="#FF4500" />
+    <!-- Diagonals (Glitches) -->
+    <rect x="16" y="16" width="4" height="4" fill="#880000" />
+    <rect x="44" y="44" width="4" height="4" fill="#880000" />
+    <rect x="44" y="16" width="4" height="4" fill="#880000" />
+    <rect x="16" y="44" width="4" height="4" fill="#880000" />
+  </g>
+</svg>
