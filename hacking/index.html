@@ -83,22 +83,25 @@
         @media (max-width: 768px) {
             .back-btn {
                 padding: 5px 10px;
-                font-size: 14px;
+                font-size: 12px;
                 top: 10px;
                 left: 10px;
+                z-index: 20;
+                /* Ensure above canvas */
             }
 
             #score-panel {
-                top: 10px;
-                font-size: 16px;
+                top: 40px;
+                /* Move down to avoid overlap */
+                font-size: 14px;
                 gap: 10px;
-                width: 90%;
+                width: 100%;
                 justify-content: center;
             }
 
             #score-bar-container {
-                width: 150px;
-                height: 15px;
+                width: 120px;
+                height: 12px;
             }
 
             #help-btn {
@@ -115,6 +118,27 @@
                 right: 5px !important;
             }
 
+            /* Help Modal Mobile Fixes */
+            #help-modal>div {
+                padding: 20px !important;
+                max-width: 90% !important;
+                max-height: 80vh !important;
+                overflow-y: auto !important;
+            }
+
+            #help-modal h2 {
+                font-size: 20px !important;
+            }
+
+            #help-modal h3 {
+                font-size: 16px !important;
+            }
+
+            #help-modal p,
+            #help-modal li {
+                font-size: 12px !important;
+            }
+
             #victory-screen h1 {
                 font-size: 32px !important;
             }
@@ -129,7 +153,7 @@
             }
         }
     </style>
-  <script type="module" crossorigin src="/kross_games/assets/hacking-Do2j5KOZ.js"></script>
+  <script type="module" crossorigin src="/kross_games/assets/hacking-BZKpScqq.js"></script>
   <link rel="modulepreload" crossorigin href="/kross_games/assets/modulepreload-polyfill-B5Qt9EMX.js">
 </head>
 
