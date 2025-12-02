@@ -102,6 +102,31 @@ export class GridSystem {
         return true;
     }
 
+    buildRoom(x, y, type) {
+        if (x < 0 || x >= GRID_COLS || y < 0 || y >= GRID_ROWS) return false;
+        const tile = this.tiles[y][x];
+
+        // Can only build on EMPTY
+        if (tile.type !== TILE_TYPES.EMPTY) return false;
+
+        tile.type = TILE_TYPES.ROOM;
+        tile.room = type;
+
+        // Update sprite
+        // For now, use the generic room texture
+        // We need to load it if not already loaded in textures
+        // But GridSystem only loads 'tiles'.
+        // Let's use a placeholder or assume Game loaded 'rooms' and we can get it.
+        const roomTexture = Assets.get('rooms');
+        if (roomTexture) {
+            this.sprites[y][x].texture = roomTexture;
+            // Tint based on type?
+            // this.sprites[y][x].tint = ...
+        }
+
+        return true;
+    }
+
     getTile(x, y) {
         if (x < 0 || x >= GRID_COLS || y < 0 || y >= GRID_ROWS) return null;
         return this.tiles[y][x];

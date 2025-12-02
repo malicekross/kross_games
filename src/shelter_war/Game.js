@@ -1,6 +1,7 @@
 import { Application, Container, Text, TextStyle, Ticker, Assets } from 'pixi.js';
 import { SCREEN_WIDTH, SCREEN_HEIGHT, COLORS, GAME_STATES } from './constants.js';
 import { GridSystem } from './systems/GridSystem.js';
+import { ROOM_COSTS } from './systems/RoomSystem.js';
 import { Pathfinder } from './systems/Pathfinder.js';
 import { WorkerSystem, JOB_TYPES } from './systems/WorkerSystem.js';
 import { TimeSystem } from './systems/TimeSystem.js';
@@ -256,6 +257,21 @@ export class Game {
 
     handleTileClick(x, y) {
         if (this.state !== GAME_STATES.VAULT) return;
+
+        if (this.selectedRoom) {
+            const cost = ROOM_COSTS[this.selectedRoom];
+            if (this.scrap >= cost) {
+                this.scrap -= cost;
+                console.log(`Order: Build ${this.selectedRoom} at ${x}, ${y} (Cost: ${cost})`);
+                this.workerSystem.addJob(JOB_TYPES.BUILD, x, y, { roomType: this.selectedRoom });
+                this.audioSystem.playSFX('click'); // Or build sound
+                this.selectedRoom = null; // Deselect after order? Or keep? Let's deselect for safety.
+                // Reset cursor or UI highlight here if implemented
+            } else {
+                console.log("Not enough scrap to build!");
+            }
+            return;
+        }
 
         // Mining Cost
         if (this.scrap >= 1) {

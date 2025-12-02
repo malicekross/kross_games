@@ -88,8 +88,8 @@ export class WorkerSystem {
         this.mrHandys.push(robot);
     }
 
-    addJob(type, x, y) {
-        this.jobs.push({ type, x, y, priority: 1 });
+    addJob(type, x, y, data = {}) {
+        this.jobs.push({ type, x, y, priority: 1, data });
     }
 
     update(delta) {

@@ -81,7 +81,7 @@ export class BuildMenu {
             return;
         }
         console.log(`Selected Room: ${type}`);
-        // In real impl, set placement mode in GridSystem
+        this.game.selectedRoom = type;
     }
 
     isRoomLocked(type) {
