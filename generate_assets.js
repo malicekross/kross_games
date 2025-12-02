@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { createCanvas } from 'canvas';
 import path from 'path';
+import { createCanvas, loadImage } from 'canvas';
 
 // Ensure directory exists
 const outDir = 'public/shelter_war/assets';
@@ -8,283 +8,74 @@ if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir, { recursive: true });
 }
 
-function generateTiles() {
-    const width = 160; // 5 variants * 32
-    const height = 128; // 4 types * 32
-    const canvas = createCanvas(width, height);
-    const ctx = canvas.getContext('2d');
-
-    // Helper for noise
-    function addNoise(ctx, x, y, w, h, intensity = 0.1) {
-        const imageData = ctx.getImageData(x, y, w, h);
-        const data = imageData.data;
-        for (let i = 0; i < data.length; i += 4) {
-            const factor = 1 - intensity + Math.random() * intensity * 2;
-            data[i] *= factor;
-            data[i + 1] *= factor;
-            data[i + 2] *= factor;
-        }
-        ctx.putImageData(imageData, x, y);
+async function processSpriteSheet() {
+    const sourcePath = path.join(outDir, 'source.png');
+    if (!fs.existsSync(sourcePath)) {
+        console.error('Source sprite sheet not found at ' + sourcePath);
+        return;
     }
 
-    // Row 0: Dirt
-    for (let i = 0; i < 5; i++) {
-        const x = i * 32;
-        ctx.fillStyle = '#5d4037'; // Base dirt
-        ctx.fillRect(x, 0, 32, 32);
-        // Add texture
-        ctx.fillStyle = '#4e342e';
-        for (let k = 0; k < 10; k++) ctx.fillRect(x + Math.random() * 30, Math.random() * 30, 2, 2);
-        addNoise(ctx, x, 0, 32, 32, 0.15);
-        // Border
-        ctx.strokeStyle = '#3e2723';
-        ctx.strokeRect(x, 0, 32, 32);
-    }
-
-    // Row 1: Rock
-    for (let i = 0; i < 5; i++) {
-        const x = i * 32;
-        ctx.fillStyle = '#757575'; // Base rock
-        ctx.fillRect(x, 32, 32, 32);
-        // Cracks
-        ctx.strokeStyle = '#424242';
-        ctx.beginPath();
-        ctx.moveTo(x + Math.random() * 32, 32 + Math.random() * 32);
-        ctx.lineTo(x + Math.random() * 32, 32 + Math.random() * 32);
-        ctx.stroke();
-        addNoise(ctx, x, 32, 32, 32, 0.2);
-    }
-
-    // Row 2: Bedrock
-    for (let i = 0; i < 5; i++) {
-        const x = i * 32;
-        ctx.fillStyle = '#212121'; // Dark bedrock
-        ctx.fillRect(x, 64, 32, 32);
-        // Hard pattern
-        ctx.fillStyle = '#000000';
-        ctx.fillRect(x + 4, 64 + 4, 24, 24);
-        ctx.fillStyle = '#212121';
-        ctx.fillRect(x + 8, 64 + 8, 16, 16);
-        addNoise(ctx, x, 64, 32, 32, 0.1);
-    }
-
-    // Row 3: Background Wall (Empty)
-    for (let i = 0; i < 5; i++) {
-        const x = i * 32;
-        ctx.fillStyle = '#3e2723'; // Darker dirt wall
-        ctx.fillRect(x, 96, 32, 32);
-        // Grid pattern for vault wall look
-        ctx.strokeStyle = '#281a17';
-        ctx.strokeRect(x, 96, 32, 32);
-        ctx.fillStyle = '#2d1e1b';
-        ctx.fillRect(x + 2, 96 + 2, 28, 28);
-    }
-
-    const buffer = canvas.toBuffer('image/png');
-    fs.writeFileSync(path.join(outDir, 'tiles.png'), buffer);
-    console.log('Generated tiles.png');
-}
-
-function generateDwellers() {
-    const width = 128; // 4 frames * 32
-    const height = 160; // 5 variants * 32
-    const canvas = createCanvas(width, height);
+    console.log('Loading source image...');
+    const image = await loadImage(sourcePath);
+    const canvas = createCanvas(image.width, image.height);
     const ctx = canvas.getContext('2d');
+    ctx.drawImage(image, 0, 0);
 
-    const variants = [
-        { skin: '#f1c27d', hair: '#4a3b2a', suit: '#0000FF', gender: 'M' }, // Light skin, brown hair, blue suit
-        { skin: '#8d5524', hair: '#000000', suit: '#0000FF', gender: 'F' }, // Dark skin, black hair
-        { skin: '#e0ac69', hair: '#e6cea8', suit: '#0000FF', gender: 'M' }, // Med skin, blonde hair
-        { skin: '#c68642', hair: '#a52a2a', suit: '#0000FF', gender: 'F' }, // Tan skin, red hair
-        { skin: '#ffdbac', hair: '#808080', suit: '#0000FF', gender: 'M' }  // Pale skin, grey hair
-    ];
+    // Helper to extract and save
+    const extract = (name, x, y, w, h) => {
+        const c = createCanvas(w, h);
+        const cx = c.getContext('2d');
+        cx.drawImage(canvas, x, y, w, h, 0, 0, w, h);
 
-    for (let i = 0; i < 5; i++) {
-        const y = i * 32;
-        const v = variants[i];
+        const buffer = c.toBuffer('image/png');
+        fs.writeFileSync(path.join(outDir, name), buffer);
+        console.log(`Generated ${name}`);
+    };
 
-        for (let f = 0; f < 4; f++) {
-            const x = f * 32;
+    // Layout Analysis based on visual inspection of the uploaded image:
+    // The image likely contains:
+    // Top-Left: Dwellers (12 cols x 5 rows) -> 384x160
+    // Top-Right: Tiles (5 cols x 4 rows) -> 160x128. Starts at x=384.
+    // Bottom-Left: Duplicate Tiles? Or maybe nothing.
+    // Bottom-Right: Enemies (9 cols? x 3 rows). Starts at x=384, y=128.
+    // Row 13 (Mr Handy/UI): Starts at x=384, y=224 (below enemies).
 
-            // Frame offset for animation
-            const bounce = (f === 1 || f === 3) ? -1 : 0;
-            const legOffset = (f === 1) ? -2 : (f === 3) ? 2 : 0;
+    // 1. Dwellers
+    extract('dwellers.png', 0, 0, 384, 160);
 
-            ctx.save();
-            ctx.translate(x + 16, y + 16 + bounce); // Center
+    // 2. Tiles
+    extract('tiles.png', 384, 0, 160, 128);
 
-            // Body (Jumpsuit)
-            ctx.fillStyle = v.suit;
-            ctx.fillRect(-6, -4, 12, 14);
-            // Yellow stripe
-            ctx.fillStyle = '#FFFF00';
-            ctx.fillRect(-1, -4, 2, 14);
+    // 3. Enemies
+    // The prompt asked for 3 rows of enemies.
+    // Row 10: Radroach
+    // Row 11: Mole Rat
+    // Row 12: Power Armor
+    // Let's extract this block. 
+    // Width: Prompt asked for 12 cols (384px), but image might be smaller if animations are missing.
+    // Let's grab 384px width to be safe; empty space is fine.
+    extract('enemies.png', 384, 128, 384, 96);
 
-            // Legs
-            ctx.fillStyle = '#1a1a1a'; // Dark pants/shoes
-            ctx.fillRect(-5 + legOffset, 10, 4, 6);
-            ctx.fillRect(1 - legOffset, 10, 4, 6);
+    // 4. Mr Handy
+    // Row 13, Cols 1-4 (0-128px relative to start)
+    // Start Y = 128 (end of tiles) + 96 (enemies) = 224?
+    // Wait, Tiles are 128px high. Enemies start at y=128?
+    // Yes. Enemies are 96px high (3 rows).
+    // So Mr Handy starts at y = 128 + 96 = 224.
+    // X = 384.
+    extract('mr_handy.png', 384, 224, 128, 32);
 
-            // Head
-            ctx.fillStyle = v.skin;
-            ctx.beginPath();
-            ctx.arc(0, -10, 6, 0, Math.PI * 2);
-            ctx.fill();
+    // 5. UI / Rooms
+    // Row 13, Cols 5-8 (128-256px relative to start)
+    extract('ui.png', 384 + 128, 224, 128, 32);
 
-            // Hair
-            ctx.fillStyle = v.hair;
-            if (v.gender === 'M') {
-                ctx.fillRect(-6, -16, 12, 4); // Short hair
-                ctx.fillRect(-7, -14, 2, 6); // Sideburns
-            } else {
-                ctx.beginPath();
-                ctx.arc(0, -10, 7, Math.PI, 0); // Top
-                ctx.fillRect(-7, -10, 14, 8); // Long hair sides
-                ctx.fill();
-            }
+    // Use UI slice for rooms too for now
+    extract('rooms.png', 384 + 128, 224, 128, 32);
 
-            // Face
-            ctx.fillStyle = '#000000';
-            ctx.fillRect(-2, -11, 1, 1); // Eye
-            ctx.fillRect(1, -11, 1, 1); // Eye
-            ctx.fillStyle = '#a0522d'; // Mouth
-            ctx.fillRect(-1, -8, 2, 1);
-
-            // Arms
-            ctx.fillStyle = v.suit;
-            ctx.fillRect(-9, -3, 3, 8); // Left arm
-            ctx.fillRect(6, -3, 3, 8); // Right arm
-
-            // Hands
-            ctx.fillStyle = v.skin;
-            ctx.fillRect(-9, 5, 3, 3);
-            ctx.fillRect(6, 5, 3, 3);
-
-            ctx.restore();
-        }
-    }
-
-    const buffer = canvas.toBuffer('image/png');
-    fs.writeFileSync(path.join(outDir, 'dwellers.png'), buffer);
-    console.log('Generated dwellers.png');
+    // 6. Combat Units (Power Armor)
+    // This is Row 12 (3rd row of enemies).
+    // Y = 128 + 64 = 192.
+    extract('combat_units.png', 384, 192, 384, 32);
 }
 
-function generateMrHandy() {
-    const width = 32;
-    const height = 32;
-    const canvas = createCanvas(width, height);
-    const ctx = canvas.getContext('2d');
-
-    // Silver Body
-    ctx.fillStyle = '#B0BEC5';
-    ctx.beginPath();
-    ctx.arc(16, 16, 10, 0, Math.PI * 2);
-    ctx.fill();
-    // Arms
-    ctx.strokeStyle = '#78909C';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(16, 26);
-    ctx.lineTo(10, 32);
-    ctx.moveTo(16, 26);
-    ctx.lineTo(22, 32);
-    ctx.moveTo(16, 26);
-    ctx.lineTo(16, 32);
-    ctx.stroke();
-    // Eye
-    ctx.fillStyle = '#000000';
-    ctx.beginPath();
-    ctx.arc(16, 16, 3, 0, Math.PI * 2);
-    ctx.fill();
-
-    const buffer = canvas.toBuffer('image/png');
-    fs.writeFileSync(path.join(outDir, 'mr_handy.png'), buffer);
-    console.log('Generated mr_handy.png');
-}
-
-function generateRooms() {
-    const width = 32;
-    const height = 32;
-    const canvas = createCanvas(width, height);
-    const ctx = canvas.getContext('2d');
-
-    // Generic Room Icon (Box with door)
-    ctx.fillStyle = '#4CAF50'; // Greenish
-    ctx.fillRect(0, 0, 32, 32);
-    ctx.fillStyle = '#1B5E20';
-    ctx.fillRect(2, 2, 28, 28);
-    ctx.fillStyle = '#81C784';
-    ctx.fillRect(10, 10, 12, 22); // Door
-
-    const buffer = canvas.toBuffer('image/png');
-    fs.writeFileSync(path.join(outDir, 'rooms.png'), buffer);
-    console.log('Generated rooms.png');
-}
-
-function generateCombatUnits() {
-    const width = 32;
-    const height = 32;
-    const canvas = createCanvas(width, height);
-    const ctx = canvas.getContext('2d');
-
-    // Soldier (Green)
-    ctx.fillStyle = '#388E3C';
-    ctx.fillRect(8, 8, 16, 24);
-    ctx.fillStyle = '#1B5E20';
-    ctx.fillRect(10, 2, 12, 10); // Helmet
-
-    const buffer = canvas.toBuffer('image/png');
-    fs.writeFileSync(path.join(outDir, 'combat_units.png'), buffer);
-    console.log('Generated combat_units.png');
-}
-
-function generateEnemies() {
-    const width = 32;
-    const height = 32;
-    const canvas = createCanvas(width, height);
-    const ctx = canvas.getContext('2d');
-
-    // Radroach (Brown bug)
-    ctx.fillStyle = '#5D4037';
-    ctx.beginPath();
-    ctx.ellipse(16, 24, 10, 6, 0, 0, Math.PI * 2);
-    ctx.fill();
-    // Legs
-    ctx.strokeStyle = '#3E2723';
-    ctx.beginPath();
-    ctx.moveTo(6, 24); ctx.lineTo(26, 24);
-    ctx.stroke();
-
-    const buffer = canvas.toBuffer('image/png');
-    fs.writeFileSync(path.join(outDir, 'enemies.png'), buffer);
-    console.log('Generated enemies.png');
-}
-
-function generateUI() {
-    const width = 32;
-    const height = 32;
-    const canvas = createCanvas(width, height);
-    const ctx = canvas.getContext('2d');
-
-    // Simple UI icon (Gear)
-    ctx.fillStyle = '#00FF00';
-    ctx.beginPath();
-    ctx.arc(16, 16, 12, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = '#000000';
-    ctx.beginPath();
-    ctx.arc(16, 16, 6, 0, Math.PI * 2);
-    ctx.fill();
-
-    const buffer = canvas.toBuffer('image/png');
-    fs.writeFileSync(path.join(outDir, 'ui.png'), buffer);
-    console.log('Generated ui.png');
-}
-
-generateTiles();
-generateDwellers();
-generateMrHandy();
-generateRooms();
-generateCombatUnits();
-generateEnemies();
-generateUI();
+processSpriteSheet();
