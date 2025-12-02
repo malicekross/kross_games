@@ -48,7 +48,7 @@ export class SettingsMenu {
             fontSize: 14,
             fill: COLORS.TEXT
         });
-        const version = new Text({ text: 'v1.0.0', style: verStyle });
+        const version = new Text({ text: `v${__APP_VERSION__}`, style: verStyle });
         version.x = SCREEN_WIDTH / 2 - version.width / 2;
         version.y = SCREEN_HEIGHT / 2 + 120;
         this.container.addChild(version);

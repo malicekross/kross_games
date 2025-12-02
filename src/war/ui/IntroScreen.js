@@ -30,7 +30,7 @@ export class IntroScreen {
             fontSize: 16,
             fill: COLORS.TEXT
         });
-        const version = new Text({ text: 'v1.0.0', style: verStyle });
+        const version = new Text({ text: `v${__APP_VERSION__}`, style: verStyle });
         version.x = SCREEN_WIDTH - version.width - 10;
         version.y = SCREEN_HEIGHT - version.height - 10;
         this.container.addChild(version);
