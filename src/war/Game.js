@@ -40,6 +40,10 @@ export class Game {
             document.body.appendChild(this.app.canvas);
         }
 
+        // Handle Resizing
+        window.addEventListener('resize', () => this.resize());
+        this.resize(); // Initial resize
+
         this.app.stage.addChild(this.root);
 
         // Show Loading Screen
@@ -256,5 +260,24 @@ export class Game {
         console.log(`Order: Dig at ${x}, ${y}`);
         this.workerSystem.addJob(JOB_TYPES.DIG, x, y);
         this.audioSystem.playSFX('dig');
+    }
+
+    resize() {
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        // Calculate scale to fit window while maintaining aspect ratio
+        const scaleX = windowWidth / SCREEN_WIDTH;
+        const scaleY = windowHeight / SCREEN_HEIGHT;
+        const scale = Math.min(scaleX, scaleY);
+
+        this.app.stage.scale.set(scale);
+
+        // Center the stage
+        this.app.stage.x = (windowWidth - SCREEN_WIDTH * scale) / 2;
+        this.app.stage.y = (windowHeight - SCREEN_HEIGHT * scale) / 2;
+
+        // Resize renderer to fill window
+        this.app.renderer.resize(windowWidth, windowHeight);
     }
 }
