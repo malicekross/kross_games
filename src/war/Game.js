@@ -1,4 +1,4 @@
-import { Application, Container, Text, TextStyle, Ticker } from 'pixi.js';
+import { Application, Container, Text, TextStyle, Ticker, Assets } from 'pixi.js';
 import { SCREEN_WIDTH, SCREEN_HEIGHT, COLORS, GAME_STATES } from './constants.js';
 import { GridSystem } from './systems/GridSystem.js';
 import { Pathfinder } from './systems/Pathfinder.js';
@@ -14,6 +14,7 @@ import { BuildMenu } from './ui/BuildMenu.js';
 import { UnitSelector } from './ui/UnitSelector.js';
 import { SettingsMenu } from './ui/SettingsMenu.js';
 import { CreditsScreen } from './ui/CreditsScreen.js';
+import { LoadingScreen } from './ui/LoadingScreen.js';
 
 export class Game {
     constructor() {
@@ -40,6 +41,17 @@ export class Game {
         }
 
         this.app.stage.addChild(this.root);
+
+        // Show Loading Screen
+        this.loadingScreen = new LoadingScreen();
+        this.app.stage.addChild(this.loadingScreen.container);
+
+        // Load Assets
+        await this.loadAssets();
+
+        // Remove Loading Screen
+        this.app.stage.removeChild(this.loadingScreen.container);
+
         this.root.addChild(this.world);
         this.root.addChild(this.surface);
         this.root.addChild(this.ui);
@@ -93,6 +105,24 @@ export class Game {
 
         console.log('Shelter War Game Initialized');
         this.audioSystem.playMusic('menu');
+    }
+
+    async loadAssets() {
+        const assets = [
+            { alias: 'tiles', src: 'src/war/assets/tiles.png' },
+            { alias: 'ui', src: 'src/war/assets/ui.png' },
+            { alias: 'rooms', src: 'src/war/assets/rooms.png' },
+            { alias: 'dwellers', src: 'src/war/assets/dwellers.png' },
+            { alias: 'mr_handy', src: 'src/war/assets/mr_handy.png' },
+            { alias: 'combat_units', src: 'src/war/assets/combat_units.png' },
+            { alias: 'enemies', src: 'src/war/assets/enemies.png' }
+        ];
+
+        // Pre-load assets
+        for (let i = 0; i < assets.length; i++) {
+            await Assets.load(assets[i].src);
+            this.loadingScreen.updateProgress((i + 1) / assets.length);
+        }
     }
 
     update(delta) {
