@@ -38,7 +38,15 @@ export class CombatSystem {
         // Placeholders
         this.textures = {
             [UNIT_TYPES.SCOUT]: new Texture({ source: this.unitTextureBase.source, frame: new Rectangle(0, 0, 32, 32) }),
-            [ENEMY_TYPES.RADROACH]: new Texture({ source: this.enemyTextureBase.source, frame: new Rectangle(0, 0, 32, 32) })
+
+            // Enemies (Mapped to rows in enemies.png)
+            [ENEMY_TYPES.RADROACH]: new Texture({ source: this.enemyTextureBase.source, frame: new Rectangle(0, 0, 32, 32) }),
+            [ENEMY_TYPES.MOLE_RAT]: new Texture({ source: this.enemyTextureBase.source, frame: new Rectangle(0, 32, 32, 32) }),
+            [ENEMY_TYPES.GHOUL]: new Texture({ source: this.enemyTextureBase.source, frame: new Rectangle(0, 64, 32, 32) }),
+            [ENEMY_TYPES.RAIDER_SCUM]: new Texture({ source: this.enemyTextureBase.source, frame: new Rectangle(0, 96, 32, 32) }),
+            [ENEMY_TYPES.RAIDER_PSYCHO]: new Texture({ source: this.enemyTextureBase.source, frame: new Rectangle(0, 128, 32, 32) }),
+            [ENEMY_TYPES.SUPER_MUTANT]: new Texture({ source: this.enemyTextureBase.source, frame: new Rectangle(0, 160, 32, 32) }),
+            [ENEMY_TYPES.DEATHCLAW]: new Texture({ source: this.enemyTextureBase.source, frame: new Rectangle(0, 192, 32, 32) })
         };
     }
 

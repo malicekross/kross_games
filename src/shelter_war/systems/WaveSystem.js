@@ -28,7 +28,26 @@ export class WaveSystem {
         if (day >= 2) {
             for (let i = 0; i < 3 + day; i++) enemies.push(ENEMY_TYPES.MOLE_RAT);
         }
-        // ... add more types based on day
+        // Day 3: Ghoul
+        if (day >= 3) {
+            for (let i = 0; i < 3 + day; i++) enemies.push(ENEMY_TYPES.GHOUL);
+        }
+        // Day 4: Raider Scum
+        if (day >= 4) {
+            for (let i = 0; i < 2 + day; i++) enemies.push(ENEMY_TYPES.RAIDER_SCUM);
+        }
+        // Day 5: Raider Psycho
+        if (day >= 5) {
+            for (let i = 0; i < 2 + day; i++) enemies.push(ENEMY_TYPES.RAIDER_PSYCHO);
+        }
+        // Day 6: Super Mutant
+        if (day >= 6) {
+            for (let i = 0; i < 1 + day; i++) enemies.push(ENEMY_TYPES.SUPER_MUTANT);
+        }
+        // Day 7: Deathclaw
+        if (day >= 7) {
+            enemies.push(ENEMY_TYPES.DEATHCLAW);
+        }
 
         // Shuffle
         return enemies.sort(() => Math.random() - 0.5);
