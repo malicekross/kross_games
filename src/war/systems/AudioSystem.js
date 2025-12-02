@@ -66,4 +66,13 @@ export class AudioSystem {
     setVolume(vol) {
         this.masterGain.gain.value = vol;
     }
+
+    toggleMute() {
+        this.isMuted = !this.isMuted;
+        if (this.isMuted) {
+            this.ctx.suspend();
+        } else {
+            this.ctx.resume();
+        }
+    }
 }

@@ -58,9 +58,11 @@ export class Pathfinder {
                     continue;
                 }
 
-                // Check walkable (Empty or Room)
+                // Check walkable (Empty or Room) OR if it is the destination
                 const tile = this.gridSystem.getTile(neighborX, neighborY);
-                if (!tile || (tile.type !== TILE_TYPES.EMPTY && tile.type !== TILE_TYPES.ROOM)) {
+                const isDestination = neighborX === endX && neighborY === endY;
+
+                if (!tile || (!isDestination && tile.type !== TILE_TYPES.EMPTY && tile.type !== TILE_TYPES.ROOM)) {
                     continue;
                 }
 

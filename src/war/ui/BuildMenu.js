@@ -24,7 +24,7 @@ export class BuildMenu {
             'DINER': 'DINER',
             'WATER_TREATMENT': 'WATER',
             'MEDBAY': 'MEDBAY',
-            'WORKSHOP': 'SHOP'
+            'WORKSHOP': 'WORKSHOP'
         };
         const rooms = Object.values(ROOM_TYPES);
         this.buttons = [];
