@@ -1,4 +1,4 @@
-import { Container, Sprite, Texture, Rectangle } from 'pixi.js';
+import { Container, Sprite, Texture, Rectangle, Assets } from 'pixi.js';
 import { TILE_SIZE, GRID_COLS, GRID_ROWS } from '../constants.js';
 import { TILE_TYPES } from './GridSystem.js';
 
@@ -19,9 +19,12 @@ export class WorkerSystem {
         this.mrHandys = []; // Separate list for robots
         this.jobs = []; // Queue of jobs { type, x, y, priority }
 
-        // Load textures
-        this.textureBase = Texture.from('src/war/assets/dwellers.png');
-        this.mrHandyTextureBase = Texture.from('src/war/assets/mr_handy.png');
+        // Load textures from cache
+        this.textureBase = Assets.get('dwellers');
+        this.mrHandyTextureBase = Assets.get('mr_handy');
+
+        if (!this.textureBase) this.textureBase = Texture.EMPTY;
+        if (!this.mrHandyTextureBase) this.mrHandyTextureBase = Texture.EMPTY;
 
         // Assuming 32x32 sprites
         this.idleTexture = new Texture({ source: this.textureBase.source, frame: new Rectangle(0, 0, 32, 32) });

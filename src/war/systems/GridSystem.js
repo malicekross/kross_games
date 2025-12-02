@@ -1,4 +1,4 @@
-import { Container, Sprite, Texture, Rectangle } from 'pixi.js';
+import { Container, Sprite, Texture, Rectangle, Assets } from 'pixi.js';
 import { TILE_SIZE, GRID_COLS, GRID_ROWS, COLORS } from '../constants.js';
 
 export const TILE_TYPES = {
@@ -18,8 +18,15 @@ export class GridSystem {
 
         worldContainer.addChild(this.container);
 
-        // Load textures
-        this.textureBase = Texture.from('src/war/assets/tiles.png');
+        // Load textures from cache (using alias)
+        this.textureBase = Assets.get('tiles');
+
+        // Fallback if not loaded (should be loaded by Game.js)
+        if (!this.textureBase) {
+            console.error('Tiles texture not found in cache!');
+            this.textureBase = Texture.EMPTY;
+        }
+
         this.textures = {
             [TILE_TYPES.DIRT]: [],
             [TILE_TYPES.ROCK]: [],
@@ -76,6 +83,7 @@ export class GridSystem {
 
     _getRandomTexture(type) {
         const variants = this.textures[type];
+        if (!variants || variants.length === 0) return Texture.EMPTY;
         return variants[Math.floor(Math.random() * variants.length)];
     }
 

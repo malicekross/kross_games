@@ -1,4 +1,4 @@
-import { Container, Sprite, Texture, Rectangle } from 'pixi.js';
+import { Container, Sprite, Texture, Rectangle, Assets } from 'pixi.js';
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../constants.js';
 
 export const UNIT_TYPES = {
@@ -28,9 +28,12 @@ export class CombatSystem {
 
         this.isActive = false;
 
-        // Load textures
-        this.unitTextureBase = Texture.from('src/war/assets/combat_units.png');
-        this.enemyTextureBase = Texture.from('src/war/assets/enemies.png');
+        // Load textures from cache
+        this.unitTextureBase = Assets.get('combat_units');
+        this.enemyTextureBase = Assets.get('enemies');
+
+        if (!this.unitTextureBase) this.unitTextureBase = Texture.EMPTY;
+        if (!this.enemyTextureBase) this.enemyTextureBase = Texture.EMPTY;
 
         // Placeholders
         this.textures = {

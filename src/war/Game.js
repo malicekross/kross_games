@@ -108,14 +108,17 @@ export class Game {
     }
 
     async loadAssets() {
+        // In production (GitHub Pages), we need the base path
+        const basePath = import.meta.env.BASE_URL; // '/kross_games/'
+
         const assets = [
-            { alias: 'tiles', src: 'src/war/assets/tiles.png' },
-            { alias: 'ui', src: 'src/war/assets/ui.png' },
-            { alias: 'rooms', src: 'src/war/assets/rooms.png' },
-            { alias: 'dwellers', src: 'src/war/assets/dwellers.png' },
-            { alias: 'mr_handy', src: 'src/war/assets/mr_handy.png' },
-            { alias: 'combat_units', src: 'src/war/assets/combat_units.png' },
-            { alias: 'enemies', src: 'src/war/assets/enemies.png' }
+            { alias: 'tiles', src: `${basePath}war/assets/tiles.png` },
+            { alias: 'ui', src: `${basePath}war/assets/ui.png` },
+            { alias: 'rooms', src: `${basePath}war/assets/rooms.png` },
+            { alias: 'dwellers', src: `${basePath}war/assets/dwellers.png` },
+            { alias: 'mr_handy', src: `${basePath}war/assets/mr_handy.png` },
+            { alias: 'combat_units', src: `${basePath}war/assets/combat_units.png` },
+            { alias: 'enemies', src: `${basePath}war/assets/enemies.png` }
         ];
 
         // Pre-load assets
