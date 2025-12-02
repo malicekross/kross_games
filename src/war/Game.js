@@ -122,10 +122,9 @@ export class Game {
         ];
 
         // Pre-load assets
-        for (let i = 0; i < assets.length; i++) {
-            await Assets.load(assets[i].src);
-            this.loadingScreen.updateProgress((i + 1) / assets.length);
-        }
+        // We must pass the objects to Assets.load so it registers the aliases
+        await Assets.load(assets);
+        this.loadingScreen.updateProgress(1);
     }
 
     update(delta) {
