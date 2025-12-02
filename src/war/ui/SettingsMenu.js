@@ -36,7 +36,7 @@ export class SettingsMenu {
         let y = SCREEN_HEIGHT / 2 - 60;
         this.createButton('SAVE GAME', y, () => this.game.saveSystem.save(1));
         y += 50;
-        this.createButton('HELP (MANUAL)', y, () => console.log('Show Manual'));
+        this.createButton('HELP (MANUAL)', y, () => this.showManual());
         y += 50;
         this.createButton('EXIT TO INTRO', y, () => this.game.exitToIntro());
         y += 50;
@@ -52,6 +52,42 @@ export class SettingsMenu {
         version.x = SCREEN_WIDTH / 2 - version.width / 2;
         version.y = SCREEN_HEIGHT / 2 + 120;
         this.container.addChild(version);
+
+        // Manual Overlay
+        this.manualContainer = new Container();
+        this.manualContainer.visible = false;
+        this.container.addChild(this.manualContainer);
+
+        const manBg = new Graphics();
+        manBg.rect(SCREEN_WIDTH / 2 - 250, SCREEN_HEIGHT / 2 - 200, 500, 400);
+        manBg.fill(COLORS.UI_BG);
+        manBg.stroke({ width: 2, color: COLORS.UI_BORDER });
+        this.manualContainer.addChild(manBg);
+
+        const manText = new Text({
+            text: 'SHELTER WAR MANUAL\n\n' +
+                '- Build rooms to survive.\n' +
+                '- Assign dwellers to rooms.\n' +
+                '- Gather resources (Power, Water, Food).\n' +
+                '- Defend against enemies.\n' +
+                '- Click to interact.\n\n' +
+                '[CLICK TO CLOSE]',
+            style: new TextStyle({
+                fontFamily: 'Courier New',
+                fontSize: 16,
+                fill: COLORS.TEXT,
+                wordWrap: true,
+                wordWrapWidth: 460
+            })
+        });
+        manText.x = SCREEN_WIDTH / 2 - 230;
+        manText.y = SCREEN_HEIGHT / 2 - 180;
+        this.manualContainer.addChild(manText);
+
+        // Close manual on click
+        manBg.eventMode = 'static';
+        manBg.cursor = 'pointer';
+        manBg.on('pointerdown', () => this.manualContainer.visible = false);
     }
 
     createButton(text, y, callback) {
@@ -71,5 +107,10 @@ export class SettingsMenu {
 
     toggle() {
         this.container.visible = !this.container.visible;
+        this.manualContainer.visible = false; // Reset manual visibility
+    }
+
+    showManual() {
+        this.manualContainer.visible = true;
     }
 }
