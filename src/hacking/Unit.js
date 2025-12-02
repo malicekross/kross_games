@@ -1,18 +1,54 @@
+import { Container, Sprite, Texture, Rectangle } from 'pixi.js';
+
 export class Unit {
-    constructor(x, y, target, owner, source) {
+    constructor(x, y, target, owner, source, spritesTexture) {
         this.x = x;
         this.y = y;
         this.target = target;
         this.owner = owner;
         this.source = source; // Track origin for wire cutting logic
-        this.speed = 100; // Pixels per second
+        this.speed = 150; // Pixels per second (1.5x faster)
         this.active = true;
         this.radius = 4;
 
-        this.colors = {
-            player: '#00ff9d',
-            enemy: '#ff3333'
-        };
+        // Pixi
+        this.container = new Container();
+        this.container.x = x;
+        this.container.y = y;
+
+        // Sprite
+        // Random generic code sprite (indices 9-18)
+        let spriteIndex = Math.floor(Math.random() * 10) + 9;
+
+        this.sprite = new Sprite(new Texture({
+            source: spritesTexture.source,
+            frame: new Rectangle(spriteIndex * 64, 0, 64, 64)
+        }));
+        this.sprite.anchor.set(0.5);
+        this.sprite.width = 24; // 1.5x bigger
+        this.sprite.height = 24;
+
+        // Tint based on owner
+        if (this.owner === 'player') {
+            this.sprite.tint = 0x00ffff; // Cyan
+        } else {
+            this.sprite.tint = 0xff00ff; // Magenta
+        }
+
+        // Shadow Sprite
+        this.shadow = new Sprite(new Texture({
+            source: spritesTexture.source,
+            frame: new Rectangle(spriteIndex * 64, 0, 64, 64)
+        }));
+        this.shadow.anchor.set(0.5);
+        this.shadow.width = 24;
+        this.shadow.height = 24;
+        this.shadow.tint = 0x000000;
+        this.shadow.alpha = 0.6; // Semi-transparent shadow
+        this.shadow.position.set(3, 3); // Offset
+        this.container.addChild(this.shadow);
+
+        this.container.addChild(this.sprite);
     }
 
     update(deltaTime, game) {
@@ -30,30 +66,10 @@ export class Unit {
         const moveDist = this.speed * deltaTime;
         this.x += (dx / dist) * moveDist;
         this.y += (dy / dist) * moveDist;
-    }
 
-    draw(ctx, sprites, spritesLoaded) {
-        if (spritesLoaded) {
-            // Sprite indices: Player Unit=7, Enemy Unit=8
-            let spriteIndex = 7;
-            if (this.owner === 'enemy') spriteIndex = 8;
-
-            const size = this.radius * 4; // Larger than hitbox for visibility
-
-            ctx.drawImage(
-                sprites,
-                spriteIndex * 64, 0, 64, 64,
-                this.x - size / 2, this.y - size / 2, size, size
-            );
-        } else {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = this.colors[this.owner];
-            ctx.fill();
-
-            // Trail effect (Optimized - removed shadowBlur)
-            ctx.fill();
-        }
+        // Update visual position
+        this.container.x = this.x;
+        this.container.y = this.y;
     }
 
     hitTarget(game) {
@@ -68,8 +84,9 @@ export class Unit {
                     if (outgoing.length > 0) {
                         const randomConn = outgoing[Math.floor(Math.random() * outgoing.length)];
                         // Spawn new unit from target to randomConn.to
-                        // Use this.constructor to create a new instance of the same class
-                        game.units.push(new this.constructor(this.target.x, this.target.y, randomConn.to, this.owner, this.target));
+                        const unit = new Unit(this.target.x, this.target.y, randomConn.to, this.owner, this.target, game.spritesTexture);
+                        game.units.push(unit);
+                        game.unitLayer.addChild(unit.container);
                     }
                 }
             }
@@ -80,5 +97,9 @@ export class Unit {
                 this.target.value = Math.abs(this.target.value);
             }
         }
+    }
+
+    destroy() {
+        this.container.destroy({ children: true });
     }
 }

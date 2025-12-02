@@ -1,7 +1,8 @@
 import { Unit } from './Unit.js';
+import { Container, TilingSprite, Graphics } from 'pixi.js';
 
 export class Connection {
-    constructor(from, to) {
+    constructor(from, to, wireTexture) {
         this.from = from;
         this.to = to;
         this.timer = 0;
@@ -11,9 +12,37 @@ export class Connection {
         this.growthTimer = 0;
         this.growthDuration = 0.5; // Seconds to fully grow
         this.fullyGrown = false;
+
+        // Pixi
+        this.container = new Container();
+
+        // Calculate dimensions
+        const dx = this.to.x - this.from.x;
+        const dy = this.to.y - this.from.y;
+        this.distance = Math.sqrt(dx * dx + dy * dy);
+        this.angle = Math.atan2(dy, dx);
+
+        this.container.x = this.from.x;
+        this.container.y = this.from.y;
+        this.container.rotation = this.angle;
+
+        // Tiling Sprite for Wire
+        // Wire texture is 96x32
+        this.sprite = new TilingSprite({
+            texture: wireTexture,
+            width: 0, // Start at 0 for growth
+            height: 32
+        });
+        this.sprite.anchor.set(0, 0.5); // Anchor left-middle
+        this.sprite.tint = (this.from.owner === 'enemy') ? 0xff4444 : 0x00ff9d; // Red for enemy, Green for player
+        this.container.addChild(this.sprite);
     }
 
     update(deltaTime, game) {
+        // Check for reverse connection (Tug of War)
+        const reverse = game.connections.find(c => c.from === this.to && c.to === this.from);
+        const targetWidth = reverse ? this.distance / 2 : this.distance;
+
         // Update growth
         if (!this.fullyGrown) {
             this.growthTimer += deltaTime;
@@ -21,7 +50,15 @@ export class Connection {
                 this.fullyGrown = true;
                 this.growthTimer = this.growthDuration;
             }
+            // Update width based on growth (capped at targetWidth)
+            this.sprite.width = Math.min((this.growthTimer / this.growthDuration) * this.distance, targetWidth);
+        } else {
+            this.sprite.width = targetWidth;
         }
+
+        // Animate Flow (Move tile position)
+        // Speed = 50 pixels per second (Positive for correct direction)
+        this.sprite.tilePosition.x += 50 * deltaTime;
 
         // Only stream if source has units AND connection is fully grown
         if (this.fullyGrown && this.from.value >= 1) {
@@ -35,72 +72,14 @@ export class Connection {
                 this.from.value--;
 
                 // Spawn unit
-                game.units.push(new Unit(this.from.x, this.from.y, this.to, this.from.owner, this.from));
+                const unit = new Unit(this.from.x, this.from.y, this.to, this.from.owner, this.from, game.spritesTexture);
+                game.units.push(unit);
+                game.unitLayer.addChild(unit.container);
             }
         }
     }
 
-    draw(ctx, game) {
-        if (game.wireSpriteLoaded) {
-            const dx = this.to.x - this.from.x;
-            const dy = this.to.y - this.from.y;
-            const fullDistance = Math.sqrt(dx * dx + dy * dy);
-            const angle = Math.atan2(dy, dx);
-
-            // Calculate current visible distance based on growth
-            const distance = this.fullyGrown ? fullDistance : (this.growthTimer / this.growthDuration) * fullDistance;
-
-            ctx.save();
-            ctx.translate(this.from.x, this.from.y);
-            ctx.rotate(angle);
-
-            // Animate offset
-            const speed = -50; // Pixels per second (Negative for correct flow direction)
-            const offset = (performance.now() / 1000 * speed) % 96; // 96 is sprite width
-            const spriteWidth = 96;
-            const spriteHeight = 32;
-
-            // Draw repeating sprite manually
-            // Start from -1 to cover the gap caused by the moving offset
-            for (let i = -1; ; i++) {
-                let dx = i * spriteWidth - offset;
-                let dw = spriteWidth;
-                let sx = 0;
-                let sw = spriteWidth;
-
-                // Skip if completely before 0
-                if (dx + dw < 0) continue;
-
-                // Crop start if partially before 0
-                if (dx < 0) {
-                    sx = -dx;
-                    sw = dw + dx; // dx is negative
-                    dx = 0;
-                }
-
-                // Crop end if partially after distance
-                if (dx + sw > distance) {
-                    sw = distance - dx;
-                }
-
-                // Stop if we are past distance
-                if (dx >= distance) break;
-
-                // Draw segment
-                if (sw > 0) {
-                    ctx.drawImage(game.wireSprite, sx, 0, sw, spriteHeight, dx, -spriteHeight / 2, sw, spriteHeight);
-                }
-            }
-
-            ctx.restore();
-        } else {
-            // Fallback line
-            ctx.beginPath();
-            ctx.moveTo(this.from.x, this.from.y);
-            ctx.lineTo(this.to.x, this.to.y);
-            ctx.strokeStyle = '#00ff9d';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-        }
+    destroy() {
+        this.container.destroy({ children: true });
     }
 }

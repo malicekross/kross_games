@@ -1,8 +1,11 @@
+import { Container, Graphics, Sprite, Text, Texture, Rectangle } from 'pixi.js';
+
 export class Node {
-    constructor(x, y, owner = 'neutral') {
+    constructor(x, y, owner = 'neutral', spritesTexture) {
         this.x = x;
         this.y = y;
         this.owner = owner; // 'player', 'enemy', 'neutral'
+        this.lastOwner = owner; // Track previous owner for change detection
         this.value = 10;
         this.capacity = 60;
         this.radius = 30;
@@ -14,14 +17,69 @@ export class Node {
 
         // Colors
         this.colors = {
-            player: '#00ff9d',
-            enemy: '#ff3333',
-            neutral: '#888888'
+            player: 0x00ff9d,
+            enemy: 0xff3333,
+            neutral: 0x888888
         };
+
+        // Pixi Container
+        this.container = new Container();
+        this.container.x = x;
+        this.container.y = y;
+
+        // 1. Glow/Background Graphics
+        this.graphics = new Graphics();
+        this.container.addChild(this.graphics);
+
+        // 2. Sprite
+        // Create frame from spritesheet
+        this.spritesTexture = spritesTexture;
+        this.sprite = new Sprite(this.getTextureFrame());
+        this.sprite.anchor.set(0.5);
+        this.sprite.width = 64;
+        this.sprite.height = 64;
+        this.container.addChild(this.sprite);
+
+        // 3. Text
+        this.text = new Text({
+            text: Math.floor(this.value),
+            style: {
+                fontFamily: 'Courier New',
+                fontSize: 24,
+                fontWeight: 'bold',
+                fill: 0xffffff,
+                stroke: { color: 0x000000, width: 4 }
+            }
+        });
+        this.text.anchor.set(0.5);
+        this.container.addChild(this.text);
+
+        this.updateVisuals();
     }
 
-    update(deltaTime) {
+    getTextureFrame() {
+        // Sprite indices:
+        // Player: Lvl1=0, Lvl2=1, Lvl3=2
+        // Enemy:  Lvl1=3, Lvl2=4, Lvl3=5
+        // Neutral: 6
+        let spriteIndex = 6;
+
+        if (this.owner === 'player') {
+            spriteIndex = this.level - 1;
+        } else if (this.owner === 'enemy') {
+            spriteIndex = 3 + (this.level - 1);
+        }
+
+        // Create a new texture object that shares the base texture but has a different frame
+        return new Texture({
+            source: this.spritesTexture.source,
+            frame: new Rectangle(spriteIndex * 64, 0, 64, 64)
+        });
+    }
+
+    update(deltaTime, outgoingCount = 0) {
         // Upgrade Logic
+        let prevLevel = this.level;
         if (this.value >= 30 && this.level < 3) {
             this.level = 3;
             this.generationRate = 3.3;
@@ -36,97 +94,61 @@ export class Node {
         // Update max connections based on level
         this.maxConnections = this.level;
 
+        // Update texture if level or owner changed
+        // (For simplicity we check if we need to update texture in updateVisuals)
+
         if (this.owner !== 'neutral' && this.value < this.capacity) {
             this.timer += deltaTime;
-            if (this.timer >= 1 / this.generationRate) {
+
+            // Apply 10% boost for player
+            let currentRate = this.generationRate;
+            if (this.owner === 'player') {
+                currentRate *= 1.1;
+            }
+
+            if (this.timer >= 1 / currentRate) {
                 this.value++;
                 this.timer = 0;
             }
         }
+
+        this.updateVisuals(prevLevel, outgoingCount);
     }
 
-    draw(ctx, sprites, spritesLoaded, connectionCount = 0) {
-        if (spritesLoaded) {
-            // Sprite indices:
-            // Player: Lvl1=0, Lvl2=1, Lvl3=2
-            // Enemy:  Lvl1=3, Lvl2=4, Lvl3=5
-            // Neutral: 6
-            let spriteIndex = 6;
+    updateVisuals(prevLevel, outgoingCount) {
+        // Update Text
+        this.text.text = Math.floor(this.value);
 
-            if (this.owner === 'player') {
-                spriteIndex = this.level - 1;
-            } else if (this.owner === 'enemy') {
-                spriteIndex = 3 + (this.level - 1);
-            }
-
-            const size = this.radius * 2.5; // Slightly larger than hitbox
-
-            // Draw sprite
-            ctx.drawImage(
-                sprites,
-                spriteIndex * 64, 0, 64, 64, // Source
-                this.x - size / 2, this.y - size / 2, size, size // Destination
-            );
-
-            // Selection Glow (Optimized)
-            if (this.owner !== 'neutral') {
-                ctx.globalAlpha = 0.3;
-                ctx.fillStyle = this.colors[this.owner];
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius + 5 + (this.level * 2), 0, Math.PI * 2);
-                ctx.fill();
-                ctx.globalAlpha = 1.0;
-            }
+        // Update Graphics (Glow)
+        this.graphics.clear();
+        if (this.owner !== 'neutral') {
+            this.graphics.circle(0, 0, this.radius + 5 + (this.level * 2));
+            this.graphics.fill({ color: this.colors[this.owner], alpha: 0.3 });
         } else {
-            // Fallback
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = '#1a1a1a';
-            ctx.fill();
-
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = this.colors[this.owner];
-            ctx.stroke();
+            this.graphics.circle(0, 0, this.radius);
+            this.graphics.fill({ color: 0x1a1a1a });
+            this.graphics.stroke({ width: 3, color: this.colors[this.owner] });
         }
 
-        // Value text (Centered on node)
-        ctx.font = 'bold 24px "Courier New", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+        // Update Sprite Frame if needed
+        this.sprite.texture = this.getTextureFrame();
 
-        // Shadow for readability
-        // ctx.shadowBlur = 4; // REMOVED FOR PERFORMANCE
-        // ctx.shadowColor = '#000000';
-        ctx.lineWidth = 4;
-        ctx.strokeStyle = '#000000';
-        ctx.strokeText(Math.floor(this.value), this.x, this.y);
-        // ctx.shadowBlur = 0; // Reset shadow
+        // 4. Wire Indicators (Bubbles)
+        const indicatorRadius = 4;
+        const indicatorGap = 10;
+        const startY = this.radius + 15;
 
-        // Fill
-        ctx.fillStyle = '#ffffff';
-        ctx.fillText(Math.floor(this.value), this.x, this.y);
+        let startX = -((this.maxConnections - 1) * indicatorGap) / 2;
 
-        // Connection Bubbles
-        if (this.owner === 'player') {
-            const bubbleRadius = 4;
-            const spacing = 12;
-            const startX = this.x - ((this.maxConnections - 1) * spacing) / 2;
-            const bubbleY = this.y + this.radius + 15;
+        for (let i = 0; i < this.maxConnections; i++) {
+            this.graphics.circle(startX + (i * indicatorGap), startY, indicatorRadius);
 
-            for (let i = 0; i < this.maxConnections; i++) {
-                ctx.beginPath();
-                ctx.arc(startX + (i * spacing), bubbleY, bubbleRadius, 0, Math.PI * 2);
-
-                // Fill if used
-                if (i < connectionCount) {
-                    ctx.fillStyle = '#00ff9d';
-                    ctx.fill();
-                }
-
-                // Outline always
-                ctx.strokeStyle = '#00ff9d';
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
+            // Fill if index is less than outgoingCount (active wires)
+            if (i < outgoingCount) {
+                this.graphics.fill({ color: this.colors[this.owner] || 0xffffff }); // Filled
+            } else {
+                this.graphics.fill({ color: 0x000000 }); // Empty background
+                this.graphics.stroke({ width: 1, color: this.colors[this.owner] || 0xffffff }); // Stroke
             }
         }
     }
@@ -135,5 +157,9 @@ export class Node {
         const dx = this.x - x;
         const dy = this.y - y;
         return dx * dx + dy * dy <= this.radius * this.radius;
+    }
+
+    destroy() {
+        this.container.destroy({ children: true });
     }
 }

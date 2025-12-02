@@ -1,21 +1,35 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kross Games - War</title>
-    <link rel="stylesheet" href="../src/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shelter War - Kross Games</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #game-container {
+            position: relative;
+            border: 2px solid #0f0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+        }
+        canvas {
+            display: block;
+        }
+    </style>
 </head>
-
 <body>
-    <div id="app">
-        <div>
-            <h1>War Game</h1>
-            <p>Coming Soon (Phase 3)</p>
-            <a href="../index.html">Back to Home</a>
-        </div>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
     </div>
+    <script type="module" src="../src/war/main.js"></script>
 </body>
-
 </html>

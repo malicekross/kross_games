@@ -1,21 +1,21 @@
+import { Application, Assets, Sprite, Container, Graphics } from 'pixi.js';
 import spritesUrl from './assets/sprites.svg';
 import wireUrl from './assets/wire.svg';
 import { Node } from './Node.js';
 import { Connection } from './Connection.js';
 
+/**
+ * Main Game Class
+ * Handles the game loop, input, AI, and rendering.
+ */
 export class Game {
-    constructor(canvas) {
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
+    constructor() {
+        this.app = new Application();
         this.nodes = [];
         this.units = [];
         this.connections = [];
-        this.lastTime = 0;
 
-        this.resize();
-        window.addEventListener('resize', () => this.resize());
-
-        // Input handling
+        // Input handling state
         this.isDragging = false;
         this.isCutting = false;
         this.dragStartNode = null;
@@ -23,30 +23,7 @@ export class Game {
         this.mouseX = 0;
         this.mouseY = 0;
 
-        this.canvas.addEventListener('mousedown', (e) => this.handleInputStart(e));
-        this.canvas.addEventListener('mousemove', (e) => this.handleInputMove(e));
-        this.canvas.addEventListener('mouseup', (e) => this.handleInputEnd(e));
-
-        // Touch support
-        this.canvas.addEventListener('touchstart', (e) => { e.preventDefault(); this.handleInputStart(e.touches[0]); }, { passive: false });
-        this.canvas.addEventListener('touchmove', (e) => { e.preventDefault(); this.handleInputMove(e.touches[0]); }, { passive: false });
-        this.canvas.addEventListener('touchend', (e) => { e.preventDefault(); this.handleInputEnd(e.changedTouches[0]); }, { passive: false });
-
-        // Load sprites
-        this.sprites = new Image();
-        this.sprites.src = spritesUrl;
-        this.spritesLoaded = false;
-        this.sprites.onload = () => { this.spritesLoaded = true; };
-        this.sprites.onerror = (e) => { console.error('Error loading sprites'); };
-
-        // Load wire sprite
-        this.wireSprite = new Image();
-        this.wireSprite.src = wireUrl;
-        this.wireSpriteLoaded = false;
-        this.wireSprite.onload = () => { this.wireSpriteLoaded = true; };
-        this.wireSprite.onerror = (e) => { console.error('Error loading wire sprite'); };
-
-        // UI Cache
+        // UI Elements Cache
         this.ui = {
             playerScore: document.getElementById('player-score'),
             enemyScore: document.getElementById('enemy-score'),
@@ -56,28 +33,108 @@ export class Game {
         this.lastPlayerScore = -1;
         this.lastEnemyScore = -1;
 
-        console.log('Game initialized');
+        // Game Over State
+        this.gameOverTriggered = false;
+        this.gameOverTimer = 0;
+        this.paused = false;
     }
 
+    /**
+     * Initialize PixiJS Application
+     * @param {HTMLCanvasElement} canvas 
+     */
+    async init(canvas) {
+        const isMobile = window.innerWidth < 768;
+        const initOptions = {
+            canvas: canvas,
+            backgroundColor: 0x050510,
+            antialias: true,
+            resolution: window.devicePixelRatio || 1,
+            autoDensity: true
+        };
+
+        // Mobile optimization: Use 90% of screen
+        if (isMobile) {
+            initOptions.width = window.innerWidth * 0.9;
+            initOptions.height = window.innerHeight * 0.9;
+        } else {
+            initOptions.resizeTo = window;
+        }
+
+        await this.app.init(initOptions);
+
+        // Load Assets
+        this.spritesTexture = await Assets.load(spritesUrl);
+        this.wireTexture = await Assets.load(wireUrl);
+
+        // Layers (Order matters!)
+        this.connectionLayer = new Container();
+        this.nodeLayer = new Container();
+        this.unitLayer = new Container();
+        this.uiLayer = new Container();
+
+        this.app.stage.addChild(this.connectionLayer);
+        this.app.stage.addChild(this.unitLayer);
+        this.app.stage.addChild(this.nodeLayer);
+        this.app.stage.addChild(this.uiLayer);
+
+        // Input Events
+        this.app.stage.eventMode = 'static';
+        this.app.stage.hitArea = this.app.screen;
+
+        this.app.stage.on('pointerdown', (e) => this.handleInputStart(e));
+        this.app.stage.on('pointermove', (e) => this.handleInputMove(e));
+        this.app.stage.on('pointerup', (e) => this.handleInputEnd(e));
+        this.app.stage.on('pointerupoutside', (e) => this.handleInputEnd(e));
+
+        // Drag Visuals
+        this.dragGraphics = new Graphics();
+        this.uiLayer.addChild(this.dragGraphics);
+
+        console.log('Game initialized with PixiJS');
+
+        // Start Loop
+        this.app.ticker.add((ticker) => {
+            this.update(ticker.deltaTime / 60);
+        });
+    }
+
+    /**
+     * Generate a random level
+     */
     generateLevel() {
+        // Cleanup existing entities
+        this.nodes.forEach(n => n.destroy());
+        this.units.forEach(u => u.destroy());
+        this.connections.forEach(c => c.destroy());
+
         this.nodes = [];
         this.units = [];
         this.connections = [];
+        this.gameOverTriggered = false;
+        this.gameOverTimer = 0;
+        this.paused = false;
 
-        const nodeCount = Math.floor(Math.random() * 6) + 5; // 5 to 10
-        const padding = 100;
-        const minDistance = 150;
+        const isMobile = this.app.screen.width < 768;
+        const nodeCount = Math.floor(Math.random() * 6) + 5;
 
-        console.log(`Target Node Count: ${nodeCount}, Canvas: ${this.canvas.width}x${this.canvas.height}`);
+        const padding = isMobile ? 50 : 100;
+        const minDistance = isMobile ? 100 : 150;
 
+        const width = this.app.screen.width;
+        const height = this.app.screen.height;
+
+        console.log(`Target Node Count: ${nodeCount}, Canvas: ${width}x${height}, Mobile: ${isMobile}`);
+
+        // Place nodes with distance check
         for (let i = 0; i < nodeCount; i++) {
             let valid = false;
             let x, y;
             let attempts = 0;
 
             while (!valid && attempts < 100) {
-                x = padding + Math.random() * (this.canvas.width - padding * 2);
-                y = padding + Math.random() * (this.canvas.height - padding * 2);
+                x = padding + Math.random() * (width - padding * 2);
+                y = padding + Math.random() * (height - padding * 2);
 
                 valid = true;
                 for (const node of this.nodes) {
@@ -96,62 +153,121 @@ export class Game {
                 if (i === 0) owner = 'player';
                 if (i === 1) owner = 'enemy';
 
-                const node = new Node(x, y, owner);
-                if (owner === 'player') node.value = 10;
+                const node = new Node(x, y, owner, this.spritesTexture);
+                if (owner === 'player' || owner === 'enemy') {
+                    node.value = Math.floor(Math.random() * 11) + 20;
+                }
+
+                if (isMobile) {
+                    node.container.scale.set(0.75);
+                }
+
                 this.nodes.push(node);
+                this.nodeLayer.addChild(node.container);
             } else {
                 console.warn('Failed to place node after 100 attempts');
             }
         }
-        console.log(`Total Nodes: ${this.nodes.length}`);
     }
 
-    resize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-        console.log(`Resized Canvas to ${this.canvas.width}x${this.canvas.height}`);
-    }
-
-    start() {
-        this.lastTime = performance.now();
-        requestAnimationFrame((time) => this.loop(time));
-    }
-
-    loop(time) {
-        let deltaTime = (time - this.lastTime) / 1000;
-        this.lastTime = time;
-
-        // Cap deltaTime to prevent physics explosions on tab switch
-        if (deltaTime > 0.1) deltaTime = 0.1;
-
-        this.update(deltaTime);
-        this.draw();
-
-        requestAnimationFrame((time) => this.loop(time));
-    }
-
+    /**
+     * Main Update Loop
+     * @param {number} deltaTime - Time in seconds
+     */
     update(deltaTime) {
-        this.nodes.forEach(node => node.update(deltaTime));
-        this.connections.forEach(conn => conn.update(deltaTime, this)); // Update connections
+        if (this.paused) return;
+
+        this.nodes.forEach(node => {
+            // Check for owner switch (Player <-> Enemy) using persistent state
+            if (node.owner !== node.lastOwner) {
+                if ((node.lastOwner === 'player' && node.owner === 'enemy') ||
+                    (node.lastOwner === 'enemy' && node.owner === 'player')) {
+
+                    // Cut ONLY outgoing wires from this node
+                    for (let i = this.connections.length - 1; i >= 0; i--) {
+                        const conn = this.connections[i];
+                        if (conn.from === node) {
+                            conn.destroy();
+                            this.connections.splice(i, 1);
+                        }
+                    }
+                }
+                // Update tracker
+                node.lastOwner = node.owner;
+            }
+
+            const outgoingCount = this.connections.filter(c => c.from === node).length;
+            node.update(deltaTime, outgoingCount);
+        });
+        this.connections.forEach(conn => conn.update(deltaTime, this));
         this.units.forEach(unit => unit.update(deltaTime, this));
 
-        // Cleanup dead units
-        this.units = this.units.filter(unit => unit.active);
+        this.updateAI(deltaTime);
 
-        // Cleanup invalid connections (if owner changes)
-        this.connections = this.connections.filter(conn => conn.from.owner === 'player');
+        // Cleanup inactive units
+        for (let i = this.units.length - 1; i >= 0; i--) {
+            if (!this.units[i].active) {
+                this.units[i].destroy();
+                this.units.splice(i, 1);
+            }
+        }
+
+        // Cleanup neutral connections (shouldn't happen often but safe to keep)
+        for (let i = this.connections.length - 1; i >= 0; i--) {
+            if (this.connections[i].from.owner === 'neutral') {
+                this.connections[i].destroy();
+                this.connections.splice(i, 1);
+            }
+        }
 
         this.updateScoreUI();
-        this.checkWinCondition();
+        this.checkWinCondition(deltaTime);
+        this.drawDragUI();
     }
 
-    checkWinCondition() {
+    drawDragUI() {
+        this.dragGraphics.clear();
+
+        if (this.isDragging && this.dragStartNode) {
+            // Draw connection preview
+            this.dragGraphics.moveTo(this.dragStartNode.x, this.dragStartNode.y);
+            this.dragGraphics.lineTo(this.mouseX, this.mouseY);
+            this.dragGraphics.stroke({ width: 2, color: 0xffffff, alpha: 0.5, dash: [5, 5] });
+        } else if (this.isCutting) {
+            // Draw cut line
+            this.dragGraphics.moveTo(this.cutStart.x, this.cutStart.y);
+            this.dragGraphics.lineTo(this.mouseX, this.mouseY);
+            this.dragGraphics.stroke({ width: 2, color: 0xff0000 });
+        }
+    }
+
+    checkWinCondition(deltaTime) {
+        if (this.gameOverTriggered) {
+            this.gameOverTimer += deltaTime;
+            if (this.gameOverTimer > 5.0) {
+                this.paused = true;
+            }
+            return;
+        }
+
         let enemyScore = 0;
-        this.nodes.forEach(node => { if (node.owner === 'enemy') enemyScore += Math.floor(node.value); });
-        this.units.forEach(unit => { if (unit.owner === 'enemy') enemyScore++; });
+        let playerScore = 0;
+        this.nodes.forEach(node => {
+            if (node.owner === 'enemy') enemyScore += Math.floor(node.value);
+            if (node.owner === 'player') playerScore += Math.floor(node.value);
+        });
+        this.units.forEach(unit => {
+            if (unit.owner === 'enemy') enemyScore++;
+            if (unit.owner === 'player') playerScore++;
+        });
 
         if (enemyScore === 0) {
+            this.gameOverTriggered = true;
             if (this.ui.victoryScreen) this.ui.victoryScreen.style.display = 'flex';
+        } else if (playerScore === 0) {
+            this.gameOverTriggered = true;
+            const defeatScreen = document.getElementById('defeat-screen');
+            if (defeatScreen) defeatScreen.style.display = 'flex';
         }
     }
 
@@ -187,46 +303,9 @@ export class Game {
         }
     }
 
-    draw() {
-        this.ctx.fillStyle = '#050510'; // Fallback background
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Draw connections
-        this.connections.forEach(conn => conn.draw(this.ctx, this));
-
-        // Draw drag line (Connection)
-        if (this.isDragging && this.dragStartNode) {
-            this.ctx.beginPath();
-            this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-            this.ctx.setLineDash([5, 5]);
-            this.ctx.moveTo(this.dragStartNode.x, this.dragStartNode.y);
-            this.ctx.lineTo(this.mouseX, this.mouseY);
-            this.ctx.stroke();
-            this.ctx.setLineDash([]);
-        }
-
-        // Draw cut line
-        if (this.isCutting) {
-            this.ctx.beginPath();
-            this.ctx.strokeStyle = '#ff0000';
-            this.ctx.lineWidth = 2;
-            this.ctx.moveTo(this.cutStart.x, this.cutStart.y);
-            this.ctx.lineTo(this.mouseX, this.mouseY);
-            this.ctx.stroke();
-        }
-
-        this.nodes.forEach(node => {
-            // Count outgoing connections for this node
-            const count = this.connections.filter(c => c.from === node).length;
-            node.draw(this.ctx, this.sprites, this.spritesLoaded, count);
-        });
-        this.units.forEach(unit => unit.draw(this.ctx, this.sprites, this.spritesLoaded));
-    }
-
     handleInputStart(e) {
-        const rect = this.canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        const x = e.global.x;
+        const y = e.global.y;
 
         const clickedNode = this.nodes.find(node => node.contains(x, y));
 
@@ -243,15 +322,13 @@ export class Game {
     }
 
     handleInputMove(e) {
-        const rect = this.canvas.getBoundingClientRect();
-        this.mouseX = e.clientX - rect.left;
-        this.mouseY = e.clientY - rect.top;
+        this.mouseX = e.global.x;
+        this.mouseY = e.global.y;
     }
 
     handleInputEnd(e) {
-        const rect = this.canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        const x = e.global.x;
+        const y = e.global.y;
 
         if (this.isDragging && this.dragStartNode) {
             const targetNode = this.nodes.find(node => node.contains(x, y));
@@ -263,6 +340,9 @@ export class Game {
         } else if (this.isCutting) {
             // Check for intersections with connections
             const connectionsToCut = this.connections.filter(conn => {
+                // Prevent cutting enemy wires
+                if (conn.from.owner === 'enemy') return false;
+
                 return this.linesIntersect(
                     this.cutStart, { x: this.mouseX, y: this.mouseY },
                     conn.from, conn.to
@@ -270,15 +350,18 @@ export class Game {
             });
 
             // Remove connections
-            this.connections = this.connections.filter(conn => !connectionsToCut.includes(conn));
-
-            // Instant transfer units on cut wires
             connectionsToCut.forEach(conn => {
+                // Instant transfer units on cut wires
                 this.units.forEach(unit => {
                     if (unit.source === conn.from && unit.target === conn.to && unit.active) {
                         unit.hitTarget(); // Instantly arrive
                     }
                 });
+
+                // Destroy connection
+                conn.destroy();
+                const index = this.connections.indexOf(conn);
+                if (index > -1) this.connections.splice(index, 1);
             });
         }
 
@@ -290,22 +373,36 @@ export class Game {
     createConnection(from, to) {
         // Check if connection already exists (A -> B)
         const existing = this.connections.find(c => c.from === from && c.to === to);
-        if (existing) return;
+        if (existing) {
+            console.log("Connection rejected: Already exists");
+            return;
+        }
 
         // Check if reverse connection exists (B -> A)
         const reverse = this.connections.find(c => c.from === to && c.to === from);
 
         // Check limits for 'from' node
         const outgoingCount = this.connections.filter(c => c.from === from).length;
-        if (outgoingCount >= from.maxConnections) return;
+        if (outgoingCount >= from.maxConnections) {
+            console.log(`Connection rejected: Max connections reached (${outgoingCount}/${from.maxConnections})`);
+            return;
+        }
 
-        // If reverse exists, remove it (Swap direction)
+        // Conditional Tug of War Logic
         if (reverse) {
-            this.connections = this.connections.filter(c => c !== reverse);
+            // If owners are the SAME (Player <-> Player OR Enemy <-> Enemy), FLIP IT
+            // This prevents "Tug of War" between friendly nodes, allowing re-routing instead.
+            if (from.owner === to.owner) {
+                reverse.destroy();
+                this.connections = this.connections.filter(c => c !== reverse);
+            }
+            // If owners are DIFFERENT (Player <-> Enemy), ALLOW IT (Tug of War)
         }
 
         // Create new connection
-        this.connections.push(new Connection(from, to));
+        const conn = new Connection(from, to, this.wireTexture);
+        this.connections.push(conn);
+        this.connectionLayer.addChild(conn.container);
     }
 
     // Helper: Line Segment Intersection
@@ -315,5 +412,56 @@ export class Game {
         const lambda = ((d.y - c.y) * (d.x - a.x) + (c.x - d.x) * (d.y - a.y)) / det;
         const gamma = ((a.y - b.y) * (d.x - a.x) + (b.x - a.x) * (d.y - a.y)) / det;
         return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+    }
+
+    updateAI(deltaTime) {
+        this.aiTimer = (this.aiTimer || 0) + deltaTime;
+        if (this.aiTimer < 3.0) return; // Run every 3 seconds
+        this.aiTimer = 0;
+
+        const enemyNodes = this.nodes.filter(n => n.owner === 'enemy');
+        // console.log(`AI Update: Found ${enemyNodes.length} enemy nodes.`); // Commented out to reduce spam
+
+        enemyNodes.forEach(source => {
+            // Check active connections
+            const activeConnections = this.connections.filter(c => c.from === source).length;
+            if (activeConnections >= source.maxConnections) return;
+
+            // Find potential targets
+            // Priority 1: Neutral nodes (Expand)
+            // Priority 2: Player nodes (Attack if stronger)
+            // Priority 3: Weak Enemy nodes (Reinforce - optional, maybe skip for simple AI)
+
+            let targets = this.nodes.filter(n => n !== source);
+
+            // Filter targets that are already connected FROM this source
+            targets = targets.filter(t => !this.connections.some(c => c.from === source && c.to === t));
+
+            let bestTarget = null;
+
+            // 1. Try to find a neutral node
+            const neutralTargets = targets.filter(n => n.owner === 'neutral');
+            if (neutralTargets.length > 0) {
+                // Pick closest or random? Random is less predictable.
+                bestTarget = neutralTargets[Math.floor(Math.random() * neutralTargets.length)];
+            }
+
+            // 2. If no neutral, try to attack player (Aggressive)
+            if (!bestTarget) {
+                const playerTargets = targets.filter(n => n.owner === 'player');
+                // Balanced: Attack only if we have MORE units
+                // Was: source.value > n.value * 0.8
+                // Now: source.value > n.value
+                const vulnerableTargets = playerTargets.filter(n => source.value > n.value);
+
+                if (vulnerableTargets.length > 0) {
+                    bestTarget = vulnerableTargets[Math.floor(Math.random() * vulnerableTargets.length)];
+                }
+            }
+
+            if (bestTarget) {
+                this.createConnection(source, bestTarget);
+            }
+        });
     }
 }

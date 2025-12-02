@@ -1,9 +1,6 @@
 <svg width="96" height="32" viewBox="0 0 96 32" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <style>
-      .neon-green { fill: #00FF00; }
-    </style>
-    <rect id="p" width="2" height="2" class="neon-green"/>
+    <rect id="p" width="2" height="2" fill="#FFFFFF"/>
   </defs>
 
   <g id="frame1">
