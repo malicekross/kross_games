@@ -58,6 +58,11 @@ export class Pathfinder {
                     continue;
                 }
 
+                // UI Restrictions (Top 2 rows, Bottom 2 rows)
+                if (neighborY < 2 || neighborY >= GRID_ROWS - 2) {
+                    continue;
+                }
+
                 // Check walkable (Empty or Room) OR if it is the destination
                 const tile = this.gridSystem.getTile(neighborX, neighborY);
                 const isDestination = neighborX === endX && neighborY === endY;

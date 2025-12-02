@@ -9,58 +9,75 @@ if (!fs.existsSync(outDir)) {
 }
 
 function generateTiles() {
-    const width = 160;
-    const height = 128;
+    const width = 160; // 5 variants * 32
+    const height = 128; // 4 types * 32
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
-    // Helper to draw a tile with border
-    const drawTile = (x, y, color, borderColor, pattern) => {
-        ctx.fillStyle = color;
-        ctx.fillRect(x, y, 32, 32);
-
-        // Add pattern
-        if (pattern === 'noise') {
-            for (let i = 0; i < 20; i++) {
-                ctx.fillStyle = Math.random() > 0.5 ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
-                ctx.fillRect(x + Math.random() * 30, y + Math.random() * 30, 2, 2);
-            }
-        } else if (pattern === 'cracks') {
-            ctx.strokeStyle = 'rgba(0,0,0,0.3)';
-            ctx.beginPath();
-            ctx.moveTo(x + 5, y + 5); ctx.lineTo(x + 15, y + 15);
-            ctx.stroke();
+    // Helper for noise
+    function addNoise(ctx, x, y, w, h, intensity = 0.1) {
+        const imageData = ctx.getImageData(x, y, w, h);
+        const data = imageData.data;
+        for (let i = 0; i < data.length; i += 4) {
+            const factor = 1 - intensity + Math.random() * intensity * 2;
+            data[i] *= factor;
+            data[i + 1] *= factor;
+            data[i + 2] *= factor;
         }
-
-        ctx.strokeStyle = borderColor;
-        ctx.lineWidth = 2;
-        ctx.strokeRect(x + 1, y + 1, 30, 30);
-    };
-
-    // Row 1: Dirt (Brown)
-    for (let i = 0; i < 5; i++) {
-        drawTile(i * 32, 0, '#5D4037', '#3E2723', 'noise');
+        ctx.putImageData(imageData, x, y);
     }
 
-    // Row 2: Rock (Grey)
+    // Row 0: Dirt
     for (let i = 0; i < 5; i++) {
-        drawTile(i * 32, 32, '#757575', '#424242', 'cracks');
+        const x = i * 32;
+        ctx.fillStyle = '#5d4037'; // Base dirt
+        ctx.fillRect(x, 0, 32, 32);
+        // Add texture
+        ctx.fillStyle = '#4e342e';
+        for (let k = 0; k < 10; k++) ctx.fillRect(x + Math.random() * 30, Math.random() * 30, 2, 2);
+        addNoise(ctx, x, 0, 32, 32, 0.15);
+        // Border
+        ctx.strokeStyle = '#3e2723';
+        ctx.strokeRect(x, 0, 32, 32);
     }
 
-    // Row 3: Bedrock (Dark Grey/Black)
+    // Row 1: Rock
     for (let i = 0; i < 5; i++) {
-        drawTile(i * 32, 64, '#212121', '#000000', 'noise');
+        const x = i * 32;
+        ctx.fillStyle = '#757575'; // Base rock
+        ctx.fillRect(x, 32, 32, 32);
+        // Cracks
+        ctx.strokeStyle = '#424242';
+        ctx.beginPath();
+        ctx.moveTo(x + Math.random() * 32, 32 + Math.random() * 32);
+        ctx.lineTo(x + Math.random() * 32, 32 + Math.random() * 32);
+        ctx.stroke();
+        addNoise(ctx, x, 32, 32, 32, 0.2);
+    }
+
+    // Row 2: Bedrock
+    for (let i = 0; i < 5; i++) {
+        const x = i * 32;
+        ctx.fillStyle = '#212121'; // Dark bedrock
+        ctx.fillRect(x, 64, 32, 32);
+        // Hard pattern
         ctx.fillStyle = '#000000';
-        ctx.fillRect(i * 32 + 8, 64 + 8, 16, 16); // Inner square
+        ctx.fillRect(x + 4, 64 + 4, 24, 24);
+        ctx.fillStyle = '#212121';
+        ctx.fillRect(x + 8, 64 + 8, 16, 16);
+        addNoise(ctx, x, 64, 32, 32, 0.1);
     }
 
-    // Row 4: Empty (Background Wall)
+    // Row 3: Background Wall (Empty)
     for (let i = 0; i < 5; i++) {
-        drawTile(i * 32, 96, '#1a1a1a', '#000000');
-        // Vertical pipes/lines
-        ctx.fillStyle = '#000000';
-        ctx.fillRect(i * 32 + 10, 96, 4, 32);
-        ctx.fillRect(i * 32 + 22, 96, 4, 32);
+        const x = i * 32;
+        ctx.fillStyle = '#3e2723'; // Darker dirt wall
+        ctx.fillRect(x, 96, 32, 32);
+        // Grid pattern for vault wall look
+        ctx.strokeStyle = '#281a17';
+        ctx.strokeRect(x, 96, 32, 32);
+        ctx.fillStyle = '#2d1e1b';
+        ctx.fillRect(x + 2, 96 + 2, 28, 28);
     }
 
     const buffer = canvas.toBuffer('image/png');
@@ -69,36 +86,82 @@ function generateTiles() {
 }
 
 function generateDwellers() {
-    const width = 160; // 5 frames * 32
-    const height = 32;
+    const width = 128; // 4 frames * 32
+    const height = 160; // 5 variants * 32
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
-    const colors = ['#1976D2', '#D32F2F', '#388E3C', '#FBC02D', '#7B1FA2']; // Blue, Red, Green, Yellow, Purple jumpsuits
+    const variants = [
+        { skin: '#f1c27d', hair: '#4a3b2a', suit: '#0000FF', gender: 'M' }, // Light skin, brown hair, blue suit
+        { skin: '#8d5524', hair: '#000000', suit: '#0000FF', gender: 'F' }, // Dark skin, black hair
+        { skin: '#e0ac69', hair: '#e6cea8', suit: '#0000FF', gender: 'M' }, // Med skin, blonde hair
+        { skin: '#c68642', hair: '#a52a2a', suit: '#0000FF', gender: 'F' }, // Tan skin, red hair
+        { skin: '#ffdbac', hair: '#808080', suit: '#0000FF', gender: 'M' }  // Pale skin, grey hair
+    ];
 
     for (let i = 0; i < 5; i++) {
-        const x = i * 32;
+        const y = i * 32;
+        const v = variants[i];
 
-        // Body (Jumpsuit)
-        ctx.fillStyle = colors[i];
-        ctx.fillRect(x + 8, 8, 16, 24);
+        for (let f = 0; f < 4; f++) {
+            const x = f * 32;
 
-        // Yellow Trim (Vault Stripe)
-        ctx.fillStyle = '#FFEB3B';
-        ctx.fillRect(x + 14, 8, 4, 24);
+            // Frame offset for animation
+            const bounce = (f === 1 || f === 3) ? -1 : 0;
+            const legOffset = (f === 1) ? -2 : (f === 3) ? 2 : 0;
 
-        // Head
-        ctx.fillStyle = '#FFCC80'; // Skin tone
-        ctx.fillRect(x + 10, 2, 12, 10);
+            ctx.save();
+            ctx.translate(x + 16, y + 16 + bounce); // Center
 
-        // Hair (Different for each)
-        ctx.fillStyle = ['#5D4037', '#FFC107', '#000000', '#E64A19', '#616161'][i];
-        ctx.fillRect(x + 10, 0, 12, 4);
+            // Body (Jumpsuit)
+            ctx.fillStyle = v.suit;
+            ctx.fillRect(-6, -4, 12, 14);
+            // Yellow stripe
+            ctx.fillStyle = '#FFFF00';
+            ctx.fillRect(-1, -4, 2, 14);
 
-        // Eyes
-        ctx.fillStyle = '#000000';
-        ctx.fillRect(x + 12, 5, 2, 2);
-        ctx.fillRect(x + 18, 5, 2, 2);
+            // Legs
+            ctx.fillStyle = '#1a1a1a'; // Dark pants/shoes
+            ctx.fillRect(-5 + legOffset, 10, 4, 6);
+            ctx.fillRect(1 - legOffset, 10, 4, 6);
+
+            // Head
+            ctx.fillStyle = v.skin;
+            ctx.beginPath();
+            ctx.arc(0, -10, 6, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Hair
+            ctx.fillStyle = v.hair;
+            if (v.gender === 'M') {
+                ctx.fillRect(-6, -16, 12, 4); // Short hair
+                ctx.fillRect(-7, -14, 2, 6); // Sideburns
+            } else {
+                ctx.beginPath();
+                ctx.arc(0, -10, 7, Math.PI, 0); // Top
+                ctx.fillRect(-7, -10, 14, 8); // Long hair sides
+                ctx.fill();
+            }
+
+            // Face
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(-2, -11, 1, 1); // Eye
+            ctx.fillRect(1, -11, 1, 1); // Eye
+            ctx.fillStyle = '#a0522d'; // Mouth
+            ctx.fillRect(-1, -8, 2, 1);
+
+            // Arms
+            ctx.fillStyle = v.suit;
+            ctx.fillRect(-9, -3, 3, 8); // Left arm
+            ctx.fillRect(6, -3, 3, 8); // Right arm
+
+            // Hands
+            ctx.fillStyle = v.skin;
+            ctx.fillRect(-9, 5, 3, 3);
+            ctx.fillRect(6, 5, 3, 3);
+
+            ctx.restore();
+        }
     }
 
     const buffer = canvas.toBuffer('image/png');

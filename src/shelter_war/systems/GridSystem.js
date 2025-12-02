@@ -62,6 +62,9 @@ export class GridSystem {
                 // Top row is empty (surface)
                 if (y === 0) type = TILE_TYPES.EMPTY;
 
+                // Make row 2 empty for initial dwellers
+                if (y === 2 && x >= 2 && x <= 5) type = TILE_TYPES.EMPTY;
+
                 this.tiles[y][x] = { type, room: null };
 
                 const sprite = new Sprite(this._getRandomTexture(type));
@@ -94,6 +97,11 @@ export class GridSystem {
         const tile = this.tiles[y][x];
 
         if (tile.type === TILE_TYPES.BEDROCK || tile.type === TILE_TYPES.EMPTY || tile.type === TILE_TYPES.ROOM) {
+            return false;
+        }
+
+        // UI Restrictions (Top 2 rows, Bottom 2 rows)
+        if (y < 2 || y >= GRID_ROWS - 2) {
             return false;
         }
 
