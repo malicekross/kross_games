@@ -8,8 +8,8 @@ export default defineConfig({
             input: {
                 main: resolve(__dirname, 'index.html'),
                 hello: resolve(__dirname, 'hello-world/index.html'),
-                hacking: resolve(__dirname, 'hacking/index.html'),
-                war: resolve(__dirname, 'war/index.html'),
+                hacking: resolve(__dirname, 'hacking_wars/index.html'),
+                war: resolve(__dirname, 'shelter_war/index.html'),
             },
         },
     },

@@ -117,13 +117,13 @@ export class Game {
         const v = __APP_VERSION__; // Cache busting
 
         const assets = [
-            { alias: 'tiles', src: `${basePath}war/assets/tiles.png?v=${v}` },
-            { alias: 'ui', src: `${basePath}war/assets/ui.png?v=${v}` },
-            { alias: 'rooms', src: `${basePath}war/assets/rooms.png?v=${v}` },
-            { alias: 'dwellers', src: `${basePath}war/assets/dwellers.png?v=${v}` },
-            { alias: 'mr_handy', src: `${basePath}war/assets/mr_handy.png?v=${v}` },
-            { alias: 'combat_units', src: `${basePath}war/assets/combat_units.png?v=${v}` },
-            { alias: 'enemies', src: `${basePath}war/assets/enemies.png?v=${v}` }
+            { alias: 'tiles', src: `${basePath}shelter_war/assets/tiles.png?v=${v}` },
+            { alias: 'ui', src: `${basePath}shelter_war/assets/ui.png?v=${v}` },
+            { alias: 'rooms', src: `${basePath}shelter_war/assets/rooms.png?v=${v}` },
+            { alias: 'dwellers', src: `${basePath}shelter_war/assets/dwellers.png?v=${v}` },
+            { alias: 'mr_handy', src: `${basePath}shelter_war/assets/mr_handy.png?v=${v}` },
+            { alias: 'combat_units', src: `${basePath}shelter_war/assets/combat_units.png?v=${v}` },
+            { alias: 'enemies', src: `${basePath}shelter_war/assets/enemies.png?v=${v}` }
         ];
 
         // Pre-load assets
@@ -202,7 +202,6 @@ export class Game {
         // Auto-Save
         this.saveSystem.save('auto');
 
-        // War Mode is now manual
         console.log('New Day Started. Prepare for war!');
     }
 

@@ -26,8 +26,12 @@ export class WorkerSystem {
         if (!this.textureBase) this.textureBase = Texture.EMPTY;
         if (!this.mrHandyTextureBase) this.mrHandyTextureBase = Texture.EMPTY;
 
-        // Assuming 32x32 sprites
-        this.idleTexture = new Texture({ source: this.textureBase.source, frame: new Rectangle(0, 0, 32, 32) });
+        // Assuming 32x32 sprites, now with 5 frames
+        this.dwellerTextures = [];
+        for (let i = 0; i < 5; i++) {
+            this.dwellerTextures.push(new Texture({ source: this.textureBase.source, frame: new Rectangle(i * 32, 0, 32, 32) }));
+        }
+
         this.mrHandyIdleTexture = new Texture({ source: this.mrHandyTextureBase.source, frame: new Rectangle(0, 0, 32, 32) });
 
         this.baseSpeed = 2;
@@ -44,8 +48,9 @@ export class WorkerSystem {
     }
 
     spawnDweller(x, y) {
+        const randomTexture = this.dwellerTextures[Math.floor(Math.random() * this.dwellerTextures.length)];
         const dweller = {
-            sprite: new Sprite(this.idleTexture),
+            sprite: new Sprite(randomTexture),
             x: x,
             y: y,
             state: JOB_TYPES.IDLE,

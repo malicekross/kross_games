@@ -43,7 +43,7 @@ export class BuildMenu {
     createButton(text, x, callback) {
         const style = new TextStyle({
             fontFamily: 'Courier New',
-            fontSize: 12,
+            fontSize: 10, // Reduced from 12
             fill: COLORS.TEXT
         });
         const btn = new Text({ text, style });
