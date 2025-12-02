@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shelter War - Kross Games</title>
+    <link rel="icon" type="image/x-icon" href="/kross_games/favicon.ico" />
     <style>
         body {
             margin: 0;
@@ -16,20 +18,24 @@
             color: #0f0;
             font-family: 'Courier New', Courier, monospace;
         }
+
         #game-container {
             position: relative;
             border: 2px solid #0f0;
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
         }
+
         canvas {
             display: block;
         }
     </style>
 </head>
+
 <body>
     <div id="game-container">
         <canvas id="game-canvas"></canvas>
     </div>
     <script type="module" src="../src/war/main.js"></script>
 </body>
+
 </html>

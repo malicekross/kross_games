@@ -17,11 +17,20 @@ export class BuildMenu {
 
         // Room Buttons
         let x = 10;
+        // Abbreviated names for display
+        const roomLabels = {
+            'LIVING_QUARTERS': 'LIVING',
+            'POWER_PLANT': 'POWER',
+            'DINER': 'DINER',
+            'WATER_TREATMENT': 'WATER',
+            'MEDBAY': 'MEDBAY',
+            'WORKSHOP': 'SHOP'
+        };
         const rooms = Object.values(ROOM_TYPES);
 
         for (const room of rooms) {
-            this.createButton(room, x, () => this.selectRoom(room));
-            x += 80;
+            this.createButton(roomLabels[room] || room, x, () => this.selectRoom(room));
+            x += 90; // Increased spacing
         }
     }
 

@@ -84,6 +84,8 @@ export class GridSystem {
     _getRandomTexture(type) {
         const variants = this.textures[type];
         if (!variants || variants.length === 0) return Texture.EMPTY;
+        // Use the first variant for DIRT to ensure a clean, non-noisy pattern
+        if (type === TILE_TYPES.DIRT) return variants[0];
         return variants[Math.floor(Math.random() * variants.length)];
     }
 

@@ -34,6 +34,21 @@ export class HUD {
         this.scrapText.x = 200;
         this.scrapText.y = 10;
         this.container.addChild(this.scrapText);
+
+        // Settings Button
+        const btnStyle = new TextStyle({
+            fontFamily: 'Courier New',
+            fontSize: 16,
+            fill: COLORS.TEXT,
+            fontWeight: 'bold'
+        });
+        this.settingsBtn = new Text({ text: '[SETTINGS]', style: btnStyle });
+        this.settingsBtn.x = SCREEN_WIDTH - 120;
+        this.settingsBtn.y = 10;
+        this.settingsBtn.eventMode = 'static';
+        this.settingsBtn.cursor = 'pointer';
+        this.settingsBtn.on('pointerdown', () => this.game.settingsMenu.container.visible = !this.game.settingsMenu.container.visible);
+        this.container.addChild(this.settingsBtn);
     }
 
     update() {
