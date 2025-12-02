@@ -3,7 +3,7 @@ import { createCanvas } from 'canvas';
 import path from 'path';
 
 // Ensure directory exists
-const outDir = 'shelter_war/assets';
+const outDir = 'public/shelter_war/assets';
 if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir, { recursive: true });
 }
