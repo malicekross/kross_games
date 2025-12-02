@@ -49,11 +49,33 @@ export class HUD {
         this.settingsBtn.cursor = 'pointer';
         this.settingsBtn.on('pointerdown', () => this.game.settingsMenu.container.visible = !this.game.settingsMenu.container.visible);
         this.container.addChild(this.settingsBtn);
+
+        // Fight Button
+        const fightStyle = new TextStyle({
+            fontFamily: 'Courier New',
+            fontSize: 16,
+            fill: '#FF0000', // Red for danger
+            fontWeight: 'bold'
+        });
+        this.fightBtn = new Text({ text: '[FIGHT]', style: fightStyle });
+        this.fightBtn.x = SCREEN_WIDTH - 220;
+        this.fightBtn.y = 10;
+        this.fightBtn.eventMode = 'static';
+        this.fightBtn.cursor = 'pointer';
+        this.fightBtn.on('pointerdown', () => {
+            if (this.game.state === 'VAULT') {
+                this.game.startWar();
+            }
+        });
+        this.container.addChild(this.fightBtn);
     }
 
     update() {
         this.dayText.text = `Day: ${this.game.timeSystem.day}`;
         this.popText.text = `Pop: ${this.game.workerSystem.dwellers.length}/10`;
-        // Scrap not implemented yet in Game, need to add it
+        this.scrapText.text = `Scrap: ${this.game.scrap || 0}`;
+
+        // Only show FIGHT button in Vault mode
+        this.fightBtn.visible = this.game.state === 'VAULT';
     }
 }

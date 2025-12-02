@@ -27,11 +27,17 @@ export class BuildMenu {
             'WORKSHOP': 'SHOP'
         };
         const rooms = Object.values(ROOM_TYPES);
+        this.buttons = [];
 
         for (const room of rooms) {
-            this.createButton(roomLabels[room] || room, x, () => this.selectRoom(room));
-            x += 90; // Increased spacing
+            const btn = this.createButton(roomLabels[room] || room, x, () => this.selectRoom(room));
+            btn.roomType = room;
+            this.buttons.push(btn);
+            x += 90;
         }
+
+        // Add update loop to check unlocks
+        this.game.app.ticker.add(() => this.update());
     }
 
     createButton(text, x, callback) {
@@ -47,10 +53,33 @@ export class BuildMenu {
         btn.cursor = 'pointer';
         btn.on('pointerdown', callback);
         this.container.addChild(btn);
+        return btn;
     }
 
     selectRoom(type) {
+        // Check unlock again just in case
+        if (this.isRoomLocked(type)) {
+            console.log('Room Locked!');
+            return;
+        }
         console.log(`Selected Room: ${type}`);
         // In real impl, set placement mode in GridSystem
+    }
+
+    isRoomLocked(type) {
+        const day = this.game.timeSystem.day;
+        if (type === 'MEDBAY' && day < 2) return true;
+        if (type === 'WORKSHOP' && day < 3) return true;
+        return false;
+    }
+
+    update() {
+        if (!this.container.visible) return;
+
+        this.buttons.forEach(btn => {
+            const locked = this.isRoomLocked(btn.roomType);
+            btn.alpha = locked ? 0.5 : 1;
+            btn.eventMode = locked ? 'none' : 'static';
+        });
     }
 }

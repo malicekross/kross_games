@@ -152,6 +152,7 @@ export class Game {
 
         this.timeSystem.day = 1;
         this.timeSystem.time = 0;
+        this.scrap = 10; // Starting scrap
 
         this.audioSystem.playSFX('click');
         console.log('New Game Started');
@@ -197,8 +198,12 @@ export class Game {
         // Auto-Save
         this.saveSystem.save('auto');
 
-        // Start War Mode
-        this.startWarMode(day);
+        // War Mode is now manual
+        console.log('New Day Started. Prepare for war!');
+    }
+
+    startWar() {
+        this.startWarMode(this.timeSystem.day);
     }
 
     startWarMode(day) {
