@@ -1,6 +1,6 @@
 import { Container, Text, TextStyle, Graphics } from 'pixi.js';
 import { SCREEN_HEIGHT, COLORS } from '../constants.js';
-import { ROOM_TYPES } from '../systems/RoomSystem.js';
+import { ROOM_TYPES, ROOM_COSTS } from '../systems/RoomSystem.js';
 
 export class BuildMenu {
     constructor(game) {
@@ -30,30 +30,48 @@ export class BuildMenu {
         this.buttons = [];
 
         for (const room of rooms) {
-            const btn = this.createButton(roomLabels[room] || room, x, () => this.selectRoom(room));
+            const cost = ROOM_COSTS[room];
+            const btn = this.createButton(roomLabels[room] || room, x, () => this.selectRoom(room), cost);
             btn.roomType = room;
             this.buttons.push(btn);
-            x += 90;
+            x += 80; // Reduced spacing slightly
         }
 
         // Add update loop to check unlocks
         this.game.app.ticker.add(() => this.update());
     }
 
-    createButton(text, x, callback) {
+    createButton(text, x, callback, cost) {
+        const container = new Container();
+        container.x = x;
+        container.y = 10;
+
         const style = new TextStyle({
             fontFamily: 'Courier New',
-            fontSize: 10, // Reduced from 12
-            fill: COLORS.TEXT
+            fontSize: 10,
+            fill: COLORS.TEXT,
+            fontWeight: 'bold'
         });
-        const btn = new Text({ text, style });
-        btn.x = x;
-        btn.y = 20;
-        btn.eventMode = 'static';
-        btn.cursor = 'pointer';
-        btn.on('pointerdown', callback);
-        this.container.addChild(btn);
-        return btn;
+        const btnText = new Text({ text, style });
+        container.addChild(btnText);
+
+        if (cost) {
+            const costStyle = new TextStyle({
+                fontFamily: 'Courier New',
+                fontSize: 8,
+                fill: '#FFFF00' // Yellow for cost
+            });
+            const costText = new Text({ text: `(${cost})`, style: costStyle });
+            costText.y = 12;
+            costText.x = btnText.width / 2 - costText.width / 2;
+            container.addChild(costText);
+        }
+
+        container.eventMode = 'static';
+        container.cursor = 'pointer';
+        container.on('pointerdown', callback);
+        this.container.addChild(container);
+        return container;
     }
 
     selectRoom(type) {

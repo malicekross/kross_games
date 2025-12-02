@@ -142,17 +142,39 @@ export class WorkerSystem {
             }
         } else if (dweller.targetJob) {
             // 3. Perform Job
-            this._performJob(dweller);
+            this._performJob(dweller, delta);
         }
     }
 
-    _performJob(dweller) {
+    _performJob(dweller, delta) {
         const job = dweller.targetJob;
-        if (job.type === JOB_TYPES.DIG) {
-            // Instant dig for now, add timer later
-            this.gridSystem.dig(job.x, job.y);
+
+        // Initialize timer if not set
+        if (!dweller.jobTimer) {
+            if (job.type === JOB_TYPES.DIG) dweller.jobTimer = 2000; // 2 seconds
+            else if (job.type === JOB_TYPES.BUILD) dweller.jobTimer = 4000; // 4 seconds
+            else dweller.jobTimer = 0;
+        }
+
+        // Decrement timer (delta is in frames, approx 16.66ms per frame)
+        // Actually, let's assume delta is passed from Game.update which is ticker.deltaTime (frames)
+        // To be safe, let's use a fixed decrement assuming 60FPS or use deltaMS if available.
+        // Game.js passes ticker.deltaTime. 1 deltaTime = 1 frame (~16ms).
+        // So 2000ms = 120 frames.
+
+        // Let's convert ms to frames roughly: ms / 16.66
+        dweller.jobTimer -= delta * 16.66;
+
+        if (dweller.jobTimer <= 0) {
+            if (job.type === JOB_TYPES.DIG) {
+                this.gridSystem.dig(job.x, job.y);
+            }
+            // Build logic is handled elsewhere or instant for now, but delay is added here.
+
+            // Reset
             dweller.state = JOB_TYPES.IDLE;
             dweller.targetJob = null;
+            dweller.jobTimer = null;
         }
     }
 }

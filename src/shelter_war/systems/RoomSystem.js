@@ -10,6 +10,16 @@ export const ROOM_TYPES = {
     WORKSHOP: 'WORKSHOP'
 };
 
+export const ROOM_COSTS = {
+    [ROOM_TYPES.LIVING_QUARTERS]: 100,
+    [ROOM_TYPES.POWER_PLANT]: 150,
+    [ROOM_TYPES.DINER]: 150,
+    [ROOM_TYPES.WATER_TREATMENT]: 150,
+    [ROOM_TYPES.ARMORY]: 200,
+    [ROOM_TYPES.MEDBAY]: 300,
+    [ROOM_TYPES.WORKSHOP]: 500
+};
+
 export class RoomSystem {
     constructor(game) {
         this.game = game;

@@ -256,9 +256,16 @@ export class Game {
 
     handleTileClick(x, y) {
         if (this.state !== GAME_STATES.VAULT) return;
-        console.log(`Order: Dig at ${x}, ${y}`);
-        this.workerSystem.addJob(JOB_TYPES.DIG, x, y);
-        this.audioSystem.playSFX('dig');
+
+        // Mining Cost
+        if (this.scrap >= 1) {
+            this.scrap -= 1;
+            console.log(`Order: Dig at ${x}, ${y} (Cost: 1 Scrap)`);
+            this.workerSystem.addJob(JOB_TYPES.DIG, x, y);
+            this.audioSystem.playSFX('dig');
+        } else {
+            console.log("Not enough scrap to mine!");
+        }
     }
 
     resize() {
