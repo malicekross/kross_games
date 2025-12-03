@@ -32,11 +32,85 @@ async function processSpriteSheet() {
         ctx2.drawImage(image2, 0, 0);
     }
 
+    // Helper to remove background (Chroma Key)
+    const removeBackground = (ctx, width, height) => {
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const data = imageData.data;
+
+        // Sample top-left pixel as background color 1
+        const bg1 = { r: data[0], g: data[1], b: data[2] };
+
+        // Sample a pixel that is likely the other checkerboard color (e.g., 16px right, 16px down)
+        // If it's a 32x32 grid, the checkerboard might be smaller. Let's assume standard 8x8 or 16x16 checks.
+        // Let's sample a few points to find common background colors.
+        // Or simpler: Just assume anything close to grey/white is background?
+        // No, that might kill the robot's silver body.
+
+        // Better approach: The background is likely the checkerboard.
+        // Let's define the two checkerboard colors based on the top-left area.
+        // Usually it's a light grey and a dark grey.
+        // Pixel 0,0 was 149,149,149.
+
+        // Let's use a tolerance.
+        const tolerance = 30; // For JPEG artifacts
+
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+
+            // Check against BG1 (Grey ~149)
+            // Also check against White/Lighter Grey if present.
+            // Looking at the user's image, it seems to be a standard checkerboard.
+            // Let's check if it's "greyish" and not "colorful".
+
+            // Heuristic: Low saturation (R~=G~=B) and high brightness?
+            // But the robot is also grey.
+
+            // Let's stick to keying out the specific sampled background colors.
+            // We'll sample 0,0.
+            const dist1 = Math.sqrt(Math.pow(r - bg1.r, 2) + Math.pow(g - bg1.g, 2) + Math.pow(b - bg1.b, 2));
+
+            // Sample another point for the second checker color?
+            // Let's assume the checkerboard squares are maybe 8x8 or 16x16.
+            // Let's check pixel at 10,0.
+            // If the user image is 32x32 grid, the checkerboard is likely smaller.
+
+            // Let's try to detect the second color dynamically.
+            // If we encounter a pixel that is "grey" but different from bg1, maybe it's bg2?
+
+            // For now, let's just key out the color at 0,0 with tolerance.
+            // If the checkerboard has two colors, we might miss one.
+            // Let's assume the user's "transparent" background is the grey checkerboard.
+            // Often these tools export a grid.
+
+            // Let's hardcode the check for the grey we found (149) and maybe a lighter one (204 or 255).
+            // 149 is #959595.
+            // The other square is often #CCCCCC (204) or #FFFFFF (255).
+
+            const isGrey1 = dist1 < tolerance;
+
+            // Check for a second common grey (e.g. 204, 204, 204)
+            const dist2 = Math.sqrt(Math.pow(r - 204, 2) + Math.pow(g - 204, 2) + Math.pow(b - 204, 2));
+            const isGrey2 = dist2 < tolerance;
+
+            if (isGrey1 || isGrey2) {
+                data[i + 3] = 0; // Transparent
+            }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+    };
+
     // Helper to extract from a specific canvas
     const extract = (canvas, name, x, y, w, h) => {
         const c = createCanvas(w, h);
         const cx = c.getContext('2d');
         cx.drawImage(canvas, x, y, w, h, 0, 0, w, h);
+
+        // Apply background removal
+        removeBackground(cx, w, h);
+
         const buffer = c.toBuffer('image/png');
         fs.writeFileSync(path.join(outDir, name), buffer);
         console.log(`Generated ${name}`);
