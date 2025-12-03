@@ -48,19 +48,11 @@ def remove_background_hsv(img):
     print(f"Removed {count} magenta pixels.")
     return img
 
-def crop_to_content(img):
-    bbox = img.getbbox()
-    if bbox:
-        print(f"Cropping to {bbox}")
-        return img.crop(bbox)
-    return img
-
-def smart_resize(img, target_width):
+def force_resize(img, target_size):
     w, h = img.size
-    scale = target_width / w
-    new_h = int(h * scale)
-    print(f"Resizing from {w}x{h} to {target_width}x{new_h} (Scale: {scale:.2f})")
-    return img.resize((target_width, new_h), Image.Resampling.NEAREST)
+    tw, th = target_size
+    print(f"Force Resizing from {w}x{h} to {tw}x{th}")
+    return img.resize(target_size, Image.Resampling.NEAREST)
 
 def verify_clean(img, name):
     # Check for remaining magenta
@@ -82,8 +74,6 @@ def extract(img, name, x, y, w, h):
     img_w, img_h = img.size
     if x + w > img_w or y + h > img_h:
         print(f"WARNING: Extract {name} out of bounds! Image is {img_w}x{img_h}, trying to get {x},{y} to {x+w},{y+h}")
-        # Pad with transparent if needed? Or just crop what we can.
-        # For now, let's crop what we can.
         crop = img.crop((x, y, min(x + w, img_w), min(y + h, img_h)))
     else:
         crop = img.crop((x, y, x + w, y + h))
@@ -92,7 +82,7 @@ def extract(img, name, x, y, w, h):
     crop.save(os.path.join(OUT_DIR, name))
     print(f"Generated {name}")
 
-def process_file(path, name_base):
+def process_file(path, target_size, name_base):
     if not os.path.exists(path):
         return None
         
@@ -102,17 +92,15 @@ def process_file(path, name_base):
     # 1. Remove Background
     clean_img = remove_background_hsv(img)
     
-    # 2. Crop
-    cropped_img = crop_to_content(clean_img)
-    
-    # 3. Resize (Width based)
-    final_img = smart_resize(cropped_img, TARGET_WIDTH)
+    # 2. Force Resize to Grid
+    final_img = force_resize(clean_img, target_size)
     
     return final_img
 
 def main():
     # --- SOURCE 1 ---
-    img1 = process_file(SOURCE_PATH, 'source')
+    # Target: 12 cols * 32 = 384. 13 rows * 32 = 416.
+    img1 = process_file(SOURCE_PATH, (384, 416), 'source')
     
     if img1:
         # 1. Dwellers (Rows 1-5) -> 0-160px
@@ -132,11 +120,12 @@ def main():
         extract(img1, 'combat_units.png', 0, 352, 384, 32)
 
     # --- SOURCE 2 ---
-    img2 = process_file(EXTRA_PATH, 'source_extra')
+    # Target: 12 cols * 32 = 384. 7 rows * 32 = 224.
+    img2 = process_file(EXTRA_PATH, (384, 224), 'source_extra')
     
     # --- COMBINE ENEMIES ---
     print("Combining Enemies...")
-    # Target Height: 7 rows (Radroach, Mole Rat, Ghoul, Raider, Psycho, Mutant, Deathclaw) * 32 = 224px
+    # Target Height: 7 rows * 32 = 224px
     enemies_w, enemies_h = 384, 224
     enemies_img = Image.new("RGBA", (enemies_w, enemies_h), (0, 0, 0, 0))
     
