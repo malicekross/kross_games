@@ -48,37 +48,56 @@ def find_intervals(histogram, threshold=0):
 
 def smart_slice(img, expected_cols, expected_rows):
     # 1. Get Alpha Channel / Non-Transparent Mask
-    # Assuming img has BG removed
     alpha = np.array(img.split()[-1])
     
     # 2. Project to Y axis (Row detection)
-    # Sum of alpha values per row
     row_hist = np.sum(alpha, axis=1)
     rows = find_intervals(row_hist)
     
+    # Fix Merged Rows
+    # If a row is > 1.5x target size, split it
+    new_rows = []
+    for start, end in rows:
+        height = end - start
+        if height > TARGET_CELL_SIZE * 1.5:
+            # How many rows fit?
+            count = round(height / TARGET_CELL_SIZE)
+            print(f"Splitting merged row of height {height} into {count} rows")
+            step = height / count
+            for i in range(count):
+                s = start + int(i * step)
+                e = start + int((i + 1) * step)
+                new_rows.append((s, e))
+        else:
+            new_rows.append((start, end))
+    rows = new_rows
+
     # 3. Project to X axis (Column detection)
     col_hist = np.sum(alpha, axis=0)
     cols = find_intervals(col_hist)
     
-    print(f"Detected {len(cols)} columns and {len(rows)} rows.")
+    # Fix Merged Cols
+    new_cols = []
+    for start, end in cols:
+        width = end - start
+        if width > TARGET_CELL_SIZE * 1.5:
+            count = round(width / TARGET_CELL_SIZE)
+            print(f"Splitting merged col of width {width} into {count} cols")
+            step = width / count
+            for i in range(count):
+                s = start + int(i * step)
+                e = start + int((i + 1) * step)
+                new_cols.append((s, e))
+        else:
+            new_cols.append((start, end))
+    cols = new_cols
     
-    # If detection fails (e.g. no gaps), fallback to even slicing
-    if len(rows) != expected_rows or len(cols) != expected_cols:
-        print(f"Warning: Expected {expected_rows} rows, found {len(rows)}. Expected {expected_cols} cols, found {len(cols)}.")
-        # We can try to force split if counts are close, or just use even split of the bounding box.
-        # For now, let's use the detected bounds if they exist, otherwise fallback.
-        
-        if len(rows) == 0 or len(cols) == 0:
-             print("No content detected! Using full image.")
-             rows = [(0, img.height)]
-             cols = [(0, img.width)]
+    print(f"Detected {len(cols)} columns and {len(rows)} rows.")
     
     # Extract cells
     cells = []
     for r_start, r_end in rows:
         row_cells = []
-        # For each row, we might want to re-detect columns if they are not aligned?
-        # But usually sprite sheets are aligned. Let's use global cols.
         for c_start, c_end in cols:
             cell = img.crop((c_start, r_start, c_end, r_end))
             row_cells.append(cell)
