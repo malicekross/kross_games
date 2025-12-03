@@ -12,13 +12,12 @@ def remove_background(img, tolerance=30):
     
     new_data = []
     
-    # Target colors (Grey checkerboard)
-    # Based on previous analysis: ~149 and ~204/255
-    # Let's define a list of target colors to key out
+    # Target colors (Magenta)
+    # Key out #FF00FF (255, 0, 255)
     targets = [
-        (149, 149, 149),
-        (204, 204, 204),
-        (255, 255, 255) # Sometimes white
+        (255, 0, 255), # Magenta
+        (255, 0, 254), # Near Magenta (compression artifacts)
+        (254, 0, 255)
     ]
     
     for item in datas:
