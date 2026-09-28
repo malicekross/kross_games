@@ -435,6 +435,129 @@
     margin-top: 10px;
   }
 
+  /* Interactive Map Legend Modal */
+  .legend-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(4, 9, 18, 0.78);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    animation: fadeIn 0.2s ease-out;
+  }
+  .legend-modal.show {
+    display: flex;
+  }
+  .legend-content {
+    background: rgba(11, 21, 38, 0.98);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(56, 189, 248, 0.2);
+    width: 840px;
+    max-width: 100%;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 24px;
+    overflow-y: auto;
+  }
+  .legend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+  }
+  .legend-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.8rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 6px;
+    touch-action: manipulation;
+  }
+  .legend-close:hover {
+    color: var(--text-white);
+  }
+  .legend-group {
+    margin-bottom: 16px;
+  }
+  .legend-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #080F1E;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .legend-group-header:hover {
+    border-color: var(--cyan);
+    background: #0E1A30;
+  }
+  .legend-group-title {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--cyan);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .legend-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+  }
+  .legend-item-chip {
+    background: #101E34;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .legend-item-chip:hover {
+    border-color: var(--cyan);
+    background: #172B4D;
+    transform: translateY(-1px);
+  }
+  .legend-item-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+  .legend-item-text {
+    flex: 1;
+    overflow: hidden;
+  }
+  .legend-item-name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .legend-item-meta {
+    font-size: 0.7rem;
+    color: var(--cyan);
+    font-weight: 600;
+  }
+
   /* Sidebar Area */
   .sidebar {
     background: var(--panel-bg);
@@ -821,15 +944,13 @@
   <div class="header-brand">
     <a href="../index.html" class="btn-kross" title="Return to Kross Games Hub">← Kross Games</a>
     <div class="header-titles">
-      <h1>
-        MAMMOTH LAKE
-        <span class="badge-team">[ TONY, ADDIE, & KEN ]</span>
-      </h1>
+      <h1>MAMMOTH LAKE SCUBA PARK</h1>
       <p>Lake Jackson / Clute, TX • 29.0291° N, 95.4210° W • 65 Acres • Max Depth: 70 FT</p>
     </div>
   </div>
   <div class="header-actions">
     <button class="btn" id="btnBadgeMode">Badges: Cards</button>
+    <button class="btn" id="btnLegend" style="background:rgba(56, 189, 248, 0.15); border-color:var(--cyan); color:var(--cyan); font-weight:700;">🗺️ Legend</button>
     <button class="btn" id="btnTheme">Theme: Dark</button>
     <button class="btn" id="btnResetView" title="Reset View">Fit ⤢</button>
     <button class="btn" id="btnPrint" style="background:#1B3356; border-color:#38BDF8;">🖨️ Slate</button>
@@ -860,6 +981,7 @@
       <button class="tb-btn" data-filter="platform">■ Platforms</button>
       <button class="tb-btn" data-filter="dock">⚓ Docks</button>
       <button class="tb-btn" data-filter="deep">🤿 Deep Hole</button>
+      <button class="tb-btn" id="btnTbLegend" style="background:rgba(56, 189, 248, 0.15); border-color:var(--cyan); color:var(--cyan); font-weight:700;">🗺️ Legend</button>
       <span style="width:1px; height:18px; background:var(--border); margin:0 4px;"></span>
       <button class="tb-btn active" id="btnToggleNav">Lines</button>
       <button class="tb-btn active" id="btnToggleSwims">Swims</button>
@@ -1098,6 +1220,28 @@
       </div>
     </div>
 
+    <!-- Interactive Map Legend Modal -->
+    <div class="legend-modal" id="legendModal">
+      <div class="legend-content">
+        <div class="legend-header">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.5rem;">🗺️</span>
+            <div>
+              <h2 style="font-size:1.15rem; font-weight:800; color:var(--text-white); margin:0;">Mammoth Lake Attraction Legend</h2>
+              <div style="font-size:0.75rem; color:var(--cyan); font-weight:600;">47 Identified Underwater Features & Dive Targets</div>
+            </div>
+          </div>
+          <button class="legend-close" id="btnCloseLegend" aria-label="Close Legend">&times;</button>
+        </div>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">
+          Click any category header to filter the map, or click any individual sunken object to fly directly to it.
+        </p>
+        <div class="legend-categories" id="legendCategories">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Sidebar Controls & Briefings (Desktop persistent / Mobile Bottom Sheet) -->
@@ -1308,6 +1452,8 @@ const SOLVED_BADGES = [{"id": "jet", "title": "Trainer / Fighter Jet", "dep": "2
 const CIRCUITS = [{"id": "c1", "num": "Circuit 1", "title": "Flight Deck & Shallows (Addie-Friendly Warm-Up)", "color": "#10B981", "max_depth": "28 FT", "avg_depth": "22 FT", "est_time": "45 - 52 MIN", "turn_psi": "1,600 PSI", "entry": "NASA Dock (West Entry)", "waypoints": [{"id": "nasa_dock", "name": "NASA Dock", "x": 105, "y": 745, "depth": "4-8 FT"}, {"id": "p1", "name": "Platform 1", "x": 268, "y": 700, "depth": "20 FT"}, {"id": "jet", "name": "Trainer Jet", "x": 155, "y": 788, "depth": "22 FT"}, {"id": "rockets", "name": "Rocket Farm", "x": 200, "y": 730, "depth": "25 FT"}, {"id": "shuttle", "name": "Space Shuttle", "x": 250, "y": 655, "depth": "28 FT"}, {"id": "submarine", "name": "Submarine", "x": 375, "y": 420, "depth": "28 FT"}, {"id": "p2", "name": "Platform 2", "x": 272, "y": 830, "depth": "22 FT"}, {"id": "nasa_dock", "name": "NASA Dock Exit", "x": 105, "y": 745, "depth": "4-8 FT"}], "legs": [{"from": "NASA Dock", "to": "Platform 1", "hdg": "074°", "dist": "145 FT", "kicks": "16 kicks"}, {"from": "Platform 1", "to": "Trainer Jet", "hdg": "218°", "dist": "95 FT", "kicks": "10 kicks"}, {"from": "Trainer Jet", "to": "Rocket Farm", "hdg": "045°", "dist": "70 FT", "kicks": "8 kicks"}, {"from": "Rocket Farm", "to": "Space Shuttle", "hdg": "033°", "dist": "90 FT", "kicks": "10 kicks"}, {"from": "Space Shuttle", "to": "Submarine", "hdg": "028°", "dist": "265 FT", "kicks": "29 kicks"}, {"from": "Submarine", "to": "Platform 2", "hdg": "194°", "dist": "420 FT", "kicks": "46 kicks"}, {"from": "Platform 2", "to": "NASA Dock", "hdg": "300°", "dist": "185 FT", "kicks": "20 kicks"}], "desc": "Perfect first dive of the trip! High ambient natural light, gentle depths comfortably inside PADI NDL, thrilling aircraft and submarine hulls. Excellent photo opportunities with relaxed gas consumption."}, {"id": "c2", "num": "Circuit 2", "title": "C-130 Hercules Expedition (Wreck Trek)", "color": "#06B6D4", "max_depth": "38 FT", "avg_depth": "30 FT", "est_time": "40 - 46 MIN", "turn_psi": "1,600 PSI", "entry": "NASA Dock (West Entry)", "waypoints": [{"id": "nasa_dock", "name": "NASA Dock", "x": 105, "y": 745, "depth": "4-8 FT"}, {"id": "p1", "name": "Platform 1", "x": 268, "y": 700, "depth": "20 FT"}, {"id": "c130", "name": "C-130 Hercules", "x": 315, "y": 535, "depth": "26-38 FT"}, {"id": "short_bus", "name": "Short Bus", "x": 425, "y": 530, "depth": "34 FT"}, {"id": "boat_stick", "name": "Boat on a Stick", "x": 445, "y": 625, "depth": "35 FT"}, {"id": "mammoth", "name": "Mammoth", "x": 310, "y": 615, "depth": "32 FT"}, {"id": "p3", "name": "Platform 3", "x": 325, "y": 778, "depth": "20 FT"}, {"id": "nasa_dock", "name": "NASA Dock Exit", "x": 105, "y": 745, "depth": "4-8 FT"}], "legs": [{"from": "NASA Dock", "to": "Platform 1", "hdg": "074°", "dist": "145 FT", "kicks": "16 kicks"}, {"from": "Platform 1", "to": "C-130 Hercules", "hdg": "016°", "dist": "170 FT", "kicks": "19 kicks"}, {"from": "C-130 Hercules", "to": "Short Bus", "hdg": "087°", "dist": "110 FT", "kicks": "12 kicks"}, {"from": "Short Bus", "to": "Boat on a Stick", "hdg": "168°", "dist": "95 FT", "kicks": "10 kicks"}, {"from": "Boat on a Stick", "to": "Mammoth", "hdg": "265°", "dist": "135 FT", "kicks": "15 kicks"}, {"from": "Mammoth", "to": "Platform 3", "hdg": "175°", "dist": "165 FT", "kicks": "18 kicks"}, {"from": "Platform 3", "to": "NASA Dock", "hdg": "278°", "dist": "220 FT", "kicks": "24 kicks"}], "desc": "The flagship Mammoth Lake tour! Explore the colossal 132' wingspan C-130 Hercules cargo aircraft, open cargo hold, cockpit, 4 engines, followed by vehicles and prehistoric mammoth sculpture."}, {"id": "c3", "num": "Circuit 3", "title": "Tower & Tire Reef (Central Deep Basin)", "color": "#F59E0B", "max_depth": "44 FT (Optional 70' Deep Hole)", "avg_depth": "35 FT", "est_time": "36 - 42 MIN", "turn_psi": "1,700 PSI", "entry": "MidTown Dock or NASA Dock", "waypoints": [{"id": "midtown", "name": "MidTown Dock", "x": 670, "y": 830, "depth": "4-12 FT"}, {"id": "fire_truck", "name": "Fire Truck", "x": 675, "y": 590, "depth": "38 FT"}, {"id": "tower", "name": "Observation Tower", "x": 770, "y": 590, "depth": "40 FT"}, {"id": "tire_reef", "name": "Tire Reef", "x": 845, "y": 415, "depth": "42 FT"}, {"id": "p8", "name": "Platform 8", "x": 955, "y": 625, "depth": "38 FT"}, {"id": "deep_hole", "name": "Deep Hole Rim", "x": 590, "y": 690, "depth": "44-70 FT"}, {"id": "midtown", "name": "MidTown Dock Exit", "x": 670, "y": 830, "depth": "4-12 FT"}], "legs": [{"from": "MidTown Dock", "to": "Fire Truck", "hdg": "001°", "dist": "240 FT", "kicks": "26 kicks"}, {"from": "Fire Truck", "to": "Observation Tower", "hdg": "090°", "dist": "95 FT", "kicks": "10 kicks"}, {"from": "Observation Tower", "to": "Tire Reef", "hdg": "023°", "dist": "190 FT", "kicks": "21 kicks"}, {"from": "Tire Reef", "to": "Platform 8", "hdg": "152°", "dist": "235 FT", "kicks": "26 kicks"}, {"from": "Platform 8", "to": "Deep Hole Rim", "hdg": "259°", "dist": "370 FT", "kicks": "41 kicks"}, {"from": "Deep Hole Rim", "to": "MidTown Dock", "hdg": "150°", "dist": "160 FT", "kicks": "17 kicks"}], "desc": "Highest fish population in the park on Tire Reef! Observation Tower structure rises through the thermocline. Adjacent to the 70 FT Deep Hole cold spring (high-intensity lights mandatory below 50 FT)."}, {"id": "c4", "num": "Circuit 4", "title": "Thunder Bay Railroad & School Buses", "color": "#8B5CF6", "max_depth": "36 FT", "avg_depth": "28 FT", "est_time": "42 - 48 MIN", "turn_psi": "1,600 PSI", "entry": "Thunder Bay Dock (Northeast Entry)", "waypoints": [{"id": "dock_thunder", "name": "Thunder Bay Dock", "x": 1315, "y": 250, "depth": "4-10 FT"}, {"id": "p9", "name": "Platform 9", "x": 1370, "y": 388, "depth": "30 FT"}, {"id": "caboose", "name": "Rail Caboose", "x": 1490, "y": 300, "depth": "32 FT"}, {"id": "school_buses", "name": "School Buses", "x": 1530, "y": 375, "depth": "34 FT"}, {"id": "bucket_truck", "name": "Bucket Truck", "x": 1445, "y": 435, "depth": "32 FT"}, {"id": "trains", "name": "Train Tankers", "x": 1155, "y": 410, "depth": "36 FT"}, {"id": "dock_thunder", "name": "Thunder Bay Exit", "x": 1315, "y": 250, "depth": "4-10 FT"}], "legs": [{"from": "Thunder Bay Dock", "to": "Platform 9", "hdg": "158°", "dist": "150 FT", "kicks": "16 kicks"}, {"from": "Platform 9", "to": "Rail Caboose", "hdg": "054°", "dist": "150 FT", "kicks": "16 kicks"}, {"from": "Rail Caboose", "to": "School Buses", "hdg": "152°", "dist": "85 FT", "kicks": "9 kicks"}, {"from": "School Buses", "to": "Bucket Truck", "hdg": "215°", "dist": "105 FT", "kicks": "11 kicks"}, {"from": "Bucket Truck", "to": "Train Tankers", "hdg": "275°", "dist": "290 FT", "kicks": "32 kicks"}, {"from": "Train Tankers", "to": "Thunder Bay Dock", "hdg": "045°", "dist": "225 FT", "kicks": "25 kicks"}], "desc": "East basin vehicle playground! Swim through open school bus aisles, examine elevated electrical bucket utility boom truck, and tour the vintage red caboose."}];
 const NAV_LEGS = [{"from": [105, 745], "to": [268, 700], "hdg": "074°", "dist": "145'", "kicks": "16k"}, {"from": [268, 700], "to": [155, 788], "hdg": "218°", "dist": "95'", "kicks": "10k"}, {"from": [268, 700], "to": [250, 655], "hdg": "030°", "dist": "45'", "kicks": "5k"}, {"from": [268, 700], "to": [375, 420], "hdg": "025°", "dist": "310'", "kicks": "34k"}, {"from": [375, 420], "to": [315, 535], "hdg": "210°", "dist": "130'", "kicks": "14k"}, {"from": [315, 535], "to": [425, 530], "hdg": "085°", "dist": "110'", "kicks": "12k"}, {"from": [315, 535], "to": [770, 590], "hdg": "098°", "dist": "510'", "kicks": "56k"}, {"from": [770, 590], "to": [590, 690], "hdg": "240°", "dist": "210'", "kicks": "23k"}, {"from": [770, 590], "to": [845, 415], "hdg": "022°", "dist": "205'", "kicks": "22k"}, {"from": [770, 590], "to": [955, 625], "hdg": "105°", "dist": "210'", "kicks": "23k"}, {"from": [955, 625], "to": [1370, 388], "hdg": "060°", "dist": "480'", "kicks": "52k"}, {"from": [1315, 250], "to": [1370, 388], "hdg": "158°", "dist": "155'", "kicks": "17k"}, {"from": [1370, 388], "to": [1490, 300], "hdg": "058°", "dist": "145'", "kicks": "16k"}, {"from": [1370, 388], "to": [1445, 435], "hdg": "155°", "dist": "90'", "kicks": "10k"}, {"from": [1370, 388], "to": [1530, 375], "hdg": "095°", "dist": "175'", "kicks": "19k"}, {"from": [500, 745], "to": [630, 735], "hdg": "095°", "dist": "140'", "kicks": "15k"}, {"from": [630, 735], "to": [845, 710], "hdg": "085°", "dist": "230'", "kicks": "25k"}];
 const SURFACE_SWIMS = [{"from": [105, 745], "to": [315, 535], "label": "SURF SWIM: 062° • 320'"}, {"from": [670, 830], "to": [590, 690], "label": "SURF SWIM: 330° • 160'"}, {"from": [1315, 250], "to": [1490, 300], "label": "SURF SWIM: 108° • 190'"}];
+const ATTRACTION_ICONS = {"c130": "✈️", "jet": "🛩️", "shuttle": "🚀", "submarine": "⚓", "pirate": "🏴‍☠️", "boats_nw": "🚤", "cruiser_mid": "🛥️", "fish_boat": "🎣", "boat_stick": "🛶", "fire_truck": "🚒", "school_buses": "🚍", "short_bus": "🚌", "caboose": "🚃", "trains": "🚂", "cargo": "🚛", "flatbed": "🛻", "pickup": "🚙", "bucket_truck": "🏗️", "truck_stop": "⛽", "mammoth": "🦣", "king_kong": "🦍", "bug": "🐛", "egg": "🥚", "mermaid": "🧜‍♀️", "stingray": "🐡", "deep_hole": "⚠️", "tower": "🗼", "tire_reef": "🛞", "satellite": "📡", "rockets": "🚀", "weather": "🌪️", "east_pipe": "⚙️", "p1": "■", "p2": "■", "p3": "■", "p4": "■", "p5": "■", "p6": "■", "p7": "■", "p8": "■", "p9": "■", "nasa_dock": "⚓", "crab_key": "⚓", "turtle_bay": "⚓", "midtown": "⚓", "phil": "⚓", "dock_thunder": "⚓"};
+const LEGEND_GROUPS = [{"name": "Aircraft & Space", "icon": "✈️", "filter": "wreck", "items": ["c130", "jet", "shuttle"]}, {"name": "Boats & Marine Wrecks", "icon": "🚢", "filter": "wreck", "items": ["submarine", "pirate", "boats_nw", "cruiser_mid", "fish_boat", "boat_stick"]}, {"name": "Vehicles, Trucks & Trains", "icon": "🚂", "filter": "wreck", "items": ["fire_truck", "school_buses", "short_bus", "caboose", "trains", "cargo", "flatbed", "pickup", "bucket_truck", "truck_stop"]}, {"name": "Sculptures & Novelties", "icon": "🦣", "filter": "all", "items": ["mammoth", "king_kong", "bug", "egg", "mermaid", "stingray"]}, {"name": "Structures, Reefs & Hazards", "icon": "🗼", "filter": "deep", "items": ["deep_hole", "tower", "tire_reef", "satellite", "rockets", "weather", "east_pipe"]}, {"name": "Training Platforms", "icon": "■", "filter": "platform", "items": ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9"]}, {"name": "Docks & Shore Entries", "icon": "⚓", "filter": "dock", "items": ["nasa_dock", "crab_key", "turtle_bay", "midtown", "phil", "dock_thunder"]}];
 
 // DOM References
 const svg = document.getElementById('diveMapSvg');
@@ -1318,6 +1464,7 @@ const surfaceSwimsLayer = document.getElementById('surfaceSwimsLayer');
 const circuitsLayer = document.getElementById('circuitsLayer');
 const bathyGroup = document.getElementById('bathyGroup');
 const inspector = document.getElementById('inspector');
+const legendModal = document.getElementById('legendModal');
 const itemsList = document.getElementById('itemsList');
 const circuitCardsContainer = document.getElementById('circuitCardsContainer');
 const waypointCard = document.getElementById('waypointCard');
@@ -1348,8 +1495,9 @@ function updateSvgViewBox() {
 
 // Constant Screen-Size Badge Engine: Keeps cards & markers readable and constant size on screen as map zooms
 function updateBadgeZoomScales() {
-  const k = viewBox.w / 1800.0;
-  const pinScale = Math.max(0.25, k);
+  // Scaled 10% larger per user preference
+  const k = (viewBox.w / 1800.0) * 1.10;
+  const pinScale = Math.max(0.25, viewBox.w / 1800.0);
 
   SOLVED_BADGES.forEach(b => {
     const g = document.getElementById('badge-' + b.id);
@@ -1474,11 +1622,11 @@ function renderBadges() {
     if (currentFilter === 'deep' && b.category !== 'deep') return;
 
     let accent = '#1D4ED8'; // Wrecks / Attractions: Royal Blue
-    let icon = '●';
-    if (b.star) { accent = '#D97706'; icon = '★'; }
-    else if (b.category === 'platform') { accent = '#047857'; icon = '■'; }
+    let icon = ATTRACTION_ICONS[b.id] || '●';
+    if (b.star) { accent = '#D97706'; }
+    if (b.category === 'platform') { accent = '#047857'; icon = '■'; }
     else if (b.category === 'dock') { accent = '#C2410C'; icon = '⚓'; }
-    else if (b.category === 'deep') { accent = '#6D28D9'; icon = '▲'; }
+    else if (b.category === 'deep') { accent = '#6D28D9'; icon = '⚠️'; }
 
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     g.setAttribute('class', 'badge-g');
@@ -1631,7 +1779,7 @@ function renderBadges() {
       cardG.appendChild(iconTxt);
 
       const titleTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      titleTxt.setAttribute('x', rx + 28);
+      titleTxt.setAttribute('x', rx + 33);
       titleTxt.setAttribute('y', ry + 17);
       titleTxt.setAttribute('fill', '#070D18');
       titleTxt.setAttribute('font-size', '13.5px');
@@ -1926,8 +2074,9 @@ function openInspector(id) {
   const item = CATALOG.find(it => it.id === id) || SOLVED_BADGES.find(b => b.id === id);
   if (!item) return;
 
+  const icon = ATTRACTION_ICONS[id] || '●';
   document.getElementById('inspCategory').textContent = (item.category || item.type).toUpperCase();
-  document.getElementById('inspName').textContent = item.name || item.title;
+  document.getElementById('inspName').textContent = `${icon} ${item.name || item.title}`;
   document.getElementById('inspDepth').textContent = item.depth || item.dep;
   document.getElementById('inspViz').textContent = item.viz;
   document.getElementById('inspEntry').textContent = item.best_entry || 'Nearby Dock';
@@ -1989,17 +2138,21 @@ function populateList() {
     div.className = 'dir-item' + (selectedPinId === item.id ? ' selected' : '');
     div.setAttribute('data-id', item.id);
 
+    const icon = ATTRACTION_ICONS[item.id] || '●';
     let starPrefix = item.star ? '<span style="color:var(--gold);">★ </span>' : '';
     let catColor = item.category === 'platform' ? 'var(--green)' : (item.category === 'dock' ? 'var(--orange)' : (item.category === 'deep' ? 'var(--purple)' : 'var(--cyan)'));
 
     div.innerHTML = `
-      <div>
-        <div style="font-size:0.84rem; font-weight:700;">${starPrefix}${item.name}</div>
-        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">
-          <span style="color:${catColor};">● ${item.category.toUpperCase()}</span> &bull; Viz: ${item.viz}
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:1.15rem; flex-shrink:0;">${icon}</span>
+        <div>
+          <div style="font-size:0.84rem; font-weight:700;">${starPrefix}${item.name}</div>
+          <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">
+            <span style="color:${catColor};">● ${item.category.toUpperCase()}</span> &bull; Viz: ${item.viz}
+          </div>
         </div>
       </div>
-      <div style="text-align:right;">
+      <div style="text-align:right; flex-shrink:0;">
         <span style="font-size:0.82rem; font-weight:700; color:var(--cyan);">${item.depth}</span>
       </div>
     `;
@@ -2056,6 +2209,122 @@ function populateCircuitCards() {
 
     circuitCardsContainer.appendChild(card);
   });
+}
+
+// Interactive Map Legend Logic
+function renderLegendModal() {
+  const container = document.getElementById('legendCategories');
+  if (!container) return;
+  container.innerHTML = '';
+
+  LEGEND_GROUPS.forEach(grp => {
+    const groupEl = document.createElement('div');
+    groupEl.className = 'legend-group';
+
+    const header = document.createElement('div');
+    header.className = 'legend-group-header';
+    header.innerHTML = `
+      <div class="legend-group-title">
+        <span>${grp.icon}</span>
+        <span>${grp.name} (${grp.items.length})</span>
+      </div>
+      <span style="font-size:0.75rem; color:var(--cyan); font-weight:600;">Filter Map &rarr;</span>
+    `;
+    header.addEventListener('click', () => {
+      const filterBtn = document.querySelector(`.map-toolbar .tb-btn[data-filter="${grp.filter}"]`);
+      if (filterBtn) {
+        document.querySelectorAll('.map-toolbar .tb-btn[data-filter]').forEach(b => b.classList.remove('active'));
+        filterBtn.classList.add('active');
+        currentFilter = grp.filter;
+        renderBadges();
+      }
+      closeLegendModal();
+    });
+    groupEl.appendChild(header);
+
+    const grid = document.createElement('div');
+    grid.className = 'legend-items-grid';
+
+    grp.items.forEach(itemId => {
+      const item = CATALOG.find(it => it.id === itemId) || SOLVED_BADGES.find(b => b.id === itemId);
+      if (!item) return;
+
+      const chip = document.createElement('div');
+      chip.className = 'legend-item-chip';
+      const icon = ATTRACTION_ICONS[itemId] || '●';
+      const depth = item.depth || item.dep || '';
+      const star = item.star ? '<span style="color:var(--gold);">★ </span>' : '';
+
+      chip.innerHTML = `
+        <span class="legend-item-icon">${icon}</span>
+        <div class="legend-item-text">
+          <div class="legend-item-name">${star}${item.name || item.title}</div>
+          <div class="legend-item-meta">${depth} &bull; ${item.category ? item.category.toUpperCase() : ''}</div>
+        </div>
+      `;
+
+      chip.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeLegendModal();
+        focusOnAttraction(itemId);
+      });
+
+      grid.appendChild(chip);
+    });
+
+    groupEl.appendChild(grid);
+    container.appendChild(groupEl);
+  });
+}
+
+function openLegendModal() {
+  renderLegendModal();
+  if (legendModal) legendModal.classList.add('show');
+}
+
+function closeLegendModal() {
+  if (legendModal) legendModal.classList.remove('show');
+}
+
+function focusOnAttraction(id) {
+  const item = CATALOG.find(it => it.id === id) || SOLVED_BADGES.find(b => b.id === id);
+  if (!item) return;
+
+  if (currentFilter !== 'all') {
+    const isWreck = item.category === 'wreck';
+    const isPlatform = item.category === 'platform';
+    const isDock = item.category === 'dock';
+    const isDeep = item.category === 'deep';
+    const isStar = item.star;
+
+    let visible = false;
+    if (currentFilter === 'star' && isStar) visible = true;
+    if (currentFilter === 'wreck' && isWreck) visible = true;
+    if (currentFilter === 'platform' && isPlatform) visible = true;
+    if (currentFilter === 'dock' && isDock) visible = true;
+    if (currentFilter === 'deep' && isDeep) visible = true;
+
+    if (!visible) {
+      document.querySelectorAll('.map-toolbar .tb-btn[data-filter]').forEach(b => b.classList.remove('active'));
+      const allBtn = document.querySelector('.map-toolbar .tb-btn[data-filter="all"]');
+      if (allBtn) allBtn.classList.add('active');
+      currentFilter = 'all';
+      renderBadges();
+    }
+  }
+
+  openInspector(id);
+  const ix = item.x !== undefined ? item.x : item.cx;
+  const iy = item.y !== undefined ? item.y : item.cy;
+  const targetW = 550;
+  const targetH = 370;
+  const targetX = ix - targetW / 2;
+  const targetY = iy - targetH / 2;
+  animateViewBox(targetX, targetY, targetW, targetH);
+  if (document.body.classList.contains('env-mobile')) {
+    mobileSheetState = 'minimized';
+    updateMobileSheet();
+  }
 }
 
 // 7. Gas Management & NDL Calculator
@@ -2395,6 +2664,27 @@ window.addEventListener('resize', () => {
 window.addEventListener('orientationchange', () => {
   detectEnvironment();
   updateSvgViewBox();
+});
+
+// Legend Modal Listeners
+const btnLeg1 = document.getElementById('btnLegend');
+if (btnLeg1) btnLeg1.addEventListener('click', openLegendModal);
+const btnLeg2 = document.getElementById('btnTbLegend');
+if (btnLeg2) btnLeg2.addEventListener('click', openLegendModal);
+const btnLegClose = document.getElementById('btnCloseLegend');
+if (btnLegClose) btnLegClose.addEventListener('click', closeLegendModal);
+
+if (legendModal) {
+  legendModal.addEventListener('click', (e) => {
+    if (e.target === legendModal) closeLegendModal();
+  });
+}
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeLegendModal();
+    if (inspector) inspector.classList.remove('show');
+  }
 });
 
 // Initialize Everything
