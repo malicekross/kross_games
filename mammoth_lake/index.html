@@ -311,18 +311,18 @@
   /* SVG Badges & Pins */
   .badge-g {
     cursor: pointer;
-    transition: transform 0.15s ease, opacity 0.2s ease;
+    transition: opacity 0.2s ease;
   }
   .badge-g:hover {
     filter: brightness(1.1);
   }
   .badge-g:hover .leader-line {
     stroke: var(--cyan);
-    stroke-width: 2.5;
+    stroke-width: 2.5px !important;
   }
   .badge-g:hover .target-outer {
     stroke: var(--cyan);
-    stroke-width: 3;
+    stroke-width: 3px !important;
   }
   .badge-g.dimmed {
     opacity: 0.18 !important;
@@ -333,6 +333,12 @@
   .badge-g.highlighted rect {
     stroke: var(--cyan);
     stroke-width: 2.5;
+  }
+  .badge-card rect {
+    vector-effect: non-scaling-stroke;
+  }
+  .leader-line {
+    vector-effect: non-scaling-stroke;
   }
 
   /* Mode Compact Pins vs Full Cards */
@@ -1339,6 +1345,80 @@ let startPoint = { x: 0, y: 0 };
 
 function updateSvgViewBox() {
   svg.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
+  updateBadgeZoomScales();
+}
+
+// Constant Screen-Size Badge Engine: Keeps cards & markers readable and constant size on screen as map zooms
+function updateBadgeZoomScales() {
+  const k = viewBox.w / 1800.0;
+  const pinScale = Math.max(0.25, k);
+
+  SOLVED_BADGES.forEach(b => {
+    const g = document.getElementById('badge-' + b.id);
+    if (!g) return;
+
+    const dx = b.bx - b.cx;
+    const dy = b.by - b.cy;
+
+    // Fixed screen offset from attraction target to card center
+    const curBx = b.cx + dx * k;
+    const curBy = b.cy + dy * k;
+
+    // 1. Leader line connects pin to card center
+    const line = g.querySelector('.leader-line');
+    if (line) {
+      line.setAttribute('x1', b.cx);
+      line.setAttribute('y1', b.cy);
+      line.setAttribute('x2', curBx);
+      line.setAttribute('y2', curBy);
+      line.setAttribute('stroke-width', Math.max(1.2, 1.8 * k));
+    }
+
+    // 2. Transform the card rectangle & text around its center
+    const cardG = g.querySelector('.badge-card');
+    if (cardG) {
+      cardG.setAttribute('transform', `translate(${curBx}, ${curBy}) scale(${k}) translate(${-b.bx}, ${-b.by})`);
+    }
+
+    // 3. Transform target pin marker so it stays constant physical size on screen
+    const pinG = g.querySelector('.target-pin');
+    if (pinG) {
+      pinG.setAttribute('transform', `translate(${b.cx}, ${b.cy}) scale(${pinScale}) translate(${-b.cx}, ${-b.cy})`);
+    }
+
+    // 4. Transform touchHit target area
+    const touchHit = g.querySelector('.touch-hit');
+    if (touchHit) {
+      touchHit.setAttribute('transform', `translate(${b.cx}, ${b.cy}) scale(${pinScale}) translate(${-b.cx}, ${-b.cy})`);
+    }
+  });
+
+  // Keep circuit waypoints constant size on screen
+  document.querySelectorAll('.wp-pin').forEach(wpG => {
+    const wx = parseFloat(wpG.getAttribute('data-x'));
+    const wy = parseFloat(wpG.getAttribute('data-y'));
+    if (!isNaN(wx) && !isNaN(wy)) {
+      wpG.setAttribute('transform', `translate(${wx}, ${wy}) scale(${pinScale}) translate(${-wx}, ${-wy})`);
+    }
+  });
+
+  // Keep navigation line bearing tags constant size on screen
+  document.querySelectorAll('.nav-tag').forEach(tagG => {
+    const tx = parseFloat(tagG.getAttribute('data-x'));
+    const ty = parseFloat(tagG.getAttribute('data-y'));
+    if (!isNaN(tx) && !isNaN(ty)) {
+      tagG.setAttribute('transform', `translate(${tx}, ${ty}) scale(${k}) translate(${-tx}, ${-ty})`);
+    }
+  });
+
+  // Keep surface swim tags constant size on screen
+  document.querySelectorAll('.swim-tag').forEach(tagG => {
+    const tx = parseFloat(tagG.getAttribute('data-x'));
+    const ty = parseFloat(tagG.getAttribute('data-y'));
+    if (!isNaN(tx) && !isNaN(ty)) {
+      tagG.setAttribute('transform', `translate(${tx}, ${ty}) scale(${k}) translate(${-tx}, ${-ty})`);
+    }
+  });
 }
 
 // Environment Detection & Adaptation Engine
@@ -1426,6 +1506,7 @@ function renderBadges() {
 
     // Touch hit area (44x44px minimum for mobile WCAG AAA)
     const touchHit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    touchHit.setAttribute('class', 'touch-hit');
     touchHit.setAttribute('cx', b.cx);
     touchHit.setAttribute('cy', b.cy);
     touchHit.setAttribute('r', 22);
@@ -1482,7 +1563,7 @@ function renderBadges() {
       rect.setAttribute('y', ry);
       rect.setAttribute('width', b.w);
       rect.setAttribute('height', b.h);
-      rect.setAttribute('rx', 5);
+      rect.setAttribute('rx', 6);
       rect.setAttribute('fill', '#047857');
       rect.setAttribute('stroke', '#0F172A');
       rect.setAttribute('stroke-width', '2');
@@ -1493,8 +1574,8 @@ function renderBadges() {
       txt.setAttribute('x', b.bx);
       txt.setAttribute('y', b.by + 5);
       txt.setAttribute('fill', '#FFFFFF');
-      txt.setAttribute('font-size', '12px');
-      txt.setAttribute('font-weight', 'bold');
+      txt.setAttribute('font-size', '13.5px');
+      txt.setAttribute('font-weight', '800');
       txt.setAttribute('text-anchor', 'middle');
       txt.textContent = `■ ${b.title} (${b.dep})`;
       cardG.appendChild(txt);
@@ -1505,7 +1586,7 @@ function renderBadges() {
       rect.setAttribute('y', ry);
       rect.setAttribute('width', b.w);
       rect.setAttribute('height', b.h);
-      rect.setAttribute('rx', 5);
+      rect.setAttribute('rx', 6);
       rect.setAttribute('fill', '#C2410C');
       rect.setAttribute('stroke', '#0F172A');
       rect.setAttribute('stroke-width', '2');
@@ -1516,8 +1597,8 @@ function renderBadges() {
       txt.setAttribute('x', b.bx);
       txt.setAttribute('y', b.by + 5);
       txt.setAttribute('fill', '#FFFFFF');
-      txt.setAttribute('font-size', '12px');
-      txt.setAttribute('font-weight', 'bold');
+      txt.setAttribute('font-size', '13.5px');
+      txt.setAttribute('font-weight', '800');
       txt.setAttribute('text-anchor', 'middle');
       txt.textContent = `⚓ ${b.title}`;
       cardG.appendChild(txt);
@@ -1528,7 +1609,7 @@ function renderBadges() {
       rect.setAttribute('y', ry);
       rect.setAttribute('width', b.w);
       rect.setAttribute('height', b.h);
-      rect.setAttribute('rx', 5);
+      rect.setAttribute('rx', 6);
       rect.setAttribute('fill', '#FFFFFF');
       rect.setAttribute('stroke', '#0F172A');
       rect.setAttribute('stroke-width', '2');
@@ -1537,36 +1618,36 @@ function renderBadges() {
 
       // Left Accent Strip
       const stripe = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      stripe.setAttribute('d', `M ${rx+3} ${ry} L ${rx+6} ${ry} L ${rx+6} ${ry+b.h} L ${rx+3} ${ry+b.h} A 3 3 0 0 1 ${rx} ${ry+b.h-3} L ${rx} ${ry+3} A 3 3 0 0 1 ${rx+3} ${ry} Z`);
+      stripe.setAttribute('d', `M ${rx+4} ${ry} L ${rx+8} ${ry} L ${rx+8} ${ry+b.h} L ${rx+4} ${ry+b.h} A 4 4 0 0 1 ${rx} ${ry+b.h-4} L ${rx} ${ry+4} A 4 4 0 0 1 ${rx+4} ${ry} Z`);
       stripe.setAttribute('fill', accent);
       cardG.appendChild(stripe);
 
       // Icon & Title
       const iconTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      iconTxt.setAttribute('x', rx + 12);
-      iconTxt.setAttribute('y', ry + 16);
+      iconTxt.setAttribute('x', rx + 14);
+      iconTxt.setAttribute('y', ry + 17);
       iconTxt.setAttribute('fill', accent);
-      iconTxt.setAttribute('font-size', '13px');
-      iconTxt.setAttribute('font-weight', 'bold');
+      iconTxt.setAttribute('font-size', '15px');
+      iconTxt.setAttribute('font-weight', '900');
       iconTxt.textContent = icon;
       cardG.appendChild(iconTxt);
 
       const titleTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      titleTxt.setAttribute('x', rx + 26);
-      titleTxt.setAttribute('y', ry + 16);
-      titleTxt.setAttribute('fill', '#0F172A');
-      titleTxt.setAttribute('font-size', '12px');
-      titleTxt.setAttribute('font-weight', 'bold');
+      titleTxt.setAttribute('x', rx + 28);
+      titleTxt.setAttribute('y', ry + 17);
+      titleTxt.setAttribute('fill', '#070D18');
+      titleTxt.setAttribute('font-size', '13.5px');
+      titleTxt.setAttribute('font-weight', '800');
       titleTxt.textContent = b.title;
       cardG.appendChild(titleTxt);
 
       // Metadata line (Depth & Viz)
       const metaTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      metaTxt.setAttribute('x', rx + 12);
-      metaTxt.setAttribute('y', ry + 30);
+      metaTxt.setAttribute('x', rx + 14);
+      metaTxt.setAttribute('y', ry + 32);
       metaTxt.setAttribute('fill', '#1E3A8A');
-      metaTxt.setAttribute('font-size', '10px');
-      metaTxt.setAttribute('font-weight', 'bold');
+      metaTxt.setAttribute('font-size', '11.5px');
+      metaTxt.setAttribute('font-weight', '800');
       metaTxt.textContent = `DEPTH: ${b.dep}  •  VIZ: ${b.viz}`;
       cardG.appendChild(metaTxt);
     }
@@ -1581,6 +1662,7 @@ function renderBadges() {
 
     badgesLayer.appendChild(g);
   });
+  updateBadgeZoomScales();
 }
 
 // 2. Render Navigation Guidelines & Surface Swims
@@ -1605,6 +1687,10 @@ function renderNavLines() {
     const my = (leg.from[1] + leg.to[1]) / 2;
 
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('class', 'nav-tag');
+    g.setAttribute('data-x', mx);
+    g.setAttribute('data-y', my);
+
     const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     bg.setAttribute('x', mx - 38);
     bg.setAttribute('y', my - 8);
@@ -1628,6 +1714,7 @@ function renderNavLines() {
 
     navLinesLayer.appendChild(g);
   });
+  updateBadgeZoomScales();
 }
 
 function renderSurfaceSwims() {
@@ -1650,6 +1737,10 @@ function renderSurfaceSwims() {
     const my = (s.from[1] + s.to[1]) / 2;
 
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('class', 'swim-tag');
+    g.setAttribute('data-x', mx);
+    g.setAttribute('data-y', my);
+
     const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     bg.setAttribute('x', mx - 75);
     bg.setAttribute('y', my - 10);
@@ -1673,6 +1764,7 @@ function renderSurfaceSwims() {
 
     surfaceSwimsLayer.appendChild(g);
   });
+  updateBadgeZoomScales();
 }
 
 // 3. Render Tailored Circuits
@@ -1744,6 +1836,10 @@ function selectCircuit(circuitId) {
   // Numbered stop pills along path
   c.waypoints.forEach((wp, idx) => {
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('class', 'wp-pin');
+    g.setAttribute('data-x', wp.x);
+    g.setAttribute('data-y', wp.y);
+
     const r = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     r.setAttribute('cx', wp.x);
     r.setAttribute('cy', wp.y);
@@ -1765,6 +1861,7 @@ function selectCircuit(circuitId) {
 
     circuitsLayer.appendChild(g);
   });
+  updateBadgeZoomScales();
 
   // Switch to Plan tab and populate turn-by-turn navigation table
   switchToTab('tab-plan');
@@ -2187,6 +2284,7 @@ document.getElementById('btnBadgeMode').addEventListener('click', (e) => {
     document.body.classList.add('mode-cards');
     e.currentTarget.textContent = 'Badges: Cards';
   }
+  updateBadgeZoomScales();
 });
 
 // Theme Toggle (Dark vs Light)
@@ -2292,8 +2390,14 @@ document.getElementById('depthRange').addEventListener('input', updateGasCalc);
 document.getElementById('timeRange').addEventListener('input', updateGasCalc);
 
 // Window Resize & Orientation Change listener
-window.addEventListener('resize', detectEnvironment);
-window.addEventListener('orientationchange', detectEnvironment);
+window.addEventListener('resize', () => {
+  detectEnvironment();
+  updateSvgViewBox();
+});
+window.addEventListener('orientationchange', () => {
+  detectEnvironment();
+  updateSvgViewBox();
+});
 
 // Initialize Everything
 detectEnvironment();
