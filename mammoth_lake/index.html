@@ -297,6 +297,175 @@
   .theme-dark .water-55-70 { fill: #091326; stroke: #8B5CF6; }
   .theme-dark .shore-outline { stroke: #38BDF8; }
 
+  /* Light Mode (Default Theme) Styling */
+  body.theme-light {
+    --bg-dark: #F1F5F9;
+    --panel-bg: #FFFFFF;
+    --card-bg: #F8FAFC;
+    --border: #CBD5E1;
+    --text-white: #0F172A;
+    --text-muted: #64748B;
+    --text-navy: #1E3A8A;
+    --cyan: #0284C7;
+    --cyan-glow: #0284C7;
+    --charcoal: #0F172A;
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+  }
+  body.theme-light header {
+    background: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%);
+    border-bottom: 2px solid var(--border);
+  }
+  body.theme-light .btn {
+    background: #FFFFFF;
+    color: #0F172A;
+    border-color: #CBD5E1;
+  }
+  body.theme-light .btn:hover {
+    background: #E2E8F0;
+    color: var(--cyan);
+    border-color: var(--cyan);
+  }
+  body.theme-light .btn.active {
+    background: var(--cyan);
+    color: #FFFFFF;
+  }
+  body.theme-light .btn-kross {
+    background: rgba(2, 132, 199, 0.1);
+    color: #0284C7;
+    border-color: #0284C7;
+    text-shadow: none;
+  }
+  body.theme-light .circuit-bar,
+  body.theme-light .map-toolbar {
+    background: rgba(255, 255, 255, 0.96);
+    border-color: #CBD5E1;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  body.theme-light .circuit-bar-label {
+    color: #64748B;
+  }
+  body.theme-light .tb-btn {
+    background: #F8FAFC;
+    color: #1E293B;
+    border-color: #CBD5E1;
+  }
+  body.theme-light .tb-btn:hover {
+    background: #E2E8F0;
+    color: var(--cyan);
+  }
+  body.theme-light .tb-btn.active {
+    background: var(--cyan);
+    color: #FFFFFF;
+    border-color: var(--cyan);
+  }
+  body.theme-light .zoom-btn {
+    background: rgba(255, 255, 255, 0.95);
+    color: #0F172A;
+    border-color: #CBD5E1;
+  }
+  body.theme-light .zoom-btn:hover {
+    background: var(--cyan);
+    color: #FFFFFF;
+  }
+  body.theme-light .sidebar {
+    background: #FFFFFF;
+    border-left-color: #CBD5E1;
+  }
+  body.theme-light .tabs {
+    background: #F8FAFC;
+    border-bottom-color: #CBD5E1;
+  }
+  body.theme-light .tab-btn {
+    color: #64748B;
+  }
+  body.theme-light .tab-btn.active {
+    color: var(--cyan);
+    background: rgba(2, 132, 199, 0.08);
+  }
+  body.theme-light .search-box {
+    background: #FFFFFF;
+    color: #0F172A;
+    border-color: #CBD5E1;
+  }
+  body.theme-light .dir-item {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+    color: #0F172A;
+  }
+  body.theme-light .dir-item:hover,
+  body.theme-light .dir-item.selected {
+    background: #F0F9FF;
+    border-color: var(--cyan);
+  }
+  body.theme-light .circuit-card {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+    color: #0F172A;
+  }
+  body.theme-light .circuit-card:hover {
+    background: #F8FAFC;
+  }
+  body.theme-light .circuit-card.active {
+    box-shadow: 0 0 14px rgba(2, 132, 199, 0.25);
+  }
+  body.theme-light .metric-card {
+    background: #FFFFFF;
+    border-color: #CBD5E1;
+  }
+  body.theme-light .waypoint-table th {
+    background: #F1F5F9;
+    color: #0369A1;
+    border-bottom-color: #CBD5E1;
+  }
+  body.theme-light .waypoint-table td {
+    color: #0F172A;
+    border-bottom-color: #E2E8F0;
+  }
+  body.theme-light .inspector {
+    background: rgba(255, 255, 255, 0.98);
+    border-color: #CBD5E1;
+    color: #0F172A;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+  body.theme-light .inspector-title {
+    color: #0F172A;
+  }
+  body.theme-light .inspector-desc {
+    color: #334155;
+  }
+  body.theme-light .legend-content {
+    background: rgba(255, 255, 255, 0.98);
+    border-color: #CBD5E1;
+    color: #0F172A;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+  }
+  body.theme-light .legend-header h2 {
+    color: #0F172A !important;
+  }
+  body.theme-light .legend-group-header {
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+  }
+  body.theme-light .legend-item-chip {
+    background: #F8FAFC;
+    border-color: #E2E8F0;
+  }
+  body.theme-light .legend-item-chip:hover {
+    background: #F0F9FF;
+    border-color: var(--cyan);
+  }
+  body.theme-light .legend-item-name {
+    color: #0F172A;
+  }
+  body.theme-light .mobile-nav-bar {
+    background: #FFFFFF;
+    border-bottom-color: #CBD5E1;
+  }
+  body.theme-light .mobile-drag-bar {
+    background: #94A3B8;
+  }
+
   .theme-light .land-bg { fill: #EEF2F6; }
   .theme-light .grid-line { stroke: #D7E1EB; }
   .theme-light .road-outer { stroke: #CCD6E0; }
@@ -307,6 +476,67 @@
   .theme-light .water-42-55 { fill: #0284C7; stroke: #0369A1; }
   .theme-light .water-55-70 { fill: #143C82; stroke: #8B5CF6; }
   .theme-light .shore-outline { stroke: #0F2942; }
+
+  /* Beacon Hover Radar Pulse (Improvement 4) */
+  @keyframes beaconPulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .badge-g.beacon-hover .target-pin {
+    animation: beaconPulse 1.2s infinite ease-in-out;
+  }
+  .badge-g.beacon-hover .target-outer {
+    stroke: #0284C7 !important;
+    stroke-width: 4px !important;
+    filter: drop-shadow(0 0 10px #0284C7);
+  }
+  .badge-g.beacon-hover .target-inner {
+    fill: #0284C7 !important;
+  }
+  .badge-g.beacon-hover .badge-card rect {
+    stroke: #0284C7 !important;
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 14px rgba(2, 132, 199, 0.8)) !important;
+  }
+  .theme-dark .badge-g.beacon-hover .target-outer {
+    stroke: #00F3FF !important;
+    filter: drop-shadow(0 0 10px #00F3FF);
+  }
+  .theme-dark .badge-g.beacon-hover .target-inner {
+    fill: #00F3FF !important;
+  }
+  .theme-dark .badge-g.beacon-hover .badge-card rect {
+    stroke: #00F3FF !important;
+    filter: drop-shadow(0 0 14px rgba(0, 243, 255, 0.8)) !important;
+  }
+  body.theme-light #btnClearCircuit {
+    background: #E2E8F0 !important;
+    color: #1E293B !important;
+    border-color: #CBD5E1 !important;
+  }
+  body.theme-light #inspEntry {
+    color: #0F172A !important;
+  }
+
+  /* Measurement Ruler Tool (Improvement 3) */
+  .measure-hud {
+    position: absolute;
+    bottom: 24px;
+    left: 20px;
+    z-index: 85;
+    background: rgba(11, 21, 38, 0.95);
+    border: 2px solid var(--cyan);
+    border-radius: 10px;
+    padding: 10px 14px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+  }
+  body.theme-light .measure-hud {
+    background: rgba(255, 255, 255, 0.96);
+    border-color: var(--cyan);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+  }
 
   /* SVG Badges & Pins */
   .badge-g {
@@ -839,6 +1069,11 @@
       transform: translateY(0);
     }
 
+    /* Hide desktop text tabs on mobile to avoid duplication with bottom navigation bar */
+    .tabs {
+      display: none !important;
+    }
+
     .mobile-drag-handle {
       display: flex;
       justify-content: center;
@@ -937,7 +1172,7 @@
   }
 </style>
 </head>
-<body class="theme-dark mode-cards">
+<body class="theme-light mode-cards">
 
 <!-- Top Master Header -->
 <header>
@@ -951,7 +1186,7 @@
   <div class="header-actions">
     <button class="btn" id="btnBadgeMode">Badges: Cards</button>
     <button class="btn" id="btnLegend" style="background:rgba(56, 189, 248, 0.15); border-color:var(--cyan); color:var(--cyan); font-weight:700;">🗺️ Legend</button>
-    <button class="btn" id="btnTheme">Theme: Dark</button>
+    <button class="btn" id="btnTheme">Theme: Light</button>
     <button class="btn" id="btnResetView" title="Reset View">Fit ⤢</button>
     <button class="btn" id="btnPrint" style="background:#1B3356; border-color:#38BDF8;">🖨️ Slate</button>
   </div>
@@ -981,6 +1216,7 @@
       <button class="tb-btn" data-filter="platform">■ Platforms</button>
       <button class="tb-btn" data-filter="dock">⚓ Docks</button>
       <button class="tb-btn" data-filter="deep">🤿 Deep Hole</button>
+      <button class="tb-btn" id="btnToolMeasure" title="Measure Distance & Compass Bearing">📐 Ruler</button>
       <button class="tb-btn" id="btnTbLegend" style="background:rgba(56, 189, 248, 0.15); border-color:var(--cyan); color:var(--cyan); font-weight:700;">🗺️ Legend</button>
       <span style="width:1px; height:18px; background:var(--border); margin:0 4px;"></span>
       <button class="tb-btn active" id="btnToggleNav">Lines</button>
@@ -1174,7 +1410,21 @@
           <!-- Rendered dynamically -->
         </g>
 
+        <!-- Measurement Tool Layer (Improvement 3) -->
+        <g id="measureLayer" pointer-events="none"></g>
+
       </svg>
+    </div>
+
+    <!-- Floating Distance & Compass Measurement HUD (Improvement 3) -->
+    <div class="measure-hud" id="measureHud" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:6px;">
+        <span style="font-weight:800; font-size:0.84rem; color:var(--cyan); letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">📐 DIVE RULER</span>
+        <button id="btnCloseMeasure" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem; line-height:1;" title="Close Measurement">&times;</button>
+      </div>
+      <div id="measureHudBody">
+        <p style="font-size:0.76rem; color:var(--text-muted); margin:0;">Click anywhere on the lake to place <strong>Point A</strong>.</p>
+      </div>
     </div>
 
     <!-- Floating Attraction Inspector Modal -->
@@ -1233,9 +1483,12 @@
           </div>
           <button class="legend-close" id="btnCloseLegend" aria-label="Close Legend">&times;</button>
         </div>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">
           Click any category header to filter the map, or click any individual sunken object to fly directly to it.
         </p>
+        <div style="margin-bottom:14px;">
+          <input type="text" id="legendSearchBox" class="search-box" style="width:100%; box-sizing:border-box; padding:9px 12px; border-radius:8px;" placeholder="🔍 Filter attractions, wrecks, platforms (e.g. C-130, Deep Hole, bus)..." aria-label="Filter Attractions and Sunken Objects">
+        </div>
         <div class="legend-categories" id="legendCategories">
           <!-- Populated by JS -->
         </div>
@@ -1448,7 +1701,7 @@
 <script>
 // Data payloads
 const CATALOG = [{"id": "nasa_dock", "name": "NASA Dock (Main Entry)", "x": 105, "y": 745, "depth": "4-8 FT", "viz": "6-12 FT", "category": "dock", "star": false, "hazard": "Low - Primary park entry", "desc": "Main entrance hub, check-in dive shop, air & nitrox fills, covered gear staging tables, hot showers, emergency O2 & AED, gear rinse basins. Primary entry for Circuits 1 & 2.", "best_entry": "Direct Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "p1", "name": "Platform 1", "x": 268, "y": 700, "depth": "20 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Training platform", "desc": "10x10 FT submerged wood/fiberglass training platform. West basin navigation crossroad linking NASA Dock to Flight Deck aircraft, shallow training shelf, and C-130 expedition line.", "best_entry": "NASA Dock: 145 FT @ 074°", "fin_kicks": "16 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "jet", "name": "Trainer / Fighter Jet", "x": 155, "y": 788, "depth": "22 FT", "viz": "10-15 FT", "category": "wreck", "star": true, "hazard": "Low - Open cockpit; watch sharp wing edges", "desc": "Military jet sitting upright on hard sand bottom. Intact cockpit, twin ejection seat frames, and swept wings. High-light training depth; diver favorite for Addie's warm-up photos.", "best_entry": "NASA Dock: 80 FT @ 140° or P1: 95 FT @ 218°", "fin_kicks": "10 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "weather", "name": "Weather Station", "x": 220, "y": 810, "depth": "24 FT", "viz": "10-14 FT", "category": "attraction", "star": false, "hazard": "Low - Clear steel frame", "desc": "Submerged meteorological tower array, anemometer cups, and sensor housing on the southwest training shelf.", "best_entry": "Platform 1: 120 FT @ 155°", "fin_kicks": "13 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p2", "name": "Platform 2", "x": 272, "y": 830, "depth": "22 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Training platform", "desc": "Submerged training platform on southern shelf. Excellent buoyancy practice spot at 22 FT before heading toward deeper westshelf wrecks.", "best_entry": "Platform 1: 130 FT @ 178°", "fin_kicks": "14 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "rockets", "name": "Rocket Farm", "x": 200, "y": 730, "depth": "25 FT", "viz": "10-15 FT", "category": "attraction", "star": false, "hazard": "Low - Stable upright cylinders", "desc": "Cluster of upright aerospace rocket booster mockups resting vertically on lake bottom. Eerie futuristic silhouette in morning light.", "best_entry": "Platform 1: 70 FT @ 225°", "fin_kicks": "8 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "shuttle", "name": "Space Shuttle Mockup", "x": 250, "y": 655, "depth": "28 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low/Mod - Do not penetrate enclosed nose", "desc": "Large replica orbiter airframe complete with delta wing outline, cockpit window frames, and vertical stabilizer fin. Popular photo destination.", "best_entry": "Platform 1: 50 FT @ 335°", "fin_kicks": "6 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "fish_boat", "name": "Fishing Boat", "x": 280, "y": 750, "depth": "28 FT", "viz": "10-16 FT", "category": "wreck", "star": false, "hazard": "Low - Open fiberglass hull", "desc": "Small recreational cabin cruiser wreck resting upright on gravel. Fish congregate inside open cuddy cabin.", "best_entry": "Platform 1: 55 FT @ 165°", "fin_kicks": "6 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "pirate", "name": "Pirate Ship Wreck", "x": 340, "y": 680, "depth": "30 FT", "viz": "10-15 FT", "category": "wreck", "star": false, "hazard": "Moderate - Overhead deck timbers; use caution", "desc": "Themed wooden vessel with bowsprit, mast stubs, and open gunwale deck. Great for navigation games and fish watching.", "best_entry": "Platform 1: 75 FT @ 075°", "fin_kicks": "8 kicks", "padi_ndl": "205 min"}, {"id": "p3", "name": "Platform 3", "x": 325, "y": 778, "depth": "20 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Training platform", "desc": "South training platform near Crab Key dock. Calm waters, good visibility, perfect for mask clearing and buoyancy checks.", "best_entry": "Crab Key Dock: 100 FT @ 355°", "fin_kicks": "11 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "crab_key", "name": "Crab Key Dock", "x": 320, "y": 875, "depth": "4-10 FT", "viz": "6-12 FT", "category": "dock", "star": false, "hazard": "Low - Shallow dock stairs", "desc": "South bank entry dock with picnic benches, gear staging, and shallow ramp entry directly to Platform 3.", "best_entry": "South Perimeter Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "p4", "name": "Platform 4", "x": 395, "y": 750, "depth": "18 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Shallow training platform", "desc": "Shallow 18 FT training platform along the south slope. Connects Turtle Bay dock to central lake routes.", "best_entry": "Turtle Bay Dock: 110 FT @ 350°", "fin_kicks": "12 kicks", "padi_ndl": "Unlimited"}, {"id": "turtle_bay", "name": "Turtle Bay Dock", "x": 405, "y": 860, "depth": "4-12 FT", "viz": "8-14 FT", "category": "dock", "star": false, "hazard": "Low - Sloped gravel entry", "desc": "Protected southern dock bay with frequent red-eared slider turtle sightings basking on perimeter logs.", "best_entry": "South Perimeter Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "p5", "name": "Platform 5", "x": 500, "y": 745, "depth": "20 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Training platform", "desc": "Mid-lake southern shelf training platform. Natural waypoint when transitioning from West Flight Deck to MidTown Basin.", "best_entry": "Turtle Bay Dock: 150 FT @ 045°", "fin_kicks": "16 kicks", "padi_ndl": "Unlimited"}, {"id": "boats_nw", "name": "Speedboat Fleet", "x": 175, "y": 505, "depth": "24-28 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low - Open runabouts", "desc": "Group of 3 fiberglass runabouts clustered together on flat limestone shelf. Excellent bass and bluegill habitat.", "best_entry": "NASA Dock: 250 FT @ 340°", "fin_kicks": "27 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "bug", "name": "Giant Centipede", "x": 275, "y": 465, "depth": "26 FT", "viz": "14-20 FT", "category": "attraction", "star": false, "hazard": "Low - Metal art sculpture", "desc": "Segmented welded steel centipede sculpture resting on the northwest bottom slope.", "best_entry": "C-130 Hercules: 80 FT @ 330°", "fin_kicks": "9 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "submarine", "name": "Submarine (WWII Mock)", "x": 375, "y": 420, "depth": "26-28 FT", "viz": "15-22 FT", "category": "wreck", "star": true, "hazard": "Low/Mod - External inspection only; tight hatch", "desc": "Full-length submarine replica complete with conning tower, periscope mast, bow planes, and hull torpedo tubes. Top attraction with incredible silhouette photography!", "best_entry": "NASA Dock: 380 FT @ 035° or C-130: 130 FT @ 030°", "fin_kicks": "14 kicks from C-130", "padi_ndl": "Unlimited (>205 min)"}, {"id": "c130", "name": "C-130 Hercules Cargo Plane", "x": 315, "y": 535, "depth": "26-38 FT", "viz": "15-25 FT", "category": "wreck", "star": true, "hazard": "Moderate - Penetration only for trained divers with guideline", "desc": "The crown jewel of Mammoth Lake! Massive four-engine turboprop military transport with colossal 132' wingspan. Cockpit, cargo bay swim-through, 4 engines, and high fish congregation.", "best_entry": "Surface Swim from NASA Dock: 320 FT @ 062° (35 kicks) or via Platform 1 guideline (170 FT @ 016°)", "fin_kicks": "19 kicks from P1", "padi_ndl": "140 min at deepest point (38 FT)"}, {"id": "mammoth", "name": "Columbian Mammoth", "x": 310, "y": 615, "depth": "32 FT", "viz": "12-18 FT", "category": "attraction", "star": false, "hazard": "Low - Large welded frame", "desc": "Life-sized steel mammoth sculpture honoring prehistoric mammoth fossils discovered during quarry excavation. Giant curved tusks and ribs.", "best_entry": "C-130 Hercules: 80 FT @ 180°", "fin_kicks": "9 kicks", "padi_ndl": "205 min"}, {"id": "egg", "name": "Giant Egg", "x": 345, "y": 650, "depth": "30 FT", "viz": "12-18 FT", "category": "attraction", "star": false, "hazard": "Low - Concrete dome with openings", "desc": "Submerged concrete egg structure with swim-through portal openings on gravel bottom.", "best_entry": "Mammoth: 50 FT @ 140°", "fin_kicks": "6 kicks", "padi_ndl": "205 min"}, {"id": "short_bus", "name": "Short Bus", "x": 425, "y": 530, "depth": "34 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low - Open windows & emergency exit", "desc": "Sunken yellow school short bus with interior seats intact. Easy swim-through for divers of all experience levels.", "best_entry": "C-130 Hercules: 110 FT @ 085°", "fin_kicks": "12 kicks", "padi_ndl": "160 min"}, {"id": "boat_stick", "name": "Boat on a Stick", "x": 445, "y": 625, "depth": "35 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low - Elevated pylon structure", "desc": "Recreational boat hull perched atop a vertical steel pylon several feet off the lake floor. Catfish often rest underneath.", "best_entry": "Short Bus: 95 FT @ 168°", "fin_kicks": "10 kicks", "padi_ndl": "160 min"}, {"id": "cruiser_mid", "name": "Cabin Cruiser", "x": 535, "y": 615, "depth": "34 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low - Open cabin", "desc": "Sunken 28 FT cruiser hull resting upright on the central basin ridge. Connects west attractions to the deep basin.", "best_entry": "Boat on a Stick: 90 FT @ 085°", "fin_kicks": "10 kicks", "padi_ndl": "160 min"}, {"id": "deep_hole", "name": "THE DEEP HOLE (Spring Pipe)", "x": 590, "y": 690, "depth": "65-70 FT", "viz": "5-10 FT", "category": "deep", "star": true, "hazard": "CRITICAL HAZARD - Cold natural spring, pitch black below 50 FT, rapid NDL consumption. High-intensity dive lights & redundant gas mandatory.", "desc": "The deepest point in Texas dive parks (70 FT max)! Submerged natural spring sinkhole with cold artesian flow (68°F thermocline). Marked by vertical discharge pipe structure. Tony & Ken advanced deep dive spot.", "best_entry": "Surface Swim from MidTown Dock: 160 FT @ 330° (17 kicks) or guideline from Platform 6 (60 FT @ 325°)", "fin_kicks": "17 kicks from MidTown", "padi_ndl": "40 min strictly monitored"}, {"id": "fire_truck", "name": "Fire Truck", "x": 675, "y": 590, "depth": "38 FT", "viz": "10-16 FT", "category": "wreck", "star": false, "hazard": "Low/Mod - Open cab & ladder brackets", "desc": "Full-size commercial fire engine with pump panel, hose bed, bumper winch, and open cab. Excellent photo subject.", "best_entry": "MidTown Dock: 240 FT @ 001°", "fin_kicks": "26 kicks", "padi_ndl": "140 min"}, {"id": "pickup", "name": "Pickup Truck", "x": 670, "y": 645, "depth": "36 FT", "viz": "10-16 FT", "category": "wreck", "star": false, "hazard": "Low - Open cab", "desc": "Submerged truck chassis resting on gravel floor south of the Fire Truck.", "best_entry": "Fire Truck: 55 FT @ 175°", "fin_kicks": "6 kicks", "padi_ndl": "150 min"}, {"id": "king_kong", "name": "King Kong Sculpture", "x": 718, "y": 700, "depth": "32 FT", "viz": "12-18 FT", "category": "attraction", "star": false, "hazard": "Low - Welded steel art piece", "desc": "Large metallic gorilla sculpture standing upright on concrete slab with raised arms.", "best_entry": "Pickup: 75 FT @ 125°", "fin_kicks": "8 kicks", "padi_ndl": "205 min"}, {"id": "p6", "name": "Platform 6", "x": 630, "y": 735, "depth": "22 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Training platform south of Deep Hole", "desc": "Central training platform. The primary safety & decompression staging platform for divers ascending from the Deep Hole.", "best_entry": "MidTown Dock: 100 FT @ 340°", "fin_kicks": "11 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p7", "name": "Platform 7", "x": 845, "y": 710, "depth": "24 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Training platform", "desc": "Training platform east of King Kong on the south slope.", "best_entry": "Mermaid Beach: 120 FT @ 010°", "fin_kicks": "13 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "tower", "name": "Observation Tower", "x": 770, "y": 590, "depth": "38-42 FT", "viz": "12-18 FT", "category": "attraction", "star": false, "hazard": "Low - Steel lattice cross-braces", "desc": "Tall steel lattice tower structure. Tower apex rises through the thermocline from 42 FT basin floor up to ~25 FT depth.", "best_entry": "Fire Truck: 95 FT @ 090°", "fin_kicks": "10 kicks", "padi_ndl": "135 min"}, {"id": "tire_reef", "name": "Tire Reef & Jungle Gym", "x": 845, "y": 415, "depth": "38-44 FT", "viz": "14-20 FT", "category": "attraction", "star": true, "hazard": "Low - Open pyramid reef structure", "desc": "Massive artificial reef made of hundreds of bundled tires stacked with steel climbing gym. Highest fish density in Mammoth Lake (bass, crappie, catfish)!", "best_entry": "Tower: 190 FT @ 023°", "fin_kicks": "21 kicks", "padi_ndl": "135 min"}, {"id": "cargo", "name": "18-Wheeler & Cargo", "x": 985, "y": 305, "depth": "38-42 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Moderate - Do not penetrate enclosed trailer", "desc": "Full semi tractor and enclosed cargo box trailer resting in north cove trench.", "best_entry": "Tire Reef: 180 FT @ 055°", "fin_kicks": "20 kicks", "padi_ndl": "135 min"}, {"id": "satellite", "name": "Satellite Dish", "x": 1075, "y": 240, "depth": "28 FT", "viz": "14-20 FT", "category": "attraction", "star": false, "hazard": "Low - Parabolic steel mesh dish", "desc": "Large parabolic radar dish pointed upwards toward the surface. Highly reflective in sunlight.", "best_entry": "18-Wheeler: 110 FT @ 055°", "fin_kicks": "12 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "truck_stop", "name": "Truck Stop & Dumps", "x": 1035, "y": 515, "depth": "38-42 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low/Mod - Heavy machinery frames", "desc": "Collection of heavy commercial dump truck beds and mining machinery.", "best_entry": "Observation Tower: 275 FT @ 075°", "fin_kicks": "30 kicks", "padi_ndl": "135 min"}, {"id": "p8", "name": "Platform 8", "x": 955, "y": 625, "depth": "38 FT", "viz": "12-18 FT", "category": "platform", "star": false, "hazard": "Low - Deep skills platform", "desc": "Deep skills training platform in the central basin. Crucial hub connecting central wrecks to Thunder Bay railroad.", "best_entry": "Stingray City: 150 FT @ 360°", "fin_kicks": "17 kicks", "padi_ndl": "140 min"}, {"id": "midtown", "name": "MidTown Dock", "x": 670, "y": 830, "depth": "4-12 FT", "viz": "8-14 FT", "category": "dock", "star": false, "hazard": "Low - Dock steps & staging ramp", "desc": "Central south shore dock entry. Shortest surface swim access to Fire Truck (240 FT) and Deep Hole (160 FT). Covered shelter.", "best_entry": "South Perimeter Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "phil", "name": "Phil Station", "x": 765, "y": 845, "depth": "4-12 FT", "viz": "8-14 FT", "category": "dock", "star": false, "hazard": "Low - Dock stairs", "desc": "South shore dock with covered sun canopy and bench seating.", "best_entry": "South Perimeter Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "mermaid", "name": "Mermaid Beach", "x": 820, "y": 830, "depth": "2-8 FT", "viz": "6-12 FT", "category": "dock", "star": false, "hazard": "Low - Gentle sandy slope", "desc": "Gentle sloping natural sand beach entry. Ideal for wading, snorkelers, and gentle shore entries.", "best_entry": "South Perimeter Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "stingray", "name": "Stingray City", "x": 955, "y": 770, "depth": "10-18 FT", "viz": "8-14 FT", "category": "dock", "star": false, "hazard": "Low - Shelf dock", "desc": "South bank shelf dock entry point. Direct access to Platform 8 and central trench.", "best_entry": "South Perimeter Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "dock_thunder", "name": "Thunder Bay Dock", "x": 1315, "y": 250, "depth": "4-10 FT", "viz": "8-15 FT", "category": "dock", "star": false, "hazard": "Low - Primary northeast dock hub", "desc": "Northeast park entrance hub. Features covered shelter, picnic tables, parking, camping sites, and direct access to Thunder Bay Railroad wrecks.", "best_entry": "North Dixie Dr Entry Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "p9", "name": "Platform 9", "x": 1370, "y": 388, "depth": "30 FT", "viz": "12-18 FT", "category": "platform", "star": false, "hazard": "Low - East training platform", "desc": "East basin primary training platform. Crossroads connecting Thunder Bay Dock to the Caboose, School Buses, and Bucket Truck.", "best_entry": "Thunder Bay Dock: 150 FT @ 158°", "fin_kicks": "16 kicks", "padi_ndl": "205 min"}, {"id": "caboose", "name": "Railroad Caboose", "x": 1490, "y": 300, "depth": "30-34 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low/Mod - Open doors & windows for swim-through", "desc": "Authentic vintage steel railroad caboose with cupola observation roof. Open doorways and windows allow comfortable interior swim-throughs.", "best_entry": "Platform 9: 150 FT @ 054° or Surface Swim from Thunder Bay: 190 FT @ 108°", "fin_kicks": "16 kicks from P9", "padi_ndl": "160 min"}, {"id": "trains", "name": "Train Boxcars & Tanks", "x": 1155, "y": 410, "depth": "34-38 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Moderate - Heavy steel freight couplers", "desc": "Heavy freight railroad boxcars and cylindrical tanker cars resting in parallel tracks on gravel basin bed.", "best_entry": "Platform 9: 220 FT @ 265°", "fin_kicks": "24 kicks", "padi_ndl": "140 min"}, {"id": "bucket_truck", "name": "Bucket Utility Truck", "x": 1445, "y": 435, "depth": "32 FT", "viz": "14-20 FT", "category": "wreck", "star": true, "hazard": "Low - Elevated hydraulic bucket arm", "desc": "Commercial electrical boom truck with hydraulic bucket elevated into the water column. Staff and diver favorite for novelty photo shoots!", "best_entry": "Platform 9: 90 FT @ 155°", "fin_kicks": "10 kicks", "padi_ndl": "205 min"}, {"id": "school_buses", "name": "School Buses (x2)", "x": 1530, "y": 375, "depth": "30-36 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low - Clear open aisles & emergency exits", "desc": "Two full-size yellow school buses placed end-to-end on lakebed. Open windows, clear roof hatches, and long aisle swim-throughs.", "best_entry": "Platform 9: 175 FT @ 095°", "fin_kicks": "19 kicks", "padi_ndl": "160 min"}, {"id": "flatbed", "name": "Flatbed Truck", "x": 1215, "y": 575, "depth": "36 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low - Open flatbed deck", "desc": "Heavy commercial flatbed rig resting on the southeast slope.", "best_entry": "Platform 8: 260 FT @ 080°", "fin_kicks": "28 kicks", "padi_ndl": "150 min"}, {"id": "east_pipe", "name": "East Valve & Pipe", "x": 1565, "y": 510, "depth": "34 FT", "viz": "10-15 FT", "category": "attraction", "star": false, "hazard": "Low - Valve assembly", "desc": "Industrial quarry piping, valve fixture structure, and flange manifold on east basin slope.", "best_entry": "School Buses: 140 FT @ 165°", "fin_kicks": "15 kicks", "padi_ndl": "160 min"}];
-const SOLVED_BADGES = [{"id": "jet", "title": "Trainer / Fighter Jet", "dep": "22 FT", "viz": "10-15'", "type": "star", "cx": 154.4, "cy": 787.3, "bx": 52.0, "by": 823.9, "w": 175.6, "h": 41.0, "star": true, "desc": "Military jet sitting upright on hard sand bottom. Intact cockpit, twin ejection seat frames, and swept wings. High-light training depth; diver favorite for Addie's warm-up photos.", "category": "wreck", "hazard": "Low - Open cockpit; watch sharp wing edges", "best_entry": "NASA Dock: 80 FT @ 140° or P1: 95 FT @ 218°", "fin_kicks": "10 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "rockets", "title": "Rocket Farm", "dep": "25 FT", "viz": "10-15'", "type": "attraction", "cx": 199.8, "cy": 729.5, "bx": 97.3, "by": 704.6, "w": 175.6, "h": 38.0, "star": false, "desc": "Cluster of upright aerospace rocket booster mockups resting vertically on lake bottom. Eerie futuristic silhouette in morning light.", "category": "attraction", "hazard": "Low - Stable upright cylinders", "best_entry": "Platform 1: 70 FT @ 225°", "fin_kicks": "8 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "weather", "title": "Weather Station", "dep": "24 FT", "viz": "10-14'", "type": "attraction", "cx": 219.5, "cy": 810.0, "bx": 190.2, "by": 913.9, "w": 175.6, "h": 38.0, "star": false, "desc": "Submerged meteorological tower array, anemometer cups, and sensor housing on the southwest training shelf.", "category": "attraction", "hazard": "Low - Clear steel frame", "best_entry": "Platform 1: 120 FT @ 155°", "fin_kicks": "13 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "shuttle", "title": "Space Shuttle Mock", "dep": "28 FT", "viz": "12-18'", "type": "wreck", "cx": 249.5, "cy": 654.9, "bx": 147.1, "by": 581.0, "w": 175.6, "h": 41.0, "star": false, "desc": "Large replica orbiter airframe complete with delta wing outline, cockpit window frames, and vertical stabilizer fin. Popular photo destination.", "category": "wreck", "hazard": "Low/Mod - Do not penetrate enclosed nose", "best_entry": "Platform 1: 50 FT @ 335°", "fin_kicks": "6 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "fish_boat", "title": "Fishing Boat", "dep": "28 FT", "viz": "10-16'", "type": "wreck", "cx": 279.5, "cy": 750.0, "bx": 235.6, "by": 804.9, "w": 175.6, "h": 41.0, "star": false, "desc": "Small recreational cabin cruiser wreck resting upright on gravel. Fish congregate inside open cuddy cabin.", "category": "wreck", "hazard": "Low - Open fiberglass hull", "best_entry": "Platform 1: 55 FT @ 165°", "fin_kicks": "6 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "pirate", "title": "Pirate Ship Wreck", "dep": "30 FT", "viz": "10-15'", "type": "wreck", "cx": 339.5, "cy": 679.8, "bx": 427.3, "by": 682.7, "w": 175.6, "h": 41.0, "star": false, "desc": "Themed wooden vessel with bowsprit, mast stubs, and open gunwale deck. Great for navigation games and fish watching.", "category": "wreck", "hazard": "Moderate - Overhead deck timbers; use caution", "best_entry": "Platform 1: 75 FT @ 075°", "fin_kicks": "8 kicks", "padi_ndl": "205 min"}, {"id": "boats_nw", "title": "Speedboat Fleet", "dep": "24-28 FT", "viz": "12-18'", "type": "wreck", "cx": 174.9, "cy": 504.9, "bx": 72.4, "by": 468.3, "w": 193.2, "h": 41.0, "star": false, "desc": "Group of 3 fiberglass runabouts clustered together on flat limestone shelf. Excellent bass and bluegill habitat.", "category": "wreck", "hazard": "Low - Open runabouts", "best_entry": "NASA Dock: 250 FT @ 340°", "fin_kicks": "27 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "bug", "title": "Giant Centipede", "dep": "26 FT", "viz": "14-20'", "type": "attraction", "cx": 274.4, "cy": 464.6, "bx": 186.6, "by": 413.4, "w": 175.6, "h": 41.0, "star": false, "desc": "Segmented welded steel centipede sculpture resting on the northwest bottom slope.", "category": "attraction", "hazard": "Low - Metal art sculpture", "best_entry": "C-130 Hercules: 80 FT @ 330°", "fin_kicks": "9 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "submarine", "title": "Submarine (WWII Mock)", "dep": "26-28 FT", "viz": "15-22'", "type": "star", "cx": 374.6, "cy": 420.0, "bx": 411.2, "by": 357.8, "w": 204.9, "h": 41.0, "star": true, "desc": "Full-length submarine replica complete with conning tower, periscope mast, bow planes, and hull torpedo tubes. Top attraction with incredible silhouette photography!", "category": "wreck", "hazard": "Low/Mod - External inspection only; tight hatch", "best_entry": "NASA Dock: 380 FT @ 035° or C-130: 130 FT @ 030°", "fin_kicks": "14 kicks from C-130", "padi_ndl": "Unlimited (>205 min)"}, {"id": "c130", "title": "C-130 Hercules Plane", "dep": "26-38 FT", "viz": "15-25'", "type": "star", "cx": 314.6, "cy": 534.9, "bx": 219.5, "by": 533.4, "w": 193.2, "h": 38.0, "star": true, "desc": "The crown jewel of Mammoth Lake! Massive four-engine turboprop military transport with colossal 132' wingspan. Cockpit, cargo bay swim-through, 4 engines, and high fish congregation.", "category": "wreck", "hazard": "Moderate - Penetration only for trained divers with guideline", "best_entry": "Surface Swim from NASA Dock: 320 FT @ 062° (35 kicks) or via Platform 1 guideline (170 FT @ 016°)", "fin_kicks": "19 kicks from P1", "padi_ndl": "140 min at deepest point (38 FT)"}, {"id": "mammoth", "title": "Columbian Mammoth", "dep": "32 FT", "viz": "12-18'", "type": "attraction", "cx": 309.5, "cy": 614.6, "bx": 214.4, "by": 628.5, "w": 185.1, "h": 38.0, "star": false, "desc": "Life-sized steel mammoth sculpture honoring prehistoric mammoth fossils discovered during quarry excavation. Giant curved tusks and ribs.", "category": "attraction", "hazard": "Low - Large welded frame", "best_entry": "C-130 Hercules: 80 FT @ 180°", "fin_kicks": "9 kicks", "padi_ndl": "205 min"}, {"id": "egg", "title": "Giant Egg", "dep": "30 FT", "viz": "12-18'", "type": "attraction", "cx": 344.6, "cy": 649.8, "bx": 388.5, "by": 729.5, "w": 175.6, "h": 41.0, "star": false, "desc": "Submerged concrete egg structure with swim-through portal openings on gravel bottom.", "category": "attraction", "hazard": "Low - Concrete dome with openings", "best_entry": "Mammoth: 50 FT @ 140°", "fin_kicks": "6 kicks", "padi_ndl": "205 min"}, {"id": "short_bus", "title": "Short Bus", "dep": "34 FT", "viz": "12-18'", "type": "wreck", "cx": 424.4, "cy": 529.8, "bx": 504.9, "by": 453.7, "w": 175.6, "h": 38.0, "star": false, "desc": "Sunken yellow school short bus with interior seats intact. Easy swim-through for divers of all experience levels.", "category": "wreck", "hazard": "Low - Open windows & emergency exit", "best_entry": "C-130 Hercules: 110 FT @ 085°", "fin_kicks": "12 kicks", "padi_ndl": "160 min"}, {"id": "boat_stick", "title": "Boat on a Stick", "dep": "35 FT", "viz": "12-18'", "type": "wreck", "cx": 444.9, "cy": 624.9, "bx": 525.4, "by": 637.3, "w": 175.6, "h": 38.0, "star": false, "desc": "Recreational boat hull perched atop a vertical steel pylon several feet off the lake floor. Catfish often rest underneath.", "category": "wreck", "hazard": "Low - Elevated pylon structure", "best_entry": "Short Bus: 95 FT @ 168°", "fin_kicks": "10 kicks", "padi_ndl": "160 min"}, {"id": "cruiser_mid", "title": "Cabin Cruiser", "dep": "34 FT", "viz": "12-18'", "type": "wreck", "cx": 534.9, "cy": 614.6, "bx": 498.3, "by": 545.1, "w": 175.6, "h": 38.0, "star": false, "desc": "Sunken 28 FT cruiser hull resting upright on the central basin ridge. Connects west attractions to the deep basin.", "category": "wreck", "hazard": "Low - Open cabin", "best_entry": "Boat on a Stick: 90 FT @ 085°", "fin_kicks": "10 kicks", "padi_ndl": "160 min"}, {"id": "deep_hole", "title": "THE DEEP HOLE (Spring Pipe)", "dep": "65-70 FT", "viz": "5-10'", "type": "deep", "cx": 589.8, "cy": 690.0, "bx": 589.8, "by": 591.2, "w": 256.8, "h": 41.0, "star": true, "desc": "The deepest point in Texas dive parks (70 FT max)! Submerged natural spring sinkhole with cold artesian flow (68°F thermocline). Marked by vertical discharge pipe structure. Tony & Ken advanced deep dive spot.", "category": "deep", "hazard": "CRITICAL HAZARD - Cold natural spring, pitch black below 50 FT, rapid NDL consumption. High-intensity dive lights & redundant gas mandatory.", "best_entry": "Surface Swim from MidTown Dock: 160 FT @ 330° (17 kicks) or guideline from Platform 6 (60 FT @ 325°)", "fin_kicks": "17 kicks from MidTown", "padi_ndl": "40 min strictly monitored"}, {"id": "fire_truck", "title": "Fire Truck", "dep": "38 FT", "viz": "10-16'", "type": "wreck", "cx": 674.6, "cy": 589.8, "bx": 616.1, "by": 499.8, "w": 175.6, "h": 38.0, "star": false, "desc": "Full-size commercial fire engine with pump panel, hose bed, bumper winch, and open cab. Excellent photo subject.", "category": "wreck", "hazard": "Low/Mod - Open cab & ladder brackets", "best_entry": "MidTown Dock: 240 FT @ 001°", "fin_kicks": "26 kicks", "padi_ndl": "140 min"}, {"id": "pickup", "title": "Pickup Truck", "dep": "36 FT", "viz": "10-16'", "type": "wreck", "cx": 669.5, "cy": 644.6, "bx": 728.0, "by": 681.2, "w": 175.6, "h": 41.0, "star": false, "desc": "Submerged truck chassis resting on gravel floor south of the Fire Truck.", "category": "wreck", "hazard": "Low - Open cab", "best_entry": "Fire Truck: 55 FT @ 175°", "fin_kicks": "6 kicks", "padi_ndl": "150 min"}, {"id": "king_kong", "title": "King Kong Sculpture", "dep": "32 FT", "viz": "12-18'", "type": "attraction", "cx": 717.8, "cy": 699.5, "bx": 782.9, "by": 770.5, "w": 180.7, "h": 41.0, "star": false, "desc": "Large metallic gorilla sculpture standing upright on concrete slab with raised arms.", "category": "attraction", "hazard": "Low - Welded steel art piece", "best_entry": "Pickup: 75 FT @ 125°", "fin_kicks": "8 kicks", "padi_ndl": "205 min"}, {"id": "tower", "title": "Observation Tower", "dep": "38-42 FT", "viz": "12-18'", "type": "attraction", "cx": 769.8, "cy": 589.8, "bx": 850.2, "by": 549.5, "w": 193.2, "h": 38.0, "star": false, "desc": "Tall steel lattice tower structure. Tower apex rises through the thermocline from 42 FT basin floor up to ~25 FT depth.", "category": "attraction", "hazard": "Low - Steel lattice cross-braces", "best_entry": "Fire Truck: 95 FT @ 090°", "fin_kicks": "10 kicks", "padi_ndl": "135 min"}, {"id": "tire_reef", "title": "Tire Reef & Jungle Gym", "dep": "38-44 FT", "viz": "14-20'", "type": "star", "cx": 844.4, "cy": 414.9, "bx": 756.6, "by": 363.7, "w": 202.7, "h": 41.0, "star": true, "desc": "Massive artificial reef made of hundreds of bundled tires stacked with steel climbing gym. Highest fish density in Mammoth Lake (bass, crappie, catfish)!", "category": "attraction", "hazard": "Low - Open pyramid reef structure", "best_entry": "Tower: 190 FT @ 023°", "fin_kicks": "21 kicks", "padi_ndl": "135 min"}, {"id": "cargo", "title": "18-Wheeler & Cargo", "dep": "38-42 FT", "viz": "12-18'", "type": "wreck", "cx": 984.9, "cy": 304.4, "bx": 904.4, "by": 249.5, "w": 193.2, "h": 41.0, "star": false, "desc": "Full semi tractor and enclosed cargo box trailer resting in north cove trench.", "category": "wreck", "hazard": "Moderate - Do not penetrate enclosed trailer", "best_entry": "Tire Reef: 180 FT @ 055°", "fin_kicks": "20 kicks", "padi_ndl": "135 min"}, {"id": "satellite", "title": "Satellite Dish", "dep": "28 FT", "viz": "14-20'", "type": "attraction", "cx": 1074.9, "cy": 240.0, "bx": 1148.0, "by": 185.1, "w": 175.6, "h": 38.0, "star": false, "desc": "Large parabolic radar dish pointed upwards toward the surface. Highly reflective in sunlight.", "category": "attraction", "hazard": "Low - Parabolic steel mesh dish", "best_entry": "18-Wheeler: 110 FT @ 055°", "fin_kicks": "12 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "truck_stop", "title": "Truck Stop & Dumps", "dep": "38-42 FT", "viz": "12-18'", "type": "wreck", "cx": 1034.6, "cy": 514.4, "bx": 1107.8, "by": 558.3, "w": 193.2, "h": 41.0, "star": false, "desc": "Collection of heavy commercial dump truck beds and mining machinery.", "category": "wreck", "hazard": "Low/Mod - Heavy machinery frames", "best_entry": "Observation Tower: 275 FT @ 075°", "fin_kicks": "30 kicks", "padi_ndl": "135 min"}, {"id": "trains", "title": "Train Tankers & Cars", "dep": "34-38 FT", "viz": "12-18'", "type": "wreck", "cx": 1154.6, "cy": 409.8, "bx": 1066.8, "by": 358.5, "w": 193.2, "h": 38.0, "star": false, "desc": "Heavy freight railroad boxcars and cylindrical tanker cars resting in parallel tracks on gravel basin bed.", "category": "wreck", "hazard": "Moderate - Heavy steel freight couplers", "best_entry": "Platform 9: 220 FT @ 265°", "fin_kicks": "24 kicks", "padi_ndl": "140 min"}, {"id": "flatbed", "title": "Flatbed Truck", "dep": "36 FT", "viz": "12-18'", "type": "wreck", "cx": 1214.6, "cy": 574.4, "bx": 1280.5, "by": 625.6, "w": 175.6, "h": 38.0, "star": false, "desc": "Heavy commercial flatbed rig resting on the southeast slope.", "category": "wreck", "hazard": "Low - Open flatbed deck", "best_entry": "Platform 8: 260 FT @ 080°", "fin_kicks": "28 kicks", "padi_ndl": "150 min"}, {"id": "caboose", "title": "Railroad Caboose", "dep": "30-34 FT", "viz": "12-18'", "type": "wreck", "cx": 1489.8, "cy": 300.0, "bx": 1570.2, "by": 248.8, "w": 193.2, "h": 38.0, "star": false, "desc": "Authentic vintage steel railroad caboose with cupola observation roof. Open doorways and windows allow comfortable interior swim-throughs.", "category": "wreck", "hazard": "Low/Mod - Open doors & windows for swim-through", "best_entry": "Platform 9: 150 FT @ 054° or Surface Swim from Thunder Bay: 190 FT @ 108°", "fin_kicks": "16 kicks from P9", "padi_ndl": "160 min"}, {"id": "school_buses", "title": "School Buses (x2)", "dep": "30-36 FT", "viz": "12-18'", "type": "wreck", "cx": 1530.0, "cy": 374.6, "bx": 1617.8, "by": 403.9, "w": 193.2, "h": 41.0, "star": false, "desc": "Two full-size yellow school buses placed end-to-end on lakebed. Open windows, clear roof hatches, and long aisle swim-throughs.", "category": "wreck", "hazard": "Low - Clear open aisles & emergency exits", "best_entry": "Platform 9: 175 FT @ 095°", "fin_kicks": "19 kicks", "padi_ndl": "160 min"}, {"id": "bucket_truck", "title": "Bucket Utility Truck", "dep": "32 FT", "viz": "14-20'", "type": "star", "cx": 1444.4, "cy": 434.6, "bx": 1356.6, "by": 485.9, "w": 175.6, "h": 41.0, "star": true, "desc": "Commercial electrical boom truck with hydraulic bucket elevated into the water column. Staff and diver favorite for novelty photo shoots!", "category": "wreck", "hazard": "Low - Elevated hydraulic bucket arm", "best_entry": "Platform 9: 90 FT @ 155°", "fin_kicks": "10 kicks", "padi_ndl": "205 min"}, {"id": "east_pipe", "title": "East Valve & Pipe", "dep": "34 FT", "viz": "10-15'", "type": "attraction", "cx": 1564.4, "cy": 510.0, "bx": 1637.6, "by": 564.9, "w": 175.6, "h": 41.0, "star": false, "desc": "Industrial quarry piping, valve fixture structure, and flange manifold on east basin slope.", "category": "attraction", "hazard": "Low - Valve assembly", "best_entry": "School Buses: 140 FT @ 165°", "fin_kicks": "15 kicks", "padi_ndl": "160 min"}, {"id": "p1", "title": "Platform 1", "dep": "20 FT", "viz": "10-15'", "type": "platform", "cx": 267.8, "cy": 699.5, "bx": 231.2, "by": 666.6, "w": 137.6, "h": 22.7, "star": false, "desc": "10x10 FT submerged wood/fiberglass training platform. West basin navigation crossroad linking NASA Dock to Flight Deck aircraft, shallow training shelf, and C-130 expedition line.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "NASA Dock: 145 FT @ 074°", "fin_kicks": "16 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p2", "title": "Platform 2", "dep": "22 FT", "viz": "10-15'", "type": "platform", "cx": 271.5, "cy": 829.8, "bx": 220.2, "by": 843.7, "w": 137.6, "h": 22.7, "star": false, "desc": "Submerged training platform on southern shelf. Excellent buoyancy practice spot at 22 FT before heading toward deeper westshelf wrecks.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "Platform 1: 130 FT @ 178°", "fin_kicks": "14 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p3", "title": "Platform 3", "dep": "20 FT", "viz": "10-15'", "type": "platform", "cx": 324.9, "cy": 777.8, "bx": 324.9, "by": 766.8, "w": 137.6, "h": 22.7, "star": false, "desc": "South training platform near Crab Key dock. Calm waters, good visibility, perfect for mask clearing and buoyancy checks.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "Crab Key Dock: 100 FT @ 355°", "fin_kicks": "11 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p4", "title": "Platform 4", "dep": "18 FT", "viz": "10-15'", "type": "platform", "cx": 394.4, "cy": 750.0, "bx": 431.0, "by": 808.5, "w": 137.6, "h": 22.7, "star": false, "desc": "Shallow 18 FT training platform along the south slope. Connects Turtle Bay dock to central lake routes.", "category": "platform", "hazard": "Low - Shallow training platform", "best_entry": "Turtle Bay Dock: 110 FT @ 350°", "fin_kicks": "12 kicks", "padi_ndl": "Unlimited"}, {"id": "p5", "title": "Platform 5", "dep": "20 FT", "viz": "10-15'", "type": "platform", "cx": 499.8, "cy": 744.9, "bx": 499.8, "by": 777.1, "w": 137.6, "h": 22.7, "star": false, "desc": "Mid-lake southern shelf training platform. Natural waypoint when transitioning from West Flight Deck to MidTown Basin.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "Turtle Bay Dock: 150 FT @ 045°", "fin_kicks": "16 kicks", "padi_ndl": "Unlimited"}, {"id": "p6", "title": "Platform 6", "dep": "22 FT", "viz": "10-15'", "type": "platform", "cx": 630.0, "cy": 734.6, "bx": 593.4, "by": 746.3, "w": 137.6, "h": 22.7, "star": false, "desc": "Central training platform. The primary safety & decompression staging platform for divers ascending from the Deep Hole.", "category": "platform", "hazard": "Low - Training platform south of Deep Hole", "best_entry": "MidTown Dock: 100 FT @ 340°", "fin_kicks": "11 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p7", "title": "Platform 7", "dep": "24 FT", "viz": "10-15'", "type": "platform", "cx": 844.4, "cy": 709.8, "bx": 881.0, "by": 730.2, "w": 137.6, "h": 22.7, "star": false, "desc": "Training platform east of King Kong on the south slope.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "Mermaid Beach: 120 FT @ 010°", "fin_kicks": "13 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p8", "title": "Platform 8", "dep": "38 FT", "viz": "12-18'", "type": "platform", "cx": 954.9, "cy": 624.9, "bx": 998.8, "by": 657.8, "w": 137.6, "h": 22.7, "star": false, "desc": "Deep skills training platform in the central basin. Crucial hub connecting central wrecks to Thunder Bay railroad.", "category": "platform", "hazard": "Low - Deep skills platform", "best_entry": "Stingray City: 150 FT @ 360°", "fin_kicks": "17 kicks", "padi_ndl": "140 min"}, {"id": "p9", "title": "Platform 9", "dep": "30 FT", "viz": "12-18'", "type": "platform", "cx": 1369.8, "cy": 387.8, "bx": 1318.5, "by": 358.5, "w": 137.6, "h": 22.7, "star": false, "desc": "East basin primary training platform. Crossroads connecting Thunder Bay Dock to the Caboose, School Buses, and Bucket Truck.", "category": "platform", "hazard": "Low - East training platform", "best_entry": "Thunder Bay Dock: 150 FT @ 158°", "fin_kicks": "16 kicks", "padi_ndl": "205 min"}, {"id": "nasa_dock", "title": "NASA DOCK (MAIN ENTRY)", "dep": "4-8 FT", "viz": "6-12 FT", "type": "dock", "cx": 105, "cy": 745, "bx": 105, "by": 780, "w": 165, "h": 26, "star": false, "desc": "Main entrance hub, check-in dive shop, air & nitrox fills, covered gear staging tables, hot showers, emergency O2 & AED, gear rinse basins. Primary entry for Circuits 1 & 2.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "crab_key", "title": "CRAB KEY DOCK", "dep": "4-10 FT", "viz": "6-12 FT", "type": "dock", "cx": 320, "cy": 875, "bx": 320, "by": 908, "w": 130, "h": 26, "star": false, "desc": "South bank entry dock with picnic benches, gear staging, and shallow ramp entry directly to Platform 3.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "turtle_bay", "title": "TURTLE BAY DOCK", "dep": "4-12 FT", "viz": "8-14 FT", "type": "dock", "cx": 405, "cy": 860, "bx": 405, "by": 895, "w": 140, "h": 26, "star": false, "desc": "Protected southern dock bay with frequent red-eared slider turtle sightings basking on perimeter logs.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "midtown", "title": "MIDTOWN DOCK", "dep": "4-12 FT", "viz": "8-14 FT", "type": "dock", "cx": 670, "cy": 830, "bx": 670, "by": 865, "w": 130, "h": 26, "star": false, "desc": "Central south shore dock entry. Shortest surface swim access to Fire Truck (240 FT) and Deep Hole (160 FT). Covered shelter.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "phil", "title": "PHIL STATION", "dep": "4-12 FT", "viz": "8-14 FT", "type": "dock", "cx": 765, "cy": 845, "bx": 765, "by": 880, "w": 120, "h": 26, "star": false, "desc": "South shore dock with covered sun canopy and bench seating.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "mermaid", "title": "MERMAID BEACH", "dep": "2-8 FT", "viz": "6-12 FT", "type": "dock", "cx": 820, "cy": 830, "bx": 820, "by": 865, "w": 130, "h": 26, "star": false, "desc": "Gentle sloping natural sand beach entry. Ideal for wading, snorkelers, and gentle shore entries.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "stingray", "title": "STINGRAY CITY", "dep": "10-18 FT", "viz": "8-14 FT", "type": "dock", "cx": 955, "cy": 770, "bx": 955, "by": 805, "w": 130, "h": 26, "star": false, "desc": "South bank shelf dock entry point. Direct access to Platform 8 and central trench.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "dock_thunder", "title": "THUNDER BAY DOCK", "dep": "4-10 FT", "viz": "8-15 FT", "type": "dock", "cx": 1315, "cy": 250, "bx": 1315, "by": 215, "w": 165, "h": 26, "star": false, "desc": "Northeast park entrance hub. Features covered shelter, picnic tables, parking, camping sites, and direct access to Thunder Bay Railroad wrecks.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}];
+const SOLVED_BADGES = [{"id": "jet", "title": "Trainer / Fighter Jet", "dep": "22 FT", "viz": "10-15'", "type": "star", "cx": 154.4, "cy": 787.3, "bx": 52.0, "by": 823.9, "w": 175.6, "h": 41.0, "star": true, "desc": "Military jet sitting upright on hard sand bottom. Intact cockpit, twin ejection seat frames, and swept wings. High-light training depth; diver favorite for Addie's warm-up photos.", "category": "wreck", "hazard": "Low - Open cockpit; watch sharp wing edges", "best_entry": "NASA Dock: 80 FT @ 140° or P1: 95 FT @ 218°", "fin_kicks": "10 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "rockets", "title": "Rocket Farm", "dep": "25 FT", "viz": "10-15'", "type": "attraction", "cx": 199.8, "cy": 729.5, "bx": 97.3, "by": 704.6, "w": 175.6, "h": 38.0, "star": false, "desc": "Cluster of upright aerospace rocket booster mockups resting vertically on lake bottom. Eerie futuristic silhouette in morning light.", "category": "attraction", "hazard": "Low - Stable upright cylinders", "best_entry": "Platform 1: 70 FT @ 225°", "fin_kicks": "8 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "weather", "title": "Weather Station", "dep": "24 FT", "viz": "10-14'", "type": "attraction", "cx": 219.5, "cy": 810.0, "bx": 190.2, "by": 913.9, "w": 175.6, "h": 38.0, "star": false, "desc": "Submerged meteorological tower array, anemometer cups, and sensor housing on the southwest training shelf.", "category": "attraction", "hazard": "Low - Clear steel frame", "best_entry": "Platform 1: 120 FT @ 155°", "fin_kicks": "13 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "shuttle", "title": "Space Shuttle Mock", "dep": "28 FT", "viz": "12-18'", "type": "wreck", "cx": 249.5, "cy": 654.9, "bx": 147.1, "by": 581.0, "w": 175.6, "h": 41.0, "star": false, "desc": "Large replica orbiter airframe complete with delta wing outline, cockpit window frames, and vertical stabilizer fin. Popular photo destination.", "category": "wreck", "hazard": "Low/Mod - Do not penetrate enclosed nose", "best_entry": "Platform 1: 50 FT @ 335°", "fin_kicks": "6 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "fish_boat", "title": "Fishing Boat", "dep": "28 FT", "viz": "10-16'", "type": "wreck", "cx": 279.5, "cy": 750.0, "bx": 235.6, "by": 804.9, "w": 175.6, "h": 41.0, "star": false, "desc": "Small recreational cabin cruiser wreck resting upright on gravel. Fish congregate inside open cuddy cabin.", "category": "wreck", "hazard": "Low - Open fiberglass hull", "best_entry": "Platform 1: 55 FT @ 165°", "fin_kicks": "6 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "pirate", "title": "Pirate Ship Wreck", "dep": "30 FT", "viz": "10-15'", "type": "wreck", "cx": 339.5, "cy": 679.8, "bx": 427.3, "by": 682.7, "w": 175.6, "h": 41.0, "star": false, "desc": "Themed wooden vessel with bowsprit, mast stubs, and open gunwale deck. Great for navigation games and fish watching.", "category": "wreck", "hazard": "Moderate - Overhead deck timbers; use caution", "best_entry": "Platform 1: 75 FT @ 075°", "fin_kicks": "8 kicks", "padi_ndl": "205 min"}, {"id": "boats_nw", "title": "Speedboat Fleet", "dep": "24-28 FT", "viz": "12-18'", "type": "wreck", "cx": 174.9, "cy": 504.9, "bx": 72.4, "by": 468.3, "w": 193.2, "h": 41.0, "star": false, "desc": "Group of 3 fiberglass runabouts clustered together on flat limestone shelf. Excellent bass and bluegill habitat.", "category": "wreck", "hazard": "Low - Open runabouts", "best_entry": "NASA Dock: 250 FT @ 340°", "fin_kicks": "27 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "bug", "title": "Giant Centipede", "dep": "26 FT", "viz": "14-20'", "type": "attraction", "cx": 274.4, "cy": 464.6, "bx": 186.6, "by": 413.4, "w": 175.6, "h": 41.0, "star": false, "desc": "Segmented welded steel centipede sculpture resting on the northwest bottom slope.", "category": "attraction", "hazard": "Low - Metal art sculpture", "best_entry": "C-130 Hercules: 80 FT @ 330°", "fin_kicks": "9 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "submarine", "title": "Submarine (WWII Mock)", "dep": "26-28 FT", "viz": "15-22'", "type": "star", "cx": 374.6, "cy": 420.0, "bx": 411.2, "by": 357.8, "w": 204.9, "h": 41.0, "star": true, "desc": "Full-length submarine replica complete with conning tower, periscope mast, bow planes, and hull torpedo tubes. Top attraction with incredible silhouette photography!", "category": "wreck", "hazard": "Low/Mod - External inspection only; tight hatch", "best_entry": "NASA Dock: 380 FT @ 035° or C-130: 130 FT @ 030°", "fin_kicks": "14 kicks from C-130", "padi_ndl": "Unlimited (>205 min)"}, {"id": "c130", "title": "C-130 Hercules Plane", "dep": "26-38 FT", "viz": "15-25'", "type": "star", "cx": 314.6, "cy": 534.9, "bx": 219.5, "by": 533.4, "w": 193.2, "h": 38.0, "star": true, "desc": "The crown jewel of Mammoth Lake! Massive four-engine turboprop military transport with colossal 132' wingspan. Cockpit, cargo bay swim-through, 4 engines, and high fish congregation.", "category": "wreck", "hazard": "Moderate - Penetration only for trained divers with guideline", "best_entry": "Surface Swim from NASA Dock: 320 FT @ 062° (35 kicks) or via Platform 1 guideline (170 FT @ 016°)", "fin_kicks": "19 kicks from P1", "padi_ndl": "140 min at deepest point (38 FT)"}, {"id": "mammoth", "title": "Columbian Mammoth", "dep": "32 FT", "viz": "12-18'", "type": "attraction", "cx": 309.5, "cy": 614.6, "bx": 214.4, "by": 628.5, "w": 185.1, "h": 38.0, "star": false, "desc": "Life-sized steel mammoth sculpture honoring prehistoric mammoth fossils discovered during quarry excavation. Giant curved tusks and ribs.", "category": "attraction", "hazard": "Low - Large welded frame", "best_entry": "C-130 Hercules: 80 FT @ 180°", "fin_kicks": "9 kicks", "padi_ndl": "205 min"}, {"id": "egg", "title": "Giant Egg", "dep": "30 FT", "viz": "12-18'", "type": "attraction", "cx": 344.6, "cy": 649.8, "bx": 388.5, "by": 729.5, "w": 175.6, "h": 41.0, "star": false, "desc": "Submerged concrete egg structure with swim-through portal openings on gravel bottom.", "category": "attraction", "hazard": "Low - Concrete dome with openings", "best_entry": "Mammoth: 50 FT @ 140°", "fin_kicks": "6 kicks", "padi_ndl": "205 min"}, {"id": "short_bus", "title": "Short Bus", "dep": "34 FT", "viz": "12-18'", "type": "wreck", "cx": 424.4, "cy": 529.8, "bx": 504.9, "by": 453.7, "w": 175.6, "h": 38.0, "star": false, "desc": "Sunken yellow school short bus with interior seats intact. Easy swim-through for divers of all experience levels.", "category": "wreck", "hazard": "Low - Open windows & emergency exit", "best_entry": "C-130 Hercules: 110 FT @ 085°", "fin_kicks": "12 kicks", "padi_ndl": "160 min"}, {"id": "boat_stick", "title": "Boat on a Stick", "dep": "35 FT", "viz": "12-18'", "type": "wreck", "cx": 444.9, "cy": 624.9, "bx": 525.4, "by": 637.3, "w": 175.6, "h": 38.0, "star": false, "desc": "Recreational boat hull perched atop a vertical steel pylon several feet off the lake floor. Catfish often rest underneath.", "category": "wreck", "hazard": "Low - Elevated pylon structure", "best_entry": "Short Bus: 95 FT @ 168°", "fin_kicks": "10 kicks", "padi_ndl": "160 min"}, {"id": "cruiser_mid", "title": "Cabin Cruiser", "dep": "34 FT", "viz": "12-18'", "type": "wreck", "cx": 534.9, "cy": 614.6, "bx": 498.3, "by": 545.1, "w": 175.6, "h": 38.0, "star": false, "desc": "Sunken 28 FT cruiser hull resting upright on the central basin ridge. Connects west attractions to the deep basin.", "category": "wreck", "hazard": "Low - Open cabin", "best_entry": "Boat on a Stick: 90 FT @ 085°", "fin_kicks": "10 kicks", "padi_ndl": "160 min"}, {"id": "deep_hole", "title": "THE DEEP HOLE (Spring Pipe)", "dep": "65-70 FT", "viz": "5-10'", "type": "deep", "cx": 589.8, "cy": 690.0, "bx": 589.8, "by": 591.2, "w": 256.8, "h": 41.0, "star": true, "desc": "The deepest point in Texas dive parks (70 FT max)! Submerged natural spring sinkhole with cold artesian flow (68°F thermocline). Marked by vertical discharge pipe structure. Tony & Ken advanced deep dive spot.", "category": "deep", "hazard": "CRITICAL HAZARD - Cold natural spring, pitch black below 50 FT, rapid NDL consumption. High-intensity dive lights & redundant gas mandatory.", "best_entry": "Surface Swim from MidTown Dock: 160 FT @ 330° (17 kicks) or guideline from Platform 6 (60 FT @ 325°)", "fin_kicks": "17 kicks from MidTown", "padi_ndl": "40 min strictly monitored"}, {"id": "fire_truck", "title": "Fire Truck", "dep": "38 FT", "viz": "10-16'", "type": "wreck", "cx": 674.6, "cy": 589.8, "bx": 616.1, "by": 499.8, "w": 175.6, "h": 38.0, "star": false, "desc": "Full-size commercial fire engine with pump panel, hose bed, bumper winch, and open cab. Excellent photo subject.", "category": "wreck", "hazard": "Low/Mod - Open cab & ladder brackets", "best_entry": "MidTown Dock: 240 FT @ 001°", "fin_kicks": "26 kicks", "padi_ndl": "140 min"}, {"id": "pickup", "title": "Pickup Truck", "dep": "36 FT", "viz": "10-16'", "type": "wreck", "cx": 669.5, "cy": 644.6, "bx": 728.0, "by": 681.2, "w": 175.6, "h": 41.0, "star": false, "desc": "Submerged truck chassis resting on gravel floor south of the Fire Truck.", "category": "wreck", "hazard": "Low - Open cab", "best_entry": "Fire Truck: 55 FT @ 175°", "fin_kicks": "6 kicks", "padi_ndl": "150 min"}, {"id": "king_kong", "title": "King Kong Sculpture", "dep": "32 FT", "viz": "12-18'", "type": "attraction", "cx": 717.8, "cy": 699.5, "bx": 782.9, "by": 770.5, "w": 180.7, "h": 41.0, "star": false, "desc": "Large metallic gorilla sculpture standing upright on concrete slab with raised arms.", "category": "attraction", "hazard": "Low - Welded steel art piece", "best_entry": "Pickup: 75 FT @ 125°", "fin_kicks": "8 kicks", "padi_ndl": "205 min"}, {"id": "tower", "title": "Observation Tower", "dep": "38-42 FT", "viz": "12-18'", "type": "attraction", "cx": 769.8, "cy": 589.8, "bx": 850.2, "by": 549.5, "w": 193.2, "h": 38.0, "star": false, "desc": "Tall steel lattice tower structure. Tower apex rises through the thermocline from 42 FT basin floor up to ~25 FT depth.", "category": "attraction", "hazard": "Low - Steel lattice cross-braces", "best_entry": "Fire Truck: 95 FT @ 090°", "fin_kicks": "10 kicks", "padi_ndl": "135 min"}, {"id": "tire_reef", "title": "Tire Reef & Jungle Gym", "dep": "38-44 FT", "viz": "14-20'", "type": "star", "cx": 844.4, "cy": 414.9, "bx": 756.6, "by": 363.7, "w": 202.7, "h": 41.0, "star": true, "desc": "Massive artificial reef made of hundreds of bundled tires stacked with steel climbing gym. Highest fish density in Mammoth Lake (bass, crappie, catfish)!", "category": "attraction", "hazard": "Low - Open pyramid reef structure", "best_entry": "Tower: 190 FT @ 023°", "fin_kicks": "21 kicks", "padi_ndl": "135 min"}, {"id": "cargo", "title": "18-Wheeler & Cargo", "dep": "38-42 FT", "viz": "12-18'", "type": "wreck", "cx": 984.9, "cy": 304.4, "bx": 904.4, "by": 249.5, "w": 193.2, "h": 41.0, "star": false, "desc": "Full semi tractor and enclosed cargo box trailer resting in north cove trench.", "category": "wreck", "hazard": "Moderate - Do not penetrate enclosed trailer", "best_entry": "Tire Reef: 180 FT @ 055°", "fin_kicks": "20 kicks", "padi_ndl": "135 min"}, {"id": "satellite", "title": "Satellite Dish", "dep": "28 FT", "viz": "14-20'", "type": "attraction", "cx": 1074.9, "cy": 240.0, "bx": 1148.0, "by": 185.1, "w": 175.6, "h": 38.0, "star": false, "desc": "Large parabolic radar dish pointed upwards toward the surface. Highly reflective in sunlight.", "category": "attraction", "hazard": "Low - Parabolic steel mesh dish", "best_entry": "18-Wheeler: 110 FT @ 055°", "fin_kicks": "12 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "truck_stop", "title": "Truck Stop & Dumps", "dep": "38-42 FT", "viz": "12-18'", "type": "wreck", "cx": 1034.6, "cy": 514.4, "bx": 1107.8, "by": 558.3, "w": 193.2, "h": 41.0, "star": false, "desc": "Collection of heavy commercial dump truck beds and mining machinery.", "category": "wreck", "hazard": "Low/Mod - Heavy machinery frames", "best_entry": "Observation Tower: 275 FT @ 075°", "fin_kicks": "30 kicks", "padi_ndl": "135 min"}, {"id": "trains", "title": "Train Tankers & Cars", "dep": "34-38 FT", "viz": "12-18'", "type": "wreck", "cx": 1154.6, "cy": 409.8, "bx": 1066.8, "by": 358.5, "w": 193.2, "h": 38.0, "star": false, "desc": "Heavy freight railroad boxcars and cylindrical tanker cars resting in parallel tracks on gravel basin bed.", "category": "wreck", "hazard": "Moderate - Heavy steel freight couplers", "best_entry": "Platform 9: 220 FT @ 265°", "fin_kicks": "24 kicks", "padi_ndl": "140 min"}, {"id": "flatbed", "title": "Flatbed Truck", "dep": "36 FT", "viz": "12-18'", "type": "wreck", "cx": 1214.6, "cy": 574.4, "bx": 1280.5, "by": 625.6, "w": 175.6, "h": 38.0, "star": false, "desc": "Heavy commercial flatbed rig resting on the southeast slope.", "category": "wreck", "hazard": "Low - Open flatbed deck", "best_entry": "Platform 8: 260 FT @ 080°", "fin_kicks": "28 kicks", "padi_ndl": "150 min"}, {"id": "caboose", "title": "Railroad Caboose", "dep": "30-34 FT", "viz": "12-18'", "type": "wreck", "cx": 1489.8, "cy": 300.0, "bx": 1570.2, "by": 248.8, "w": 193.2, "h": 38.0, "star": false, "desc": "Authentic vintage steel railroad caboose with cupola observation roof. Open doorways and windows allow comfortable interior swim-throughs.", "category": "wreck", "hazard": "Low/Mod - Open doors & windows for swim-through", "best_entry": "Platform 9: 150 FT @ 054° or Surface Swim from Thunder Bay: 190 FT @ 108°", "fin_kicks": "16 kicks from P9", "padi_ndl": "160 min"}, {"id": "school_buses", "title": "School Buses (x2)", "dep": "30-36 FT", "viz": "12-18'", "type": "wreck", "cx": 1530.0, "cy": 374.6, "bx": 1617.8, "by": 403.9, "w": 193.2, "h": 41.0, "star": false, "desc": "Two full-size yellow school buses placed end-to-end on lakebed. Open windows, clear roof hatches, and long aisle swim-throughs.", "category": "wreck", "hazard": "Low - Clear open aisles & emergency exits", "best_entry": "Platform 9: 175 FT @ 095°", "fin_kicks": "19 kicks", "padi_ndl": "160 min"}, {"id": "bucket_truck", "title": "Bucket Utility Truck", "dep": "32 FT", "viz": "14-20'", "type": "star", "cx": 1444.4, "cy": 434.6, "bx": 1356.6, "by": 485.9, "w": 175.6, "h": 41.0, "star": true, "desc": "Commercial electrical boom truck with hydraulic bucket elevated into the water column. Staff and diver favorite for novelty photo shoots!", "category": "wreck", "hazard": "Low - Elevated hydraulic bucket arm", "best_entry": "Platform 9: 90 FT @ 155°", "fin_kicks": "10 kicks", "padi_ndl": "205 min"}, {"id": "east_pipe", "title": "East Valve & Pipe", "dep": "34 FT", "viz": "10-15'", "type": "attraction", "cx": 1564.4, "cy": 510.0, "bx": 1637.6, "by": 564.9, "w": 175.6, "h": 41.0, "star": false, "desc": "Industrial quarry piping, valve fixture structure, and flange manifold on east basin slope.", "category": "attraction", "hazard": "Low - Valve assembly", "best_entry": "School Buses: 140 FT @ 165°", "fin_kicks": "15 kicks", "padi_ndl": "160 min"}, {"id": "p1", "title": "Platform 1", "dep": "20 FT", "viz": "10-15'", "type": "platform", "cx": 267.8, "cy": 699.5, "bx": 231.2, "by": 666.6, "w": 137.6, "h": 22.7, "star": false, "desc": "10x10 FT submerged wood/fiberglass training platform. West basin navigation crossroad linking NASA Dock to Flight Deck aircraft, shallow training shelf, and C-130 expedition line.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "NASA Dock: 145 FT @ 074°", "fin_kicks": "16 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p2", "title": "Platform 2", "dep": "22 FT", "viz": "10-15'", "type": "platform", "cx": 271.5, "cy": 829.8, "bx": 220.2, "by": 843.7, "w": 137.6, "h": 22.7, "star": false, "desc": "Submerged training platform on southern shelf. Excellent buoyancy practice spot at 22 FT before heading toward deeper westshelf wrecks.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "Platform 1: 130 FT @ 178°", "fin_kicks": "14 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p3", "title": "Platform 3", "dep": "20 FT", "viz": "10-15'", "type": "platform", "cx": 324.9, "cy": 777.8, "bx": 324.9, "by": 766.8, "w": 137.6, "h": 22.7, "star": false, "desc": "South training platform near Crab Key dock. Calm waters, good visibility, perfect for mask clearing and buoyancy checks.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "Crab Key Dock: 100 FT @ 355°", "fin_kicks": "11 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p4", "title": "Platform 4", "dep": "18 FT", "viz": "10-15'", "type": "platform", "cx": 394.4, "cy": 750.0, "bx": 431.0, "by": 808.5, "w": 137.6, "h": 22.7, "star": false, "desc": "Shallow 18 FT training platform along the south slope. Connects Turtle Bay dock to central lake routes.", "category": "platform", "hazard": "Low - Shallow training platform", "best_entry": "Turtle Bay Dock: 110 FT @ 350°", "fin_kicks": "12 kicks", "padi_ndl": "Unlimited"}, {"id": "p5", "title": "Platform 5", "dep": "20 FT", "viz": "10-15'", "type": "platform", "cx": 499.8, "cy": 744.9, "bx": 499.8, "by": 777.1, "w": 137.6, "h": 22.7, "star": false, "desc": "Mid-lake southern shelf training platform. Natural waypoint when transitioning from West Flight Deck to MidTown Basin.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "Turtle Bay Dock: 150 FT @ 045°", "fin_kicks": "16 kicks", "padi_ndl": "Unlimited"}, {"id": "p6", "title": "Platform 6", "dep": "22 FT", "viz": "10-15'", "type": "platform", "cx": 630.0, "cy": 734.6, "bx": 593.4, "by": 746.3, "w": 137.6, "h": 22.7, "star": false, "desc": "Central training platform. The primary safety & decompression staging platform for divers ascending from the Deep Hole.", "category": "platform", "hazard": "Low - Training platform south of Deep Hole", "best_entry": "MidTown Dock: 100 FT @ 340°", "fin_kicks": "11 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p7", "title": "Platform 7", "dep": "24 FT", "viz": "10-15'", "type": "platform", "cx": 844.4, "cy": 709.8, "bx": 881.0, "by": 730.2, "w": 137.6, "h": 22.7, "star": false, "desc": "Training platform east of King Kong on the south slope.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "Mermaid Beach: 120 FT @ 010°", "fin_kicks": "13 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p8", "title": "Platform 8", "dep": "38 FT", "viz": "12-18'", "type": "platform", "cx": 954.9, "cy": 624.9, "bx": 998.8, "by": 657.8, "w": 137.6, "h": 22.7, "star": false, "desc": "Deep skills training platform in the central basin. Crucial hub connecting central wrecks to Thunder Bay railroad.", "category": "platform", "hazard": "Low - Deep skills platform", "best_entry": "Stingray City: 150 FT @ 360°", "fin_kicks": "17 kicks", "padi_ndl": "140 min"}, {"id": "p9", "title": "Platform 9", "dep": "30 FT", "viz": "12-18'", "type": "platform", "cx": 1369.8, "cy": 387.8, "bx": 1318.5, "by": 358.5, "w": 137.6, "h": 22.7, "star": false, "desc": "East basin primary training platform. Crossroads connecting Thunder Bay Dock to the Caboose, School Buses, and Bucket Truck.", "category": "platform", "hazard": "Low - East training platform", "best_entry": "Thunder Bay Dock: 150 FT @ 158°", "fin_kicks": "16 kicks", "padi_ndl": "205 min"}, {"id": "nasa_dock", "title": "NASA DOCK (MAIN ENTRY)", "dep": "4-8 FT", "viz": "6-12 FT", "type": "dock", "cx": 105, "cy": 745, "bx": 150, "by": 780, "w": 260, "h": 28, "star": false, "desc": "Main entrance hub, check-in dive shop, air & nitrox fills, covered gear staging tables, hot showers, emergency O2 & AED, gear rinse basins. Primary entry for Circuits 1 & 2.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "crab_key", "title": "CRAB KEY DOCK", "dep": "4-10 FT", "viz": "6-12 FT", "type": "dock", "cx": 320, "cy": 875, "bx": 290, "by": 925, "w": 185, "h": 28, "star": false, "desc": "South bank entry dock with picnic benches, gear staging, and shallow ramp entry directly to Platform 3.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "turtle_bay", "title": "TURTLE BAY DOCK", "dep": "4-12 FT", "viz": "8-14 FT", "type": "dock", "cx": 405, "cy": 860, "bx": 430, "by": 885, "w": 195, "h": 28, "star": false, "desc": "Protected southern dock bay with frequent red-eared slider turtle sightings basking on perimeter logs.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "midtown", "title": "MIDTOWN DOCK", "dep": "4-12 FT", "viz": "8-14 FT", "type": "dock", "cx": 670, "cy": 830, "bx": 645, "by": 875, "w": 185, "h": 28, "star": false, "desc": "Central south shore dock entry. Shortest surface swim access to Fire Truck (240 FT) and Deep Hole (160 FT). Covered shelter.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "phil", "title": "PHIL STATION", "dep": "4-12 FT", "viz": "8-14 FT", "type": "dock", "cx": 765, "cy": 845, "bx": 765, "by": 920, "w": 175, "h": 28, "star": false, "desc": "South shore dock with covered sun canopy and bench seating.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "mermaid", "title": "MERMAID BEACH", "dep": "2-8 FT", "viz": "6-12 FT", "type": "dock", "cx": 820, "cy": 830, "bx": 880, "by": 875, "w": 185, "h": 28, "star": false, "desc": "Gentle sloping natural sand beach entry. Ideal for wading, snorkelers, and gentle shore entries.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "stingray", "title": "STINGRAY CITY", "dep": "10-18 FT", "viz": "8-14 FT", "type": "dock", "cx": 955, "cy": 770, "bx": 990, "by": 825, "w": 185, "h": 28, "star": false, "desc": "South bank shelf dock entry point. Direct access to Platform 8 and central trench.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "dock_thunder", "title": "THUNDER BAY DOCK", "dep": "4-10 FT", "viz": "8-15 FT", "type": "dock", "cx": 1315, "cy": 250, "bx": 1315, "by": 210, "w": 210, "h": 28, "star": false, "desc": "Northeast park entrance hub. Features covered shelter, picnic tables, parking, camping sites, and direct access to Thunder Bay Railroad wrecks.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}];
 const CIRCUITS = [{"id": "c1", "num": "Circuit 1", "title": "Flight Deck & Shallows (Addie-Friendly Warm-Up)", "color": "#10B981", "max_depth": "28 FT", "avg_depth": "22 FT", "est_time": "45 - 52 MIN", "turn_psi": "1,600 PSI", "entry": "NASA Dock (West Entry)", "waypoints": [{"id": "nasa_dock", "name": "NASA Dock", "x": 105, "y": 745, "depth": "4-8 FT"}, {"id": "p1", "name": "Platform 1", "x": 268, "y": 700, "depth": "20 FT"}, {"id": "jet", "name": "Trainer Jet", "x": 155, "y": 788, "depth": "22 FT"}, {"id": "rockets", "name": "Rocket Farm", "x": 200, "y": 730, "depth": "25 FT"}, {"id": "shuttle", "name": "Space Shuttle", "x": 250, "y": 655, "depth": "28 FT"}, {"id": "submarine", "name": "Submarine", "x": 375, "y": 420, "depth": "28 FT"}, {"id": "p2", "name": "Platform 2", "x": 272, "y": 830, "depth": "22 FT"}, {"id": "nasa_dock", "name": "NASA Dock Exit", "x": 105, "y": 745, "depth": "4-8 FT"}], "legs": [{"from": "NASA Dock", "to": "Platform 1", "hdg": "074°", "dist": "145 FT", "kicks": "16 kicks"}, {"from": "Platform 1", "to": "Trainer Jet", "hdg": "218°", "dist": "95 FT", "kicks": "10 kicks"}, {"from": "Trainer Jet", "to": "Rocket Farm", "hdg": "045°", "dist": "70 FT", "kicks": "8 kicks"}, {"from": "Rocket Farm", "to": "Space Shuttle", "hdg": "033°", "dist": "90 FT", "kicks": "10 kicks"}, {"from": "Space Shuttle", "to": "Submarine", "hdg": "028°", "dist": "265 FT", "kicks": "29 kicks"}, {"from": "Submarine", "to": "Platform 2", "hdg": "194°", "dist": "420 FT", "kicks": "46 kicks"}, {"from": "Platform 2", "to": "NASA Dock", "hdg": "300°", "dist": "185 FT", "kicks": "20 kicks"}], "desc": "Perfect first dive of the trip! High ambient natural light, gentle depths comfortably inside PADI NDL, thrilling aircraft and submarine hulls. Excellent photo opportunities with relaxed gas consumption."}, {"id": "c2", "num": "Circuit 2", "title": "C-130 Hercules Expedition (Wreck Trek)", "color": "#06B6D4", "max_depth": "38 FT", "avg_depth": "30 FT", "est_time": "40 - 46 MIN", "turn_psi": "1,600 PSI", "entry": "NASA Dock (West Entry)", "waypoints": [{"id": "nasa_dock", "name": "NASA Dock", "x": 105, "y": 745, "depth": "4-8 FT"}, {"id": "p1", "name": "Platform 1", "x": 268, "y": 700, "depth": "20 FT"}, {"id": "c130", "name": "C-130 Hercules", "x": 315, "y": 535, "depth": "26-38 FT"}, {"id": "short_bus", "name": "Short Bus", "x": 425, "y": 530, "depth": "34 FT"}, {"id": "boat_stick", "name": "Boat on a Stick", "x": 445, "y": 625, "depth": "35 FT"}, {"id": "mammoth", "name": "Mammoth", "x": 310, "y": 615, "depth": "32 FT"}, {"id": "p3", "name": "Platform 3", "x": 325, "y": 778, "depth": "20 FT"}, {"id": "nasa_dock", "name": "NASA Dock Exit", "x": 105, "y": 745, "depth": "4-8 FT"}], "legs": [{"from": "NASA Dock", "to": "Platform 1", "hdg": "074°", "dist": "145 FT", "kicks": "16 kicks"}, {"from": "Platform 1", "to": "C-130 Hercules", "hdg": "016°", "dist": "170 FT", "kicks": "19 kicks"}, {"from": "C-130 Hercules", "to": "Short Bus", "hdg": "087°", "dist": "110 FT", "kicks": "12 kicks"}, {"from": "Short Bus", "to": "Boat on a Stick", "hdg": "168°", "dist": "95 FT", "kicks": "10 kicks"}, {"from": "Boat on a Stick", "to": "Mammoth", "hdg": "265°", "dist": "135 FT", "kicks": "15 kicks"}, {"from": "Mammoth", "to": "Platform 3", "hdg": "175°", "dist": "165 FT", "kicks": "18 kicks"}, {"from": "Platform 3", "to": "NASA Dock", "hdg": "278°", "dist": "220 FT", "kicks": "24 kicks"}], "desc": "The flagship Mammoth Lake tour! Explore the colossal 132' wingspan C-130 Hercules cargo aircraft, open cargo hold, cockpit, 4 engines, followed by vehicles and prehistoric mammoth sculpture."}, {"id": "c3", "num": "Circuit 3", "title": "Tower & Tire Reef (Central Deep Basin)", "color": "#F59E0B", "max_depth": "44 FT (Optional 70' Deep Hole)", "avg_depth": "35 FT", "est_time": "36 - 42 MIN", "turn_psi": "1,700 PSI", "entry": "MidTown Dock or NASA Dock", "waypoints": [{"id": "midtown", "name": "MidTown Dock", "x": 670, "y": 830, "depth": "4-12 FT"}, {"id": "fire_truck", "name": "Fire Truck", "x": 675, "y": 590, "depth": "38 FT"}, {"id": "tower", "name": "Observation Tower", "x": 770, "y": 590, "depth": "40 FT"}, {"id": "tire_reef", "name": "Tire Reef", "x": 845, "y": 415, "depth": "42 FT"}, {"id": "p8", "name": "Platform 8", "x": 955, "y": 625, "depth": "38 FT"}, {"id": "deep_hole", "name": "Deep Hole Rim", "x": 590, "y": 690, "depth": "44-70 FT"}, {"id": "midtown", "name": "MidTown Dock Exit", "x": 670, "y": 830, "depth": "4-12 FT"}], "legs": [{"from": "MidTown Dock", "to": "Fire Truck", "hdg": "001°", "dist": "240 FT", "kicks": "26 kicks"}, {"from": "Fire Truck", "to": "Observation Tower", "hdg": "090°", "dist": "95 FT", "kicks": "10 kicks"}, {"from": "Observation Tower", "to": "Tire Reef", "hdg": "023°", "dist": "190 FT", "kicks": "21 kicks"}, {"from": "Tire Reef", "to": "Platform 8", "hdg": "152°", "dist": "235 FT", "kicks": "26 kicks"}, {"from": "Platform 8", "to": "Deep Hole Rim", "hdg": "259°", "dist": "370 FT", "kicks": "41 kicks"}, {"from": "Deep Hole Rim", "to": "MidTown Dock", "hdg": "150°", "dist": "160 FT", "kicks": "17 kicks"}], "desc": "Highest fish population in the park on Tire Reef! Observation Tower structure rises through the thermocline. Adjacent to the 70 FT Deep Hole cold spring (high-intensity lights mandatory below 50 FT)."}, {"id": "c4", "num": "Circuit 4", "title": "Thunder Bay Railroad & School Buses", "color": "#8B5CF6", "max_depth": "36 FT", "avg_depth": "28 FT", "est_time": "42 - 48 MIN", "turn_psi": "1,600 PSI", "entry": "Thunder Bay Dock (Northeast Entry)", "waypoints": [{"id": "dock_thunder", "name": "Thunder Bay Dock", "x": 1315, "y": 250, "depth": "4-10 FT"}, {"id": "p9", "name": "Platform 9", "x": 1370, "y": 388, "depth": "30 FT"}, {"id": "caboose", "name": "Rail Caboose", "x": 1490, "y": 300, "depth": "32 FT"}, {"id": "school_buses", "name": "School Buses", "x": 1530, "y": 375, "depth": "34 FT"}, {"id": "bucket_truck", "name": "Bucket Truck", "x": 1445, "y": 435, "depth": "32 FT"}, {"id": "trains", "name": "Train Tankers", "x": 1155, "y": 410, "depth": "36 FT"}, {"id": "dock_thunder", "name": "Thunder Bay Exit", "x": 1315, "y": 250, "depth": "4-10 FT"}], "legs": [{"from": "Thunder Bay Dock", "to": "Platform 9", "hdg": "158°", "dist": "150 FT", "kicks": "16 kicks"}, {"from": "Platform 9", "to": "Rail Caboose", "hdg": "054°", "dist": "150 FT", "kicks": "16 kicks"}, {"from": "Rail Caboose", "to": "School Buses", "hdg": "152°", "dist": "85 FT", "kicks": "9 kicks"}, {"from": "School Buses", "to": "Bucket Truck", "hdg": "215°", "dist": "105 FT", "kicks": "11 kicks"}, {"from": "Bucket Truck", "to": "Train Tankers", "hdg": "275°", "dist": "290 FT", "kicks": "32 kicks"}, {"from": "Train Tankers", "to": "Thunder Bay Dock", "hdg": "045°", "dist": "225 FT", "kicks": "25 kicks"}], "desc": "East basin vehicle playground! Swim through open school bus aisles, examine elevated electrical bucket utility boom truck, and tour the vintage red caboose."}];
 const NAV_LEGS = [{"from": [105, 745], "to": [268, 700], "hdg": "074°", "dist": "145'", "kicks": "16k"}, {"from": [268, 700], "to": [155, 788], "hdg": "218°", "dist": "95'", "kicks": "10k"}, {"from": [268, 700], "to": [250, 655], "hdg": "030°", "dist": "45'", "kicks": "5k"}, {"from": [268, 700], "to": [375, 420], "hdg": "025°", "dist": "310'", "kicks": "34k"}, {"from": [375, 420], "to": [315, 535], "hdg": "210°", "dist": "130'", "kicks": "14k"}, {"from": [315, 535], "to": [425, 530], "hdg": "085°", "dist": "110'", "kicks": "12k"}, {"from": [315, 535], "to": [770, 590], "hdg": "098°", "dist": "510'", "kicks": "56k"}, {"from": [770, 590], "to": [590, 690], "hdg": "240°", "dist": "210'", "kicks": "23k"}, {"from": [770, 590], "to": [845, 415], "hdg": "022°", "dist": "205'", "kicks": "22k"}, {"from": [770, 590], "to": [955, 625], "hdg": "105°", "dist": "210'", "kicks": "23k"}, {"from": [955, 625], "to": [1370, 388], "hdg": "060°", "dist": "480'", "kicks": "52k"}, {"from": [1315, 250], "to": [1370, 388], "hdg": "158°", "dist": "155'", "kicks": "17k"}, {"from": [1370, 388], "to": [1490, 300], "hdg": "058°", "dist": "145'", "kicks": "16k"}, {"from": [1370, 388], "to": [1445, 435], "hdg": "155°", "dist": "90'", "kicks": "10k"}, {"from": [1370, 388], "to": [1530, 375], "hdg": "095°", "dist": "175'", "kicks": "19k"}, {"from": [500, 745], "to": [630, 735], "hdg": "095°", "dist": "140'", "kicks": "15k"}, {"from": [630, 735], "to": [845, 710], "hdg": "085°", "dist": "230'", "kicks": "25k"}];
 const SURFACE_SWIMS = [{"from": [105, 745], "to": [315, 535], "label": "SURF SWIM: 062° • 320'"}, {"from": [670, 830], "to": [590, 690], "label": "SURF SWIM: 330° • 160'"}, {"from": [1315, 250], "to": [1490, 300], "label": "SURF SWIM: 108° • 190'"}];
@@ -1462,6 +1715,7 @@ const badgesLayer = document.getElementById('badgesLayer');
 const navLinesLayer = document.getElementById('navLinesLayer');
 const surfaceSwimsLayer = document.getElementById('surfaceSwimsLayer');
 const circuitsLayer = document.getElementById('circuitsLayer');
+const measureLayer = document.getElementById('measureLayer');
 const bathyGroup = document.getElementById('bathyGroup');
 const inspector = document.getElementById('inspector');
 const legendModal = document.getElementById('legendModal');
@@ -1470,6 +1724,11 @@ const circuitCardsContainer = document.getElementById('circuitCardsContainer');
 const waypointCard = document.getElementById('waypointCard');
 const waypointTableContainer = document.getElementById('waypointTableContainer');
 const sidebar = document.getElementById('sidebar');
+const measureHud = document.getElementById('measureHud');
+const measureHudBody = document.getElementById('measureHudBody');
+const btnToolMeasure = document.getElementById('btnToolMeasure');
+const btnCloseMeasure = document.getElementById('btnCloseMeasure');
+const legendSearchBox = document.getElementById('legendSearchBox');
 
 // State
 let currentFilter = 'all';
@@ -1479,9 +1738,13 @@ let showNavLines = true;
 let showSurfaceSwims = true;
 let showBathy = true;
 let badgeMode = 'cards'; // 'cards' or 'pins'
-let currentTheme = 'dark'; // 'dark' or 'light'
+let currentTheme = 'light'; // 'dark' or 'light' - Default: Light Mode
 let userToggledBadgeMode = false;
 let mobileSheetState = 'minimized'; // 'minimized', 'half', 'full'
+
+// Ruler & Measurement Tool State (Improvement 3)
+let isMeasureActive = false;
+let measurePoints = [];
 
 // ViewBox State (Lake coordinate space 1800 x 1200)
 let viewBox = { x: 0, y: 0, w: 1800, h: 1200 };
@@ -1563,6 +1826,22 @@ function updateBadgeZoomScales() {
     const ty = parseFloat(tagG.getAttribute('data-y'));
     if (!isNaN(tx) && !isNaN(ty)) {
       tagG.setAttribute('transform', `translate(${tx}, ${ty}) scale(${k}) translate(${-tx}, ${-ty})`);
+    }
+  });
+
+  // Keep measurement ruler tags & pins constant readable size on screen
+  document.querySelectorAll('.measure-tag').forEach(tagG => {
+    const tx = parseFloat(tagG.getAttribute('data-x'));
+    const ty = parseFloat(tagG.getAttribute('data-y'));
+    if (!isNaN(tx) && !isNaN(ty)) {
+      tagG.setAttribute('transform', `translate(${tx}, ${ty}) scale(${k}) translate(${-tx}, ${-ty})`);
+    }
+  });
+  document.querySelectorAll('.measure-pin').forEach(pinG => {
+    const px = parseFloat(pinG.getAttribute('data-x'));
+    const py = parseFloat(pinG.getAttribute('data-y'));
+    if (!isNaN(px) && !isNaN(py)) {
+      pinG.setAttribute('transform', `translate(${px}, ${py}) scale(${pinScale}) translate(${-px}, ${-py})`);
     }
   });
 }
@@ -1695,20 +1974,27 @@ function renderBadges() {
 
     g.appendChild(targetG);
 
-    // Solved Badge Card
-    const rx = b.bx - b.w / 2;
-    const ry = b.by - b.h / 2;
+    // Dynamic Card Dimensions: guaranteed generous width so text NEVER falls outside the card
+    let cardW = b.w || 160;
+    let cardH = b.h || 28;
 
     const cardG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     cardG.setAttribute('class', 'badge-card');
 
     if (b.category === 'platform') {
       // Solid Green Platform Pill
+      const platText = `■ ${b.title} (${b.dep})`;
+      const neededW = Math.ceil(platText.length * 8.8 + 36);
+      cardW = Math.max(cardW, neededW);
+      cardH = Math.max(cardH, 28);
+      const rx = b.bx - cardW / 2;
+      const ry = b.by - cardH / 2;
+
       const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       rect.setAttribute('x', rx);
       rect.setAttribute('y', ry);
-      rect.setAttribute('width', b.w);
-      rect.setAttribute('height', b.h);
+      rect.setAttribute('width', cardW);
+      rect.setAttribute('height', cardH);
       rect.setAttribute('rx', 6);
       rect.setAttribute('fill', '#047857');
       rect.setAttribute('stroke', '#0F172A');
@@ -1723,15 +2009,22 @@ function renderBadges() {
       txt.setAttribute('font-size', '13.5px');
       txt.setAttribute('font-weight', '800');
       txt.setAttribute('text-anchor', 'middle');
-      txt.textContent = `■ ${b.title} (${b.dep})`;
+      txt.textContent = platText;
       cardG.appendChild(txt);
     } else if (b.category === 'dock') {
       // Solid Orange Dock Pill
+      const dockText = `⚓ ${b.title}`;
+      const neededW = Math.ceil(dockText.length * 9.2 + 38);
+      cardW = Math.max(cardW, neededW);
+      cardH = Math.max(cardH, 28);
+      const rx = b.bx - cardW / 2;
+      const ry = b.by - cardH / 2;
+
       const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       rect.setAttribute('x', rx);
       rect.setAttribute('y', ry);
-      rect.setAttribute('width', b.w);
-      rect.setAttribute('height', b.h);
+      rect.setAttribute('width', cardW);
+      rect.setAttribute('height', cardH);
       rect.setAttribute('rx', 6);
       rect.setAttribute('fill', '#C2410C');
       rect.setAttribute('stroke', '#0F172A');
@@ -1746,15 +2039,23 @@ function renderBadges() {
       txt.setAttribute('font-size', '13.5px');
       txt.setAttribute('font-weight', '800');
       txt.setAttribute('text-anchor', 'middle');
-      txt.textContent = `⚓ ${b.title}`;
+      txt.textContent = dockText;
       cardG.appendChild(txt);
     } else {
       // High-Contrast White Card Badge
+      const metaStr = `DEPTH: ${b.dep}  •  VIZ: ${b.viz}`;
+      const titleNeeded = 36 + (b.title.length * 9.0) + 18;
+      const metaNeeded = 16 + (metaStr.length * 7.5) + 18;
+      cardW = Math.max(cardW, Math.ceil(Math.max(titleNeeded, metaNeeded)));
+      cardH = Math.max(cardH, 46);
+      const rx = b.bx - cardW / 2;
+      const ry = b.by - cardH / 2;
+
       const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       rect.setAttribute('x', rx);
       rect.setAttribute('y', ry);
-      rect.setAttribute('width', b.w);
-      rect.setAttribute('height', b.h);
+      rect.setAttribute('width', cardW);
+      rect.setAttribute('height', cardH);
       rect.setAttribute('rx', 6);
       rect.setAttribute('fill', '#FFFFFF');
       rect.setAttribute('stroke', '#0F172A');
@@ -1764,14 +2065,14 @@ function renderBadges() {
 
       // Left Accent Strip
       const stripe = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      stripe.setAttribute('d', `M ${rx+4} ${ry} L ${rx+8} ${ry} L ${rx+8} ${ry+b.h} L ${rx+4} ${ry+b.h} A 4 4 0 0 1 ${rx} ${ry+b.h-4} L ${rx} ${ry+4} A 4 4 0 0 1 ${rx+4} ${ry} Z`);
+      stripe.setAttribute('d', `M ${rx+4} ${ry} L ${rx+8} ${ry} L ${rx+8} ${ry+cardH} L ${rx+4} ${ry+cardH} A 4 4 0 0 1 ${rx} ${ry+cardH-4} L ${rx} ${ry+4} A 4 4 0 0 1 ${rx+4} ${ry} Z`);
       stripe.setAttribute('fill', accent);
       cardG.appendChild(stripe);
 
       // Icon & Title
       const iconTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       iconTxt.setAttribute('x', rx + 14);
-      iconTxt.setAttribute('y', ry + 17);
+      iconTxt.setAttribute('y', ry + 18);
       iconTxt.setAttribute('fill', accent);
       iconTxt.setAttribute('font-size', '15px');
       iconTxt.setAttribute('font-weight', '900');
@@ -1780,7 +2081,7 @@ function renderBadges() {
 
       const titleTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       titleTxt.setAttribute('x', rx + 33);
-      titleTxt.setAttribute('y', ry + 17);
+      titleTxt.setAttribute('y', ry + 18);
       titleTxt.setAttribute('fill', '#070D18');
       titleTxt.setAttribute('font-size', '13.5px');
       titleTxt.setAttribute('font-weight', '800');
@@ -1790,11 +2091,11 @@ function renderBadges() {
       // Metadata line (Depth & Viz)
       const metaTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       metaTxt.setAttribute('x', rx + 14);
-      metaTxt.setAttribute('y', ry + 32);
+      metaTxt.setAttribute('y', ry + 34);
       metaTxt.setAttribute('fill', '#1E3A8A');
       metaTxt.setAttribute('font-size', '11.5px');
       metaTxt.setAttribute('font-weight', '800');
-      metaTxt.textContent = `DEPTH: ${b.dep}  •  VIZ: ${b.viz}`;
+      metaTxt.textContent = metaStr;
       cardG.appendChild(metaTxt);
     }
 
@@ -1802,6 +2103,7 @@ function renderBadges() {
 
     // Interactions
     g.addEventListener('click', (e) => {
+      if (isMeasureActive) return; // Allow ruler clicks
       e.stopPropagation();
       openInspector(b.id);
     });
@@ -2124,6 +2426,13 @@ document.getElementById('btnFocusPin').addEventListener('click', () => {
   animateViewBox(targetX, targetY, targetW, targetH);
 });
 
+// Radar Beacon Highlight for Map Pins (Improvement 4)
+function setPinHighlight(id, active) {
+  const badgeEl = document.getElementById('badge-' + id);
+  if (!badgeEl) return;
+  badgeEl.classList.toggle('beacon-hover', active);
+}
+
 // 5. Populate Directory List
 function populateList() {
   itemsList.innerHTML = '';
@@ -2156,6 +2465,10 @@ function populateList() {
         <span style="font-size:0.82rem; font-weight:700; color:var(--cyan);">${item.depth}</span>
       </div>
     `;
+
+    // Directory hover highlight radar beacon on map pin (Improvement 4)
+    div.addEventListener('mouseenter', () => setPinHighlight(item.id, true));
+    div.addEventListener('mouseleave', () => setPinHighlight(item.id, false));
 
     div.addEventListener('click', () => {
       openInspector(item.id);
@@ -2211,13 +2524,31 @@ function populateCircuitCards() {
   });
 }
 
-// Interactive Map Legend Logic
+// Interactive Map Legend Logic with Real-time Search Filter (Improvement 2)
 function renderLegendModal() {
   const container = document.getElementById('legendCategories');
   if (!container) return;
   container.innerHTML = '';
 
+  const q = (legendSearchBox ? legendSearchBox.value : '').trim().toLowerCase();
+  let totalMatches = 0;
+
   LEGEND_GROUPS.forEach(grp => {
+    // Real-time filter inside legend modal
+    const matchingItems = grp.items.filter(itemId => {
+      if (!q) return true;
+      const item = CATALOG.find(it => it.id === itemId) || SOLVED_BADGES.find(b => b.id === itemId);
+      if (!item) return false;
+      const name = (item.name || item.title || '').toLowerCase();
+      const desc = (item.desc || '').toLowerCase();
+      const dep = (item.depth || item.dep || '').toLowerCase();
+      const cat = (item.category || '').toLowerCase();
+      return name.includes(q) || desc.includes(q) || dep.includes(q) || cat.includes(q);
+    });
+
+    if (matchingItems.length === 0) return;
+    totalMatches += matchingItems.length;
+
     const groupEl = document.createElement('div');
     groupEl.className = 'legend-group';
 
@@ -2226,7 +2557,7 @@ function renderLegendModal() {
     header.innerHTML = `
       <div class="legend-group-title">
         <span>${grp.icon}</span>
-        <span>${grp.name} (${grp.items.length})</span>
+        <span>${grp.name} (${matchingItems.length})</span>
       </div>
       <span style="font-size:0.75rem; color:var(--cyan); font-weight:600;">Filter Map &rarr;</span>
     `;
@@ -2245,7 +2576,7 @@ function renderLegendModal() {
     const grid = document.createElement('div');
     grid.className = 'legend-items-grid';
 
-    grp.items.forEach(itemId => {
+    matchingItems.forEach(itemId => {
       const item = CATALOG.find(it => it.id === itemId) || SOLVED_BADGES.find(b => b.id === itemId);
       if (!item) return;
 
@@ -2263,6 +2594,10 @@ function renderLegendModal() {
         </div>
       `;
 
+      // Hover beacon highlight on map pin (Improvement 4)
+      chip.addEventListener('mouseenter', () => setPinHighlight(itemId, true));
+      chip.addEventListener('mouseleave', () => setPinHighlight(itemId, false));
+
       chip.addEventListener('click', (e) => {
         e.stopPropagation();
         closeLegendModal();
@@ -2275,11 +2610,23 @@ function renderLegendModal() {
     groupEl.appendChild(grid);
     container.appendChild(groupEl);
   });
+
+  if (totalMatches === 0 && q) {
+    container.innerHTML = `
+      <div style="padding:30px 16px; text-align:center; color:var(--text-muted); font-size:0.88rem;">
+        🔍 No underwater features or targets match "<strong>${q}</strong>". Try another keyword.
+      </div>
+    `;
+  }
 }
 
 function openLegendModal() {
+  if (legendSearchBox) legendSearchBox.value = '';
   renderLegendModal();
   if (legendModal) legendModal.classList.add('show');
+  if (legendSearchBox && !document.body.classList.contains('env-mobile')) {
+    setTimeout(() => legendSearchBox.focus(), 150);
+  }
 }
 
 function closeLegendModal() {
@@ -2405,24 +2752,259 @@ function animateViewBox(targetX, targetY, targetW, targetH) {
   requestAnimationFrame(step);
 }
 
+// =========================================================================
+// 9. Interactive Compass & Distance Ruler Engine (Improvement 3)
+// =========================================================================
+function toggleMeasureTool() {
+  isMeasureActive = !isMeasureActive;
+  btnToolMeasure.classList.toggle('active', isMeasureActive);
+  if (isMeasureActive) {
+    measureHud.style.display = 'block';
+    measurePoints = [];
+    svg.style.cursor = 'crosshair';
+    updateMeasureHud();
+    renderMeasureGraphic();
+  } else {
+    clearMeasurement();
+  }
+}
+
+function clearMeasurement() {
+  isMeasureActive = false;
+  btnToolMeasure.classList.remove('active');
+  measureHud.style.display = 'none';
+  measurePoints = [];
+  svg.style.cursor = '';
+  renderMeasureGraphic();
+}
+
+function getSvgCoords(evt) {
+  const pt = svg.createSVGPoint();
+  pt.x = evt.clientX;
+  pt.y = evt.clientY;
+  const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+  return { x: Math.round(svgP.x), y: Math.round(svgP.y) };
+}
+
+function calculateHeadingAndDistance(p1, p2) {
+  const dx = p2.x - p1.x;
+  const dy = p2.y - p1.y;
+  const dist = Math.round(Math.hypot(dx, dy));
+  // In SVG coordinates, y increases southward, so North is -dy
+  const rad = Math.atan2(dx, -dy);
+  const deg = Math.round((rad * 180 / Math.PI + 360) % 360);
+  const reciprocal = (deg + 180) % 360;
+  const kicks = Math.round(dist / 9.2);
+  return { dist, heading: deg, reciprocal, kicks };
+}
+
+function updateMeasureHud(previewPt = null) {
+  if (!measureHudBody) return;
+  if (measurePoints.length === 0) {
+    measureHudBody.innerHTML = `
+      <p style="font-size:0.78rem; color:var(--text-muted); margin:0;">
+        Click anywhere on the lake to place <strong>Point A</strong>.
+      </p>
+    `;
+  } else if (measurePoints.length === 1 && !previewPt) {
+    const p1 = measurePoints[0];
+    measureHudBody.innerHTML = `
+      <p style="font-size:0.78rem; color:var(--cyan); margin:0 0 4px 0; font-weight:700;">
+        ● Point A set at (${p1.x}, ${p1.y})
+      </p>
+      <p style="font-size:0.74rem; color:var(--text-muted); margin:0;">
+        Now click second point for heading, distance, and fin kicks.
+      </p>
+    `;
+  } else {
+    const p1 = measurePoints[0];
+    const p2 = previewPt || measurePoints[1];
+    const m = calculateHeadingAndDistance(p1, p2);
+    const hdgStr = String(m.heading).padStart(3, '0');
+    const recStr = String(m.reciprocal).padStart(3, '0');
+    const isLive = previewPt ? '<span style="font-size:0.7rem; color:var(--cyan); font-weight:700;">(LIVE PREVIEW)</span>' : '';
+
+    measureHudBody.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <span style="font-size:0.74rem; color:var(--text-muted);">Points: (${p1.x},${p1.y}) &rarr; (${p2.x},${p2.y})</span>
+        ${isLive}
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+        <div style="background:rgba(2, 132, 199, 0.08); padding:6px 8px; border-radius:6px; border:1px solid var(--border);">
+          <div style="font-size:0.65rem; color:var(--text-muted); font-weight:700;">DISTANCE</div>
+          <div style="font-size:1.1rem; font-weight:800; color:var(--cyan);">${m.dist} FT</div>
+        </div>
+        <div style="background:rgba(16, 185, 129, 0.08); padding:6px 8px; border-radius:6px; border:1px solid var(--border);">
+          <div style="font-size:0.65rem; color:var(--text-muted); font-weight:700;">EST. FIN KICKS</div>
+          <div style="font-size:1.1rem; font-weight:800; color:var(--green);">${m.kicks} kicks</div>
+        </div>
+        <div style="background:rgba(245, 158, 11, 0.08); padding:6px 8px; border-radius:6px; border:1px solid var(--border);">
+          <div style="font-size:0.65rem; color:var(--text-muted); font-weight:700;">HEADING (A &rarr; B)</div>
+          <div style="font-size:1.0rem; font-weight:800; color:#F59E0B;">${hdgStr}°</div>
+        </div>
+        <div style="background:rgba(139, 92, 246, 0.08); padding:6px 8px; border-radius:6px; border:1px solid var(--border);">
+          <div style="font-size:0.65rem; color:var(--text-muted); font-weight:700;">RECIPROCAL (B &rarr; A)</div>
+          <div style="font-size:1.0rem; font-weight:800; color:#8B5CF6;">${recStr}°</div>
+        </div>
+      </div>
+      ${measurePoints.length === 2 ? '<div style="margin-top:8px; font-size:0.72rem; color:var(--text-muted); text-align:right;">Click map again to start new measure</div>' : ''}
+    `;
+  }
+}
+
+function renderMeasureGraphic(previewPt = null) {
+  if (!measureLayer) return;
+  measureLayer.innerHTML = '';
+  if (measurePoints.length === 0) return;
+
+  const p1 = measurePoints[0];
+
+  // Point A Pin
+  const g1 = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g1.setAttribute('class', 'measure-pin');
+  g1.setAttribute('data-x', p1.x);
+  g1.setAttribute('data-y', p1.y);
+
+  const ring1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  ring1.setAttribute('cx', p1.x);
+  ring1.setAttribute('cy', p1.y);
+  ring1.setAttribute('r', 12);
+  ring1.setAttribute('fill', 'none');
+  ring1.setAttribute('stroke', '#0284C7');
+  ring1.setAttribute('stroke-width', '2.5');
+  ring1.setAttribute('stroke-dasharray', '4,2');
+  g1.appendChild(ring1);
+
+  const dot1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  dot1.setAttribute('cx', p1.x);
+  dot1.setAttribute('cy', p1.y);
+  dot1.setAttribute('r', 5);
+  dot1.setAttribute('fill', '#0284C7');
+  g1.appendChild(dot1);
+  measureLayer.appendChild(g1);
+
+  const p2 = previewPt || (measurePoints.length === 2 ? measurePoints[1] : null);
+  if (!p2) return;
+
+  // Measuring Line
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', p1.x);
+  line.setAttribute('y1', p1.y);
+  line.setAttribute('x2', p2.x);
+  line.setAttribute('y2', p2.y);
+  line.setAttribute('stroke', previewPt ? '#0284C7' : '#F59E0B');
+  line.setAttribute('stroke-width', '3');
+  line.setAttribute('stroke-dasharray', previewPt ? '6,4' : 'none');
+  measureLayer.appendChild(line);
+
+  // Point B Pin
+  const g2 = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g2.setAttribute('class', 'measure-pin');
+  g2.setAttribute('data-x', p2.x);
+  g2.setAttribute('data-y', p2.y);
+
+  const ring2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  ring2.setAttribute('cx', p2.x);
+  ring2.setAttribute('cy', p2.y);
+  ring2.setAttribute('r', 12);
+  ring2.setAttribute('fill', 'none');
+  ring2.setAttribute('stroke', '#F59E0B');
+  ring2.setAttribute('stroke-width', '2.5');
+  g2.appendChild(ring2);
+
+  const dot2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  dot2.setAttribute('cx', p2.x);
+  dot2.setAttribute('cy', p2.y);
+  dot2.setAttribute('r', 5);
+  dot2.setAttribute('fill', '#F59E0B');
+  g2.appendChild(dot2);
+  measureLayer.appendChild(g2);
+
+  // Midpoint HUD Badge
+  const mx = (p1.x + p2.x) / 2;
+  const my = (p1.y + p2.y) / 2;
+  const m = calculateHeadingAndDistance(p1, p2);
+  const tagText = `${m.dist} FT @ ${String(m.heading).padStart(3, '0')}° (${m.kicks} kicks)`;
+
+  const tagG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  tagG.setAttribute('class', 'measure-tag');
+  tagG.setAttribute('data-x', mx);
+  tagG.setAttribute('data-y', my);
+
+  const tagRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  const tw = Math.ceil(tagText.length * 8.0 + 24);
+  tagRect.setAttribute('x', mx - tw / 2);
+  tagRect.setAttribute('y', my - 13);
+  tagRect.setAttribute('width', tw);
+  tagRect.setAttribute('height', 26);
+  tagRect.setAttribute('rx', 6);
+  tagRect.setAttribute('fill', '#0F172A');
+  tagRect.setAttribute('stroke', '#F59E0B');
+  tagRect.setAttribute('stroke-width', '2');
+  tagG.appendChild(tagRect);
+
+  const tagTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  tagTxt.setAttribute('x', mx);
+  tagTxt.setAttribute('y', my + 4);
+  tagTxt.setAttribute('text-anchor', 'middle');
+  tagTxt.setAttribute('fill', '#FFFFFF');
+  tagTxt.setAttribute('font-size', '11px');
+  tagTxt.setAttribute('font-weight', '800');
+  tagTxt.textContent = tagText;
+  tagG.appendChild(tagTxt);
+
+  measureLayer.appendChild(tagG);
+  updateBadgeZoomScales();
+}
+
+let isDraggingMap = false;
+let dragStartX = 0;
+let dragStartY = 0;
+
 svg.addEventListener('mousedown', (e) => {
-  if (e.target.closest('.badge-g')) return;
+  if (e.target.closest('.badge-g') && !isMeasureActive) return;
   isPanning = true;
+  isDraggingMap = false;
+  dragStartX = e.clientX;
+  dragStartY = e.clientY;
   startPoint = { x: e.clientX, y: e.clientY };
 });
 
 window.addEventListener('mousemove', (e) => {
-  if (!isPanning) return;
-  const dx = (e.clientX - startPoint.x) * (viewBox.w / svg.clientWidth);
-  const dy = (e.clientY - startPoint.y) * (viewBox.h / svg.clientHeight);
-  viewBox.x = Math.max(-300, Math.min(1800, viewBox.x - dx));
-  viewBox.y = Math.max(-200, Math.min(1200, viewBox.y - dy));
-  startPoint = { x: e.clientX, y: e.clientY };
-  updateSvgViewBox();
+  if (isPanning) {
+    const dist = Math.hypot(e.clientX - dragStartX, e.clientY - dragStartY);
+    if (dist > 5) isDraggingMap = true;
+    const dx = (e.clientX - startPoint.x) * (viewBox.w / svg.clientWidth);
+    const dy = (e.clientY - startPoint.y) * (viewBox.h / svg.clientHeight);
+    viewBox.x = Math.max(-300, Math.min(1800, viewBox.x - dx));
+    viewBox.y = Math.max(-200, Math.min(1200, viewBox.y - dy));
+    startPoint = { x: e.clientX, y: e.clientY };
+    updateSvgViewBox();
+  } else if (isMeasureActive && measurePoints.length === 1) {
+    const pt = getSvgCoords(e);
+    updateMeasureHud(pt);
+    renderMeasureGraphic(pt);
+  }
 });
 
 window.addEventListener('mouseup', () => {
   isPanning = false;
+});
+
+svg.addEventListener('click', (e) => {
+  if (isDraggingMap) return;
+  if (isMeasureActive) {
+    const pt = getSvgCoords(e);
+    if (measurePoints.length === 0) {
+      measurePoints.push(pt);
+    } else if (measurePoints.length === 1) {
+      measurePoints.push(pt);
+    } else {
+      measurePoints = [pt];
+    }
+    updateMeasureHud();
+    renderMeasureGraphic();
+  }
 });
 
 // Scroll wheel zoom centered at cursor
@@ -2554,20 +3136,27 @@ document.getElementById('btnBadgeMode').addEventListener('click', (e) => {
   updateBadgeZoomScales();
 });
 
-// Theme Toggle (Dark vs Light)
+// Theme Toggle (Light vs Dark - Default: Light)
 document.getElementById('btnTheme').addEventListener('click', (e) => {
-  if (currentTheme === 'dark') {
-    currentTheme = 'light';
-    document.body.classList.remove('theme-dark');
-    document.body.classList.add('theme-light');
-    e.currentTarget.textContent = 'Theme: Light';
-  } else {
+  if (currentTheme === 'light') {
     currentTheme = 'dark';
     document.body.classList.remove('theme-light');
     document.body.classList.add('theme-dark');
     e.currentTarget.textContent = 'Theme: Dark';
+  } else {
+    currentTheme = 'light';
+    document.body.classList.remove('theme-dark');
+    document.body.classList.add('theme-light');
+    e.currentTarget.textContent = 'Theme: Light';
   }
 });
+
+// Measurement Ruler Tool Listeners (Improvement 3)
+if (btnToolMeasure) btnToolMeasure.addEventListener('click', toggleMeasureTool);
+if (btnCloseMeasure) btnCloseMeasure.addEventListener('click', clearMeasurement);
+
+// Legend Search Box Listener (Improvement 2)
+if (legendSearchBox) legendSearchBox.addEventListener('input', renderLegendModal);
 
 // Print Slate
 document.getElementById('btnPrint').addEventListener('click', () => {
