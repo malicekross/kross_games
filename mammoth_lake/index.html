@@ -1,0 +1,2309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>Mammoth Lake Scuba Park — Master Hydrographic Dive Planner</title>
+<style>
+  :root {
+    --bg-dark: #070D18;
+    --panel-bg: #0B1526;
+    --card-bg: #101E34;
+    --border: #1E3452;
+    --text-white: #FFFFFF;
+    --text-muted: #94A3B8;
+    --text-navy: #1E3A8A;
+    --cyan: #38BDF8;
+    --cyan-glow: #00f3ff;
+    --gold: #D97706;
+    --green: #10B981;
+    --orange: #EA580C;
+    --red: #EF4444;
+    --purple: #8B5CF6;
+    --charcoal: #0F172A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Top Master Header */
+  header {
+    background: linear-gradient(180deg, #0F1D33 0%, #0A1424 100%);
+    border-bottom: 2px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    z-index: 100;
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .btn-kross {
+    background: rgba(0, 243, 255, 0.12);
+    color: var(--cyan-glow);
+    border: 1px solid var(--cyan-glow);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s;
+    text-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
+  }
+  .btn-kross:hover {
+    background: var(--cyan-glow);
+    color: #070D18;
+    box-shadow: 0 0 14px rgba(0, 243, 255, 0.6);
+  }
+  .header-titles h1 {
+    font-size: 1.22rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-white);
+  }
+  .badge-team {
+    background: #172E4D;
+    color: #FBBF24;
+    border: 1px solid #F59E0B;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+  .header-titles p {
+    color: var(--cyan);
+    font-size: 0.76rem;
+    margin-top: 2px;
+  }
+  .header-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .btn {
+    background: #152742;
+    color: var(--text-white);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    user-select: none;
+    touch-action: manipulation;
+  }
+  .btn:hover {
+    background: #1E375C;
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+  .btn.active {
+    background: var(--cyan);
+    color: #070D18;
+    border-color: var(--cyan);
+    font-weight: 700;
+  }
+
+  /* Main Workspace Layout */
+  .app-container {
+    display: grid;
+    grid-template-columns: 1fr 410px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Map Viewport Area */
+  .map-wrapper {
+    position: relative;
+    background: #060B14;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    touch-action: none;
+  }
+
+  /* Circuit Selector Quick Bar */
+  .circuit-bar {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    z-index: 50;
+    background: rgba(11, 21, 38, 0.94);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 5px 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    max-width: calc(100% - 28px);
+    overflow-x: auto;
+  }
+  .circuit-bar-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 2px;
+    white-space: nowrap;
+  }
+  .c-pill {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    user-select: none;
+    white-space: nowrap;
+    touch-action: manipulation;
+  }
+  .c-pill.c1 { background: rgba(16, 185, 129, 0.15); color: #34D399; border-color: rgba(16, 185, 129, 0.4); }
+  .c-pill.c2 { background: rgba(6, 182, 212, 0.15); color: #22D3EE; border-color: rgba(6, 182, 212, 0.4); }
+  .c-pill.c3 { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border-color: rgba(245, 158, 11, 0.4); }
+  .c-pill.c4 { background: rgba(139, 92, 246, 0.15); color: #A78BFA; border-color: rgba(139, 92, 246, 0.4); }
+  .c-pill.active, .c-pill:hover {
+    filter: brightness(1.25);
+    box-shadow: 0 0 10px currentColor;
+  }
+
+  /* Map Filter Toolbar */
+  .map-toolbar {
+    position: absolute;
+    top: 12px;
+    left: 14px;
+    z-index: 50;
+    background: rgba(11, 21, 38, 0.94);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 5px 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    max-width: calc(100% - 28px);
+  }
+  .tb-btn {
+    background: #101E34;
+    color: var(--text-white);
+    border: 1px solid var(--border);
+    padding: 5px 9px;
+    border-radius: 5px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    touch-action: manipulation;
+  }
+  .tb-btn:hover {
+    background: #172E4D;
+    color: var(--cyan);
+  }
+  .tb-btn.active {
+    background: var(--cyan);
+    color: #070D18;
+    border-color: var(--cyan);
+    font-weight: 700;
+  }
+
+  /* Zoom Controls */
+  .zoom-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 18px;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .zoom-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(11, 21, 38, 0.92);
+    border: 1px solid var(--border);
+    color: var(--text-white);
+    border-radius: 8px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transition: all 0.15s;
+    touch-action: manipulation;
+  }
+  .zoom-btn:hover {
+    background: var(--cyan);
+    color: #070D18;
+  }
+
+  /* SVG Canvas Viewport */
+  #svgContainer {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+    touch-action: none;
+  }
+  #svgContainer:active {
+    cursor: grabbing;
+  }
+  #diveMapSvg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* SVG Theme Styles */
+  .theme-dark .land-bg { fill: #080E18; }
+  .theme-dark .grid-line { stroke: #142236; }
+  .theme-dark .road-outer { stroke: #2A3B52; }
+  .theme-dark .road-inner { stroke: #475569; }
+  .theme-dark .water-0-10 { fill: #0D223B; stroke: #1E3A8A; }
+  .theme-dark .water-10-20 { fill: #123356; stroke: #38BDF8; }
+  .theme-dark .water-20-42 { fill: #184573; stroke: #0284C7; }
+  .theme-dark .water-42-55 { fill: #143962; stroke: #0369A1; }
+  .theme-dark .water-55-70 { fill: #091326; stroke: #8B5CF6; }
+  .theme-dark .shore-outline { stroke: #38BDF8; }
+
+  .theme-light .land-bg { fill: #EEF2F6; }
+  .theme-light .grid-line { stroke: #D7E1EB; }
+  .theme-light .road-outer { stroke: #CCD6E0; }
+  .theme-light .road-inner { stroke: #94A3B8; }
+  .theme-light .water-0-10 { fill: #E0F2FE; stroke: #BAE6FD; }
+  .theme-light .water-10-20 { fill: #BAE6FD; stroke: #7DD3FC; }
+  .theme-light .water-20-42 { fill: #7DD3FC; stroke: #38BDF8; }
+  .theme-light .water-42-55 { fill: #0284C7; stroke: #0369A1; }
+  .theme-light .water-55-70 { fill: #143C82; stroke: #8B5CF6; }
+  .theme-light .shore-outline { stroke: #0F2942; }
+
+  /* SVG Badges & Pins */
+  .badge-g {
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.2s ease;
+  }
+  .badge-g:hover {
+    filter: brightness(1.1);
+  }
+  .badge-g:hover .leader-line {
+    stroke: var(--cyan);
+    stroke-width: 2.5;
+  }
+  .badge-g:hover .target-outer {
+    stroke: var(--cyan);
+    stroke-width: 3;
+  }
+  .badge-g.dimmed {
+    opacity: 0.18 !important;
+  }
+  .badge-g.highlighted {
+    opacity: 1 !important;
+  }
+  .badge-g.highlighted rect {
+    stroke: var(--cyan);
+    stroke-width: 2.5;
+  }
+
+  /* Mode Compact Pins vs Full Cards */
+  .mode-pins .badge-card { display: none; }
+  .mode-pins .leader-line { display: none; }
+  .mode-pins .target-pin { display: block; }
+  .mode-pins .target-outer { r: 8px; stroke-width: 2px; }
+  .mode-cards .target-pin { display: block; }
+  .mode-cards .badge-card { display: block; }
+  .mode-cards .leader-line { display: block; }
+
+  /* Circuit Polylines */
+  .circuit-path {
+    stroke-dasharray: 12, 6;
+    animation: dashPulse 25s linear infinite;
+  }
+  @keyframes dashPulse {
+    to { stroke-dashoffset: -1000; }
+  }
+
+  /* Floating Attraction Inspector */
+  .inspector {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 340px;
+    max-width: calc(100% - 40px);
+    background: rgba(16, 30, 52, 0.96);
+    backdrop-filter: blur(12px);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    z-index: 80;
+    display: none;
+    animation: fadeIn 0.2s ease-out;
+  }
+  .inspector.show { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .inspector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .inspector-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-white);
+  }
+  .inspector-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+    touch-action: manipulation;
+  }
+  .inspector-close:hover { color: var(--text-white); }
+  .inspector-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    background: #0B1526;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+  }
+  .inspector-desc {
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: #CBD5E1;
+    margin-bottom: 10px;
+  }
+  .inspector-hazard {
+    font-size: 0.75rem;
+    color: #F87171;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 6px 8px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  .inspector-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  /* Sidebar Area */
+  .sidebar {
+    background: var(--panel-bg);
+    border-left: 2px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: #080F1D;
+    flex-shrink: 0;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 12px 6px;
+    text-align: center;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    touch-action: manipulation;
+  }
+  .tab-btn.active {
+    color: var(--cyan);
+    border-bottom-color: var(--cyan);
+    background: rgba(56, 189, 248, 0.06);
+  }
+  .tab-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-pane { display: none; flex-direction: column; gap: 12px; }
+  .tab-pane.active { display: flex; }
+
+  /* Cards */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  }
+  .card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card p {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--text-muted);
+  }
+
+  /* Circuit Cards in Tab 1 */
+  .circuit-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    touch-action: manipulation;
+  }
+  .circuit-card:hover {
+    border-color: var(--cyan);
+    background: #14243E;
+  }
+  .circuit-card.active {
+    border-width: 2px;
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
+  }
+
+  /* Waypoint Table */
+  .waypoint-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 0.74rem;
+  }
+  .waypoint-table th {
+    background: #0B1526;
+    color: var(--cyan);
+    text-align: left;
+    padding: 5px 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .waypoint-table td {
+    padding: 5px 6px;
+    border-bottom: 1px solid rgba(30, 52, 82, 0.4);
+    color: #E2E8F0;
+  }
+  .waypoint-table tr:hover td {
+    background: rgba(56, 189, 248, 0.08);
+  }
+
+  /* Gas Calculator */
+  .calc-group {
+    margin-bottom: 12px;
+  }
+  .calc-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #CBD5E1;
+  }
+  .calc-slider {
+    width: 100%;
+    height: 8px;
+    background: #1A304F;
+    border-radius: 4px;
+    outline: none;
+    -webkit-appearance: none;
+    touch-action: manipulation;
+  }
+  .calc-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--cyan);
+    cursor: pointer;
+    box-shadow: 0 0 8px var(--cyan);
+  }
+  .calc-result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .metric-card {
+    background: #0A1424;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px;
+    text-align: center;
+  }
+  .metric-val {
+    font-size: 1.15rem;
+    font-weight: 800;
+  }
+  .metric-lbl {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* Directory List */
+  .search-box {
+    width: 100%;
+    background: #080F1D;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: var(--text-white);
+    font-size: 0.82rem;
+    margin-bottom: 10px;
+    outline: none;
+  }
+  .search-box:focus {
+    border-color: var(--cyan);
+  }
+  .item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 520px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .dir-item {
+    background: #0D1B2E;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    touch-action: manipulation;
+  }
+  .dir-item:hover, .dir-item.selected {
+    border-color: var(--cyan);
+    background: #142845;
+  }
+
+  /* =========================================================================
+     MOBILE & RESPONSIVE UX OPTIMIZATIONS (Section 508 & Handheld Touch Support)
+     ========================================================================= */
+  .mobile-drag-handle, .mobile-nav-bar {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    header {
+      padding: 8px 10px;
+    }
+    .header-titles h1 {
+      font-size: 1.0rem;
+    }
+    .header-titles p {
+      display: none;
+    }
+    .btn-kross {
+      padding: 4px 8px;
+      font-size: 0.72rem;
+    }
+    .header-actions .btn {
+      padding: 4px 8px;
+      font-size: 0.74rem;
+    }
+
+    .app-container {
+      grid-template-columns: 1fr;
+      height: calc(100vh - 54px);
+    }
+
+    /* Mobile Quick Bars */
+    .circuit-bar {
+      top: 8px;
+      right: 8px;
+      left: 8px;
+      justify-content: flex-start;
+      padding: 4px 6px;
+    }
+    .map-toolbar {
+      top: 48px;
+      left: 8px;
+      right: 8px;
+      padding: 4px 6px;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+    }
+    .zoom-controls {
+      bottom: 74px;
+      left: 12px;
+    }
+
+    /* Mobile Bottom Drawer / Bottom Sheet */
+    .sidebar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      border-left: none;
+      border-top: 2px solid var(--border);
+      border-radius: 16px 16px 0 0;
+      background: rgba(11, 21, 38, 0.98);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 -8px 25px rgba(0,0,0,0.6);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 90;
+      max-height: 85vh;
+      transform: translateY(calc(100% - 56px)); /* Minimized: only bottom navigation bar shows */
+    }
+    .sidebar.sheet-half {
+      transform: translateY(calc(100% - 50vh));
+    }
+    .sidebar.sheet-full {
+      transform: translateY(0);
+    }
+
+    .mobile-drag-handle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 0 6px 0;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .mobile-drag-bar {
+      width: 44px;
+      height: 5px;
+      background: #475569;
+      border-radius: 3px;
+    }
+
+    /* Mobile Bottom Navigation Bar */
+    .mobile-nav-bar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 54px;
+      border-bottom: 1px solid var(--border);
+      background: #080F1D;
+      padding: 0 4px;
+      flex-shrink: 0;
+    }
+    .mob-nav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      height: 100%;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .mob-nav-btn.active {
+      color: var(--cyan);
+    }
+    .mob-nav-btn span.icon {
+      font-size: 1.15rem;
+    }
+
+    /* Inspector positioning on mobile */
+    .inspector {
+      bottom: 64px;
+      left: 12px;
+      right: 12px;
+      width: auto;
+      max-width: none;
+      padding: 12px;
+    }
+  }
+
+  /* Print Stylesheet */
+  @media print {
+    body {
+      background: #FFFFFF !important;
+      color: #000000 !important;
+      overflow: visible !important;
+      height: auto !important;
+    }
+    header, .circuit-bar, .map-toolbar, .zoom-controls, .tabs, .search-box, .btn, .mobile-drag-handle, .mobile-nav-bar {
+      display: none !important;
+    }
+    .app-container {
+      display: block !important;
+    }
+    .map-wrapper {
+      height: 600px !important;
+      background: #FFFFFF !important;
+      page-break-after: always;
+    }
+    .sidebar {
+      position: static !important;
+      transform: none !important;
+      border: none !important;
+      background: #FFFFFF !important;
+      max-height: none !important;
+    }
+    .tab-pane {
+      display: block !important;
+    }
+    .card {
+      background: #FFFFFF !important;
+      border: 1px solid #000000 !important;
+      color: #000000 !important;
+      margin-bottom: 15px !important;
+    }
+  }
+</style>
+</head>
+<body class="theme-dark mode-cards">
+
+<!-- Top Master Header -->
+<header>
+  <div class="header-brand">
+    <a href="../index.html" class="btn-kross" title="Return to Kross Games Hub">← Kross Games</a>
+    <div class="header-titles">
+      <h1>
+        MAMMOTH LAKE
+        <span class="badge-team">[ TONY, ADDIE, & KEN ]</span>
+      </h1>
+      <p>Lake Jackson / Clute, TX • 29.0291° N, 95.4210° W • 65 Acres • Max Depth: 70 FT</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="btn" id="btnBadgeMode">Badges: Cards</button>
+    <button class="btn" id="btnTheme">Theme: Dark</button>
+    <button class="btn" id="btnResetView" title="Reset View">Fit ⤢</button>
+    <button class="btn" id="btnPrint" style="background:#1B3356; border-color:#38BDF8;">🖨️ Slate</button>
+  </div>
+</header>
+
+<!-- Main Workspace Grid -->
+<div class="app-container">
+
+  <!-- Map View Area -->
+  <div class="map-wrapper" id="mapWrapper">
+
+    <!-- Circuit Quick Pills -->
+    <div class="circuit-bar">
+      <span class="circuit-bar-label">Circuits:</span>
+      <button class="c-pill c1" data-circuit="c1">C1: Flight Deck (28')</button>
+      <button class="c-pill c2" data-circuit="c2">C2: C-130 Hercules (38')</button>
+      <button class="c-pill c3" data-circuit="c3">C3: Tower & Reef (44')</button>
+      <button class="c-pill c4" data-circuit="c4">C4: Thunder Bay (36')</button>
+      <button class="c-pill" id="btnClearCircuit" style="background:#19273A; color:#FFF;">Clear</button>
+    </div>
+
+    <!-- Map Filter Toolbar -->
+    <div class="map-toolbar">
+      <button class="tb-btn active" data-filter="all">All (47)</button>
+      <button class="tb-btn" data-filter="star">★ Favorites</button>
+      <button class="tb-btn" data-filter="wreck">🚢 Wrecks</button>
+      <button class="tb-btn" data-filter="platform">■ Platforms</button>
+      <button class="tb-btn" data-filter="dock">⚓ Docks</button>
+      <button class="tb-btn" data-filter="deep">🤿 Deep Hole</button>
+      <span style="width:1px; height:18px; background:var(--border); margin:0 4px;"></span>
+      <button class="tb-btn active" id="btnToggleNav">Lines</button>
+      <button class="tb-btn active" id="btnToggleSwims">Swims</button>
+      <button class="tb-btn active" id="btnToggleBathy">Contours</button>
+    </div>
+
+    <!-- Zoom Controls -->
+    <div class="zoom-controls">
+      <button class="zoom-btn" id="zoomIn" title="Zoom In">+</button>
+      <button class="zoom-btn" id="zoomOut" title="Zoom Out">-</button>
+      <button class="zoom-btn" id="zoomFit" title="Fit Map">⤢</button>
+    </div>
+
+    <!-- SVG Map Canvas -->
+    <div id="svgContainer">
+      <svg id="diveMapSvg" viewBox="0 0 1800 1200" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <filter id="badge-shadow" x="-8%" y="-8%" width="116%" height="124%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.35"/>
+          </filter>
+          <filter id="circuit-glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+          <!-- Arrow Markers -->
+          <marker id="arrow-c1" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#10B981"/>
+          </marker>
+          <marker id="arrow-c2" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#06B6D4"/>
+          </marker>
+          <marker id="arrow-c3" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#F59E0B"/>
+          </marker>
+          <marker id="arrow-c4" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#8B5CF6"/>
+          </marker>
+        </defs>
+
+        <!-- Surrounding Land Background -->
+        <rect class="land-bg" x="0" y="0" width="1800" height="1200"/>
+
+        <!-- 250 FT Graticule Grid -->
+        <g id="gridGroup">
+          <line class="grid-line" x1="150" y1="0" x2="150" y2="1200" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="300" y1="0" x2="300" y2="1200" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="450" y1="0" x2="450" y2="1200" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="600" y1="0" x2="600" y2="1200" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="750" y1="0" x2="750" y2="1200" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="900" y1="0" x2="900" y2="1200" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="1050" y1="0" x2="1050" y2="1200" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="1200" y1="0" x2="1200" y2="1200" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="1350" y1="0" x2="1350" y2="1200" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="1500" y1="0" x2="1500" y2="1200" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="1650" y1="0" x2="1650" y2="1200" stroke-width="1" stroke-dasharray="4,4"/>
+          <line class="grid-line" x1="0" y1="150" x2="1800" y2="150" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="0" y1="300" x2="1800" y2="300" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="0" y1="450" x2="1800" y2="450" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="0" y1="600" x2="1800" y2="600" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="0" y1="750" x2="1800" y2="750" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="0" y1="900" x2="1800" y2="900" stroke-width="1" stroke-dasharray="4,4"/> <line class="grid-line" x1="0" y1="1050" x2="1800" y2="1050" stroke-width="1" stroke-dasharray="4,4"/>
+        </g>
+
+        <!-- Access Roads & Paths -->
+        <g id="roadsGroup">
+          <polyline class="road-outer" points="50,600 80,680 105,745 200,850 320,875 405,860 670,830 765,845 820,830 955,770" fill="none" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline class="road-inner" points="50,600 80,680 105,745 200,850 320,875 405,860 670,830 765,845 820,830 955,770" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline class="road-outer" points="1200,100 1315,250 1450,220" fill="none" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline class="road-inner" points="1200,100 1315,250 1450,220" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+
+        <!-- Vector Bathymetric Depth Contours -->
+        <g id="bathyGroup">
+          <!-- 0-10 FT Shallows (Watertight Lake Perimeter) -->
+          <polygon class="water-0-10" points="960,89 981,91 1002,92 1023,99 1044,109 1065,121 1084,139 1100,157 1118,178 1138,196 1159,205 1180,210 1201,217 1222,226 1243,239 1264,251 1285,253 1296,265 1304,280 1323,279 1337,271 1358,277 1379,275 1400,273 1421,269 1442,268 1463,270 1484,275 1505,281 1526,284 1547,290 1568,300 1588,319 1606,337 1627,346 1645,365 1651,386 1657,407 1661,428 1662,449 1659,470 1654,491 1645,512 1630,533 1609,547 1588,552 1567,554 1546,560 1525,566 1504,570 1483,571 1462,580 1441,587 1420,598 1399,607 1378,620 1357,627 1336,637 1315,644 1294,649 1273,657 1252,661 1231,664 1210,670 1189,676 1168,675 1147,688 1126,692 1105,697 1084,706 1063,714 1047,708 1037,723 1016,732 995,739 974,744 953,753 932,766 911,779 890,789 869,797 848,806 831,807 832,797 827,786 824,777 804,777 796,792 801,813 781,817 760,819 739,822 718,814 697,814 680,813 678,792 667,781 648,786 650,807 642,822 621,829 600,833 579,835 558,833 537,826 516,831 495,833 474,834 453,834 432,839 411,843 395,837 378,849 365,861 344,866 327,862 308,867 287,866 266,877 245,880 224,876 208,878 188,868 167,859 148,847 133,837 114,817 108,796 104,775 117,767 118,747 101,743 101,726 87,711 79,690 73,669 73,648 72,627 68,606 63,585 59,564 54,543 55,522 72,503 93,492 114,481 135,476 156,467 177,458 198,453 219,446 240,439 261,433 282,424 303,413 324,409 345,399 365,391 386,379 407,373 428,362 449,347 470,335 491,332 512,321 533,309 554,298 575,285 596,276 617,265 638,252 659,243 680,234 701,227 722,211 739,190 751,169 762,148 781,136 793,116 814,113 835,117 856,117 877,119 897,121 911,103 932,96 953,90" stroke-width="2"/>
+
+          <!-- 10-20 FT South Training Shelf -->
+          <polygon class="water-10-20" points="973.5,128.0 997.0,128.0 1023.0,134.0 1048.8,145.0 1074.0,160.5 1098.5,178.5 1122.8,197.0 1147.5,211.0 1167.2,222.8 1181.8,238.5 1201.5,253.8 1227.0,266.2 1253.0,278.5 1279.0,288.0 1304.8,291.2 1330.0,289.5 1355.0,287.0 1380.0,285.2 1402.5,283.8 1422.0,282.5 1443.8,283.8 1467.2,288.5 1486.5,296.8 1504.2,306.5 1527.0,314.2 1553.0,324.0 1578.8,339.0 1603.2,356.2 1625.0,376.0 1640.8,400.0 1646.0,426.0 1641.8,452.0 1631.0,477.8 1612.5,500.5 1589.5,515.8 1566.5,524.5 1542.0,532.2 1516.0,539.0 1490.0,542.8 1464.0,547.2 1438.0,555.2 1412.0,566.5 1386.0,581.2 1360.0,596.5 1334.0,608.0 1308.2,615.2 1282.8,621.8 1257.0,629.0 1231.0,632.8 1205.0,633.0 1179.0,636.2 1153.0,642.0 1127.0,647.8 1101.0,655.2 1075.0,661.5 1049.0,666.0 1023.0,671.2 997.0,677.0 972.8,686.8 961.8,701.0 967.5,711.8 968.0,718.2 953.5,727.2 936.0,734.8 917.5,735.5 894.0,735.8 868.0,739.0 842.0,743.5 816.0,746.5 791.5,751.0 772.0,764.8 757.5,784.5 742.0,800.2 721.0,807.0 698.2,805.5 680.5,796.2 665.8,787.5 651.8,789.8 637.8,798.5 617.0,806.2 591.0,808.5 565.0,804.2 539.0,796.5 513.0,788.8 487.0,784.5 461.0,781.2 435.0,780.0 409.0,782.0 384.0,777.8 361.0,769.8 346.8,773.0 340.5,787.0 330.8,803.2 324.5,818.5 329.8,829.2 335.5,839.5 330.8,849.0 318.2,847.2 305.8,837.8 292.0,834.8 274.0,838.2 255.5,837.0 237.2,835.0 214.8,837.2 189.0,837.2 163.5,832.5 139.2,821.2 120.0,807.8 112.0,796.0 114.8,780.5 118.8,760.5 114.8,742.8 105.0,729.2 97.2,713.0 91.5,691.0 87.2,666.8 83.8,642.2 79.2,617.2 81.2,592.0 88.8,566.8 97.2,542.5 111.5,524.2 126.8,514.8 139.5,511.0 156.0,508.8 177.2,501.8 198.2,485.2 219.2,464.5 243.2,448.2 269.0,437.2 295.0,428.0 321.0,419.0 347.0,410.0 373.0,401.5 399.0,393.2 425.0,383.0 451.0,370.2 477.0,358.0 503.0,349.0 529.0,340.8 553.2,327.0 575.5,309.0 598.5,293.2 622.8,279.8 648.0,266.8 674.0,255.2 700.0,244.5 725.8,231.5 749.5,213.0 769.2,189.0 786.8,163.8 806.8,144.0 831.0,135.2 856.8,138.5 878.8,153.5 895.5,176.0 914.0,193.2 933.8,193.8 948.0,179.5 955.5,158.8 960.2,138.8" stroke-width="1.5"/>
+
+          <!-- 20-30 FT & 30-42 FT Deep Basins (11 polygons) -->
+          <polygon class="water-20-42" points="1029.5,261.8 1036.0,261.5 1042.8,264.2 1048.2,268.2 1053.0,271.8 1059.0,273.0 1066.0,273.0 1073.0,273.5 1079.5,275.8 1085.2,280.5 1091.0,286.8 1097.2,292.8 1104.0,298.0 1110.2,303.5 1114.0,310.0 1114.2,316.8 1111.0,321.8 1105.0,324.0 1098.0,324.8 1091.0,324.8 1084.0,324.0 1077.0,323.0 1070.0,321.8 1063.0,320.5 1056.0,319.5 1049.0,318.2 1042.0,317.2 1035.0,317.0 1028.0,317.8 1021.0,321.0 1015.5,327.0 1013.5,334.0 1014.0,341.0 1015.0,348.0 1015.8,355.0 1015.5,362.0 1013.8,369.0 1011.5,376.0 1010.0,383.0 1009.5,390.0 1010.0,397.0 1011.0,404.0 1012.2,411.0 1014.0,418.0 1015.8,425.0 1016.5,432.0 1015.5,439.0 1012.0,444.8 1006.0,447.8 999.0,449.2 993.8,452.2 993.2,457.8 997.0,464.2 1001.0,471.0 1002.5,478.0 1000.5,484.0 995.0,486.5 989.0,484.0 985.0,478.0 982.2,471.0 980.2,464.0 979.2,457.0 979.0,450.0 978.8,443.0 977.5,436.0 975.2,429.0 973.2,422.0 972.2,415.0 972.8,408.0 975.2,401.0 979.2,394.2 984.2,388.0 989.0,381.8 991.5,375.0 992.0,368.0 992.2,361.0 992.8,354.0 993.2,347.0 994.5,340.0 996.8,333.0 998.5,326.0 997.2,320.5 992.0,318.0 985.0,317.2 978.5,316.2 973.5,313.8 970.8,309.2 971.5,304.5 976.2,302.2 982.2,301.0 986.2,299.8 989.5,300.5 994.0,303.0 999.0,305.8 1003.8,305.2 1006.8,300.0 1008.0,293.0 1009.5,286.0 1012.8,279.0 1018.0,272.2 1023.8,266.0" stroke-width="1.5"/> <polygon class="water-20-42" points="713.0,274.2 717.0,274.0 722.0,274.0 726.8,274.5 730.5,276.8 732.8,281.0 734.2,286.0 735.8,291.0 736.8,296.0 736.8,301.0 736.2,306.0 735.5,311.0 734.0,316.0 731.8,321.0 728.8,326.0 725.2,331.0 722.0,336.0 718.5,341.0 714.0,345.8 709.0,350.0 704.0,353.5 699.0,356.0 694.0,358.0 689.0,359.8 684.0,360.8 679.0,361.2 674.0,360.8 669.5,358.0 665.8,353.8 662.0,349.0 657.8,344.8 653.0,342.5 648.0,342.2 643.5,344.0 640.5,348.0 639.2,353.0 639.0,358.0 639.2,363.0 640.2,368.0 642.0,373.0 643.8,378.0 645.0,383.0 646.2,388.0 648.0,393.0 649.8,398.0 649.8,402.2 647.5,405.8 645.2,410.0 643.5,415.0 640.5,419.5 636.0,422.8 631.0,424.8 626.0,425.8 621.0,425.8 616.0,424.8 611.0,422.8 606.2,419.8 602.2,415.8 599.0,411.0 595.5,406.2 591.0,401.8 586.0,397.0 581.2,392.0 577.2,387.0 574.2,382.0 572.5,377.0 572.5,372.0 574.8,367.5 579.0,363.8 584.0,360.2 589.0,357.2 594.0,355.0 599.0,352.8 604.0,350.0 609.0,347.0 614.0,343.8 619.0,339.8 624.0,335.0 628.5,330.0 632.0,325.0 635.0,320.0 638.0,315.0 641.5,310.0 646.0,305.2 651.0,301.0 656.0,297.2 661.0,294.0 666.0,291.2 671.0,288.8 676.0,286.2 681.0,284.0 686.0,282.0 691.0,280.2 696.0,279.0 701.0,277.8 706.0,276.2 710.0,275.0" stroke-width="1.5"/> <polygon class="water-20-42" points="1400.2,314.5 1410.5,318.2 1424.0,321.8 1439.0,323.0 1453.0,322.8 1464.8,321.0 1476.2,320.0 1489.0,318.8 1500.0,316.5 1505.2,318.5 1501.2,324.2 1489.2,327.5 1479.2,332.2 1475.5,344.0 1472.8,358.5 1474.8,368.2 1485.0,369.2 1497.0,366.8 1507.0,363.8 1515.5,357.0 1523.0,348.8 1527.2,339.8 1531.2,333.2 1540.8,337.2 1553.2,346.0 1566.5,352.8 1580.5,362.0 1594.8,374.2 1607.8,387.5 1617.5,402.0 1621.5,416.2 1616.0,425.5 1603.0,425.8 1590.0,418.0 1579.2,407.5 1566.8,401.2 1552.2,400.8 1540.0,399.0 1531.0,393.5 1523.5,387.5 1516.0,380.2 1509.5,377.8 1504.2,383.8 1495.5,391.2 1485.2,399.2 1478.0,410.8 1473.2,424.5 1469.2,436.5 1464.0,441.8 1460.0,437.0 1456.2,429.8 1449.8,431.8 1441.8,439.5 1432.0,442.5 1421.8,438.2 1415.5,428.8 1416.8,417.2 1424.2,405.5 1434.8,392.5 1441.2,378.8 1436.2,368.8 1423.0,365.8 1408.0,367.5 1395.2,372.8 1390.8,381.8 1391.5,391.2 1386.2,399.0 1375.0,405.2 1363.5,406.8 1352.8,402.0 1346.8,395.2 1349.8,387.5 1352.5,378.5 1346.0,368.2 1336.2,355.0 1334.2,341.5 1344.0,332.5 1355.8,332.0 1360.5,341.5 1360.8,356.0 1362.8,368.8 1370.0,373.5 1379.2,367.2 1386.8,354.0 1392.2,339.8 1393.0,331.8 1386.5,335.2 1378.2,339.5 1376.5,333.5 1382.5,324.0 1391.5,316.8" stroke-width="1.5"/> <polygon class="water-20-42" points="792.2,317.5 796.5,317.8 799.2,320.5 799.2,324.5 797.8,328.5 797.5,333.0 798.8,338.0 800.2,343.0 802.0,348.0 804.0,352.8 805.8,357.2 807.5,361.8 810.5,365.0 815.0,365.5 819.0,363.2 821.2,359.2 822.8,354.8 824.2,350.0 825.8,345.0 827.2,340.0 828.5,335.0 829.0,330.0 828.0,325.8 826.5,323.0 827.2,320.8 830.5,318.5 834.8,317.5 838.0,319.0 839.0,322.2 838.8,325.8 838.2,330.0 838.5,335.0 839.8,340.0 841.2,345.0 843.8,349.0 848.0,350.5 852.0,351.0 854.0,353.5 855.0,356.8 854.5,358.0 851.8,359.0 849.5,362.2 849.8,366.5 852.0,370.5 854.8,375.0 857.2,380.0 860.5,383.8 864.2,385.2 865.5,386.8 864.0,390.2 862.5,393.8 861.5,393.8 860.2,390.2 857.8,386.2 854.8,382.5 852.0,379.0 848.0,377.2 843.0,377.2 838.5,378.2 835.5,380.8 834.2,385.0 833.5,388.0 831.5,387.2 829.0,384.2 827.2,380.5 824.5,377.8 820.8,378.0 818.5,381.2 819.0,385.2 820.2,387.2 818.5,387.2 814.5,387.8 811.8,388.5 811.0,386.5 811.0,382.0 809.8,378.0 806.0,376.5 801.8,377.8 799.2,381.2 797.8,386.0 795.8,389.2 793.0,388.2 790.5,384.0 788.0,380.2 784.0,379.0 779.5,379.8 776.0,382.2 773.2,385.5 771.5,386.2 771.8,383.2 773.5,378.8 775.2,374.2 777.0,370.0 778.8,365.8 780.2,361.0 782.0,356.0 783.8,351.0 785.2,346.0 786.8,341.0 788.0,336.0 788.8,331.0 788.2,326.5 786.5,323.5 786.0,321.5 788.2,319.2" stroke-width="1.5"/> <polygon class="water-20-42" points="1145.8,368.8 1149.0,368.0 1153.0,368.2 1157.0,368.8 1161.0,369.0 1165.0,369.2 1169.0,370.0 1173.0,370.8 1177.0,371.0 1181.0,370.8 1185.0,370.0 1189.0,369.2 1193.0,369.0 1197.0,369.0 1201.0,369.0 1205.0,369.0 1209.0,369.0 1213.0,369.2 1217.0,369.8 1221.0,370.2 1225.0,371.0 1229.0,371.8 1233.0,372.0 1237.0,372.2 1241.0,373.0 1245.0,373.8 1249.0,374.2 1253.0,375.5 1256.8,378.0 1259.5,381.2 1259.8,384.8 1257.2,388.2 1253.8,391.2 1250.0,393.2 1246.0,395.2 1242.0,397.8 1238.0,400.0 1234.0,402.2 1230.0,405.0 1226.0,407.5 1222.0,409.0 1218.0,410.2 1214.0,411.5 1210.0,412.0 1206.0,412.0 1202.0,412.0 1198.0,412.0 1194.2,411.8 1191.8,410.2 1190.0,407.8 1187.0,406.2 1183.2,406.8 1180.8,409.2 1180.0,413.0 1179.8,416.8 1178.2,420.0 1175.0,423.0 1171.0,425.5 1167.8,427.8 1165.8,430.8 1163.5,433.2 1160.2,434.8 1157.0,436.8 1154.0,438.8 1151.2,439.0 1148.5,437.5 1145.0,436.2 1141.0,436.0 1137.2,436.8 1133.8,438.5 1130.0,439.8 1126.0,440.0 1122.2,439.5 1118.8,438.5 1115.0,438.0 1111.0,438.8 1107.0,441.0 1103.0,444.0 1099.0,445.8 1096.0,444.5 1095.8,441.2 1098.2,438.8 1102.0,438.0 1106.0,438.0 1109.5,437.2 1111.8,435.0 1113.2,432.0 1114.5,428.8 1115.0,425.0 1115.0,421.0 1115.0,417.0 1115.0,413.0 1114.2,409.5 1111.8,407.5 1108.0,406.8 1104.8,405.2 1103.8,402.2 1105.5,399.0 1109.0,396.2 1113.0,394.2 1117.0,392.5 1120.8,389.8 1123.8,386.0 1125.5,382.0 1126.8,378.5 1129.2,376.5 1133.0,376.2 1137.0,376.8 1140.8,376.5 1143.2,374.5 1144.2,371.2" stroke-width="1.5"/> <polygon class="water-20-42" points="512.2,401.2 525.0,403.0 537.2,409.8 547.8,421.0 555.8,434.0 560.2,447.0 562.2,460.0 564.0,473.0 565.8,486.0 567.2,499.0 570.8,511.8 579.0,521.8 590.2,528.5 599.5,537.0 602.5,548.0 601.0,559.0 600.5,571.0 600.5,583.5 597.5,594.0 595.5,602.0 598.8,610.5 601.8,622.0 601.5,635.0 601.0,648.0 603.8,659.8 608.2,669.8 609.5,677.0 607.5,676.2 601.2,669.2 590.2,665.8 580.0,665.5 573.0,660.2 566.5,649.0 561.2,636.0 560.2,623.0 563.0,610.5 569.2,602.2 579.5,600.5 586.8,599.0 583.5,593.5 574.8,586.0 569.0,576.2 566.5,564.0 561.5,553.2 551.0,549.8 540.5,555.0 537.0,563.8 537.0,571.2 533.0,578.0 526.8,586.0 521.5,592.0 519.2,590.5 523.2,583.5 528.8,574.0 527.0,565.8 517.0,564.2 504.0,567.0 491.0,568.2 478.0,565.8 465.0,561.5 452.0,557.5 440.0,555.5 434.5,558.8 440.0,565.2 446.0,569.8 440.5,571.2 428.0,572.5 415.0,575.5 403.2,581.8 393.0,588.0 381.8,587.8 369.0,583.0 356.0,578.0 343.8,573.0 335.2,566.0 332.2,555.2 335.0,545.5 344.2,542.8 356.8,543.0 367.8,538.2 375.0,528.2 380.2,516.0 387.5,504.0 397.8,495.0 408.8,487.0 417.5,476.0 424.2,463.0 432.0,451.0 440.8,441.2 449.8,432.0 461.0,422.5 474.0,415.0 487.0,409.0 499.8,403.8" stroke-width="1.5"/> <polygon class="water-20-42" points="655.2,431.2 658.0,431.0 661.0,431.2 664.0,432.0 667.0,433.2 670.0,435.0 673.0,437.2 676.0,440.0 679.0,442.8 682.0,444.5 685.0,445.0 688.0,445.0 691.0,444.8 694.0,443.8 697.0,442.5 700.0,441.8 703.0,441.2 706.0,441.0 709.0,441.0 712.0,441.0 715.0,441.2 718.0,441.8 720.8,442.5 723.2,444.2 725.5,447.0 727.0,450.0 728.0,453.0 729.2,456.0 731.2,459.0 734.0,461.8 737.0,464.2 740.0,466.8 743.0,469.2 746.0,472.0 748.8,475.0 750.5,478.0 751.0,481.0 751.0,484.0 750.8,487.0 749.8,490.0 747.8,492.8 745.0,494.8 742.0,496.0 739.0,497.0 736.0,497.8 733.0,498.0 730.0,498.0 727.0,498.0 724.0,498.0 721.0,498.0 718.0,497.8 715.0,497.2 712.0,497.0 709.0,497.0 706.0,496.8 703.0,496.2 700.0,495.8 697.0,495.0 694.0,494.0 691.0,493.0 688.0,491.8 685.0,490.2 682.0,488.8 679.0,487.2 676.0,486.0 673.0,484.8 670.0,483.2 667.0,482.0 664.0,480.8 661.0,479.2 658.0,478.0 655.0,477.0 652.0,476.0 649.0,475.0 646.0,474.0 643.0,473.0 640.0,472.2 637.0,471.8 634.0,471.0 631.0,470.0 628.0,469.0 625.0,468.2 622.0,467.8 619.0,467.2 616.0,466.5 613.0,465.2 610.0,464.0 607.0,462.8 604.0,461.0 601.0,459.2 598.2,457.5 596.5,455.0 596.2,452.0 597.2,449.0 599.2,446.2 602.0,444.2 605.0,443.2 608.0,443.0 611.0,443.0 614.0,442.8 617.0,442.2 620.0,442.0 623.0,442.0 626.0,441.8 629.0,441.2 632.0,441.0 635.0,440.8 638.0,440.0 641.0,439.0 644.0,437.8 647.0,436.2 650.0,434.5 652.8,432.5" stroke-width="1.5"/> <polygon class="water-20-42" points="1346.2,448.8 1350.0,449.2 1353.2,451.5 1355.0,455.0 1355.8,459.0 1356.2,463.0 1357.0,467.0 1358.5,471.0 1361.2,474.8 1365.0,477.5 1369.0,479.0 1373.0,479.8 1377.0,479.8 1381.0,478.5 1385.0,475.8 1388.5,472.0 1391.0,468.0 1393.2,464.0 1396.0,460.2 1399.2,457.8 1403.0,457.2 1406.8,458.8 1409.8,462.0 1411.5,466.0 1412.2,470.0 1412.8,474.0 1412.8,478.0 1412.2,482.0 1411.8,486.0 1410.8,490.0 1409.0,494.0 1406.8,498.0 1403.8,501.5 1400.0,504.0 1396.0,505.8 1392.0,506.8 1388.0,507.0 1384.0,507.0 1380.0,507.0 1376.0,506.5 1372.0,505.0 1368.2,502.5 1364.8,499.0 1361.0,495.0 1357.0,491.5 1353.0,489.5 1349.0,489.0 1345.0,489.2 1341.0,489.8 1337.2,490.8 1334.0,493.2 1331.2,497.0 1329.2,501.0 1328.0,505.0 1327.2,509.0 1326.8,513.0 1326.2,517.0 1325.8,521.0 1325.2,525.0 1324.8,529.0 1323.8,533.0 1322.0,537.0 1320.5,541.0 1319.5,545.0 1318.0,549.0 1315.5,552.2 1312.2,553.5 1309.5,552.2 1308.0,549.0 1306.8,545.0 1305.5,541.0 1304.8,537.0 1304.0,533.0 1303.5,529.0 1304.0,525.0 1305.5,521.0 1308.0,517.0 1310.5,513.0 1312.5,509.2 1314.8,505.8 1317.2,502.0 1319.5,498.0 1321.2,494.0 1322.8,490.0 1324.0,486.0 1325.0,482.0 1326.2,478.0 1328.0,474.0 1330.0,470.0 1332.2,466.0 1334.8,462.0 1337.2,458.0 1340.0,454.0 1343.0,450.5" stroke-width="1.5"/> <polygon class="water-20-42" points="305.2,482.5 311.8,486.2 316.8,492.0 316.0,499.5 314.5,510.2 313.0,520.8 306.5,525.8 298.5,528.8 298.5,535.2 307.2,542.5 316.5,550.0 321.5,560.8 324.0,572.5 325.5,583.8 328.8,591.5 336.8,592.2 348.2,592.2 361.0,596.2 374.0,601.8 387.0,607.0 399.0,613.5 409.8,623.2 416.5,634.0 413.2,642.5 402.0,649.0 389.0,652.5 377.2,653.8 368.5,658.8 360.2,667.2 353.5,675.5 356.0,680.8 362.2,683.8 359.5,689.2 351.8,697.2 348.2,703.0 348.2,699.5 347.2,689.2 342.8,683.8 338.2,688.5 334.8,696.5 327.2,700.5 319.2,702.5 316.0,700.0 314.2,690.8 310.0,684.0 302.5,686.8 294.2,696.0 286.2,705.8 276.8,712.5 266.8,716.0 256.8,715.0 246.5,709.5 241.8,702.2 247.8,695.8 259.2,691.5 269.5,687.8 274.5,681.2 271.2,673.2 262.8,669.5 252.5,671.5 240.8,675.0 230.0,675.8 226.5,671.8 232.0,664.8 237.0,656.8 232.5,650.0 221.0,647.2 208.0,647.5 195.0,647.5 182.0,643.2 170.5,633.5 163.5,621.0 161.2,608.0 159.5,595.0 156.2,582.0 155.2,569.0 159.8,556.2 169.5,545.0 182.0,536.2 194.8,528.5 207.2,519.8 220.0,511.2 233.0,505.5 246.0,501.8 259.0,498.8 272.0,498.0 285.0,500.5 298.0,504.8 308.2,505.0 310.8,497.5 307.0,488.2 303.8,483.0" stroke-width="1.5"/> <polygon class="water-20-42" points="681.8,630.2 684.5,633.5 690.0,635.8 697.0,636.0 703.0,636.0 704.5,636.0 700.2,636.5 695.5,639.2 695.8,643.5 700.5,646.2 704.8,649.2 707.2,654.0 709.8,659.0 712.8,663.5 718.0,664.5 724.8,661.2 731.2,657.8 738.0,656.2 745.0,656.0 752.0,655.8 759.0,655.0 766.0,654.2 773.0,653.8 780.0,652.8 787.0,651.2 794.0,650.0 801.0,649.0 808.0,648.0 815.0,647.0 822.0,646.0 829.0,644.8 836.0,643.0 843.0,641.0 850.0,639.2 857.0,638.0 864.0,637.0 871.0,636.2 878.0,636.0 885.0,636.2 892.0,637.0 899.0,638.8 904.8,642.8 906.0,647.8 901.8,650.8 895.0,652.0 888.0,653.5 881.0,656.0 874.0,658.8 867.0,660.8 860.0,662.2 853.0,663.8 846.0,665.0 839.0,666.0 832.0,666.8 825.0,667.0 818.0,667.2 811.0,667.8 804.0,668.0 797.0,668.5 790.0,669.8 783.0,671.2 776.0,672.8 769.0,674.0 762.0,675.0 755.0,676.0 748.0,676.8 741.8,677.8 736.5,678.5 730.8,677.8 724.0,676.2 717.5,673.5 712.0,669.5 706.5,667.0 701.8,668.5 699.2,673.2 696.0,676.8 690.0,677.2 683.0,677.0 676.0,677.0 669.0,677.0 663.0,675.8 661.0,671.8 664.5,666.8 671.0,663.2 678.0,661.2 684.8,659.8 689.5,656.8 689.2,652.5 684.0,650.2 677.0,650.0 670.0,650.0 663.2,650.8 657.2,652.8 652.2,653.2 647.2,651.2 643.0,648.2 642.5,643.5 646.0,639.0 652.0,636.8 659.0,634.5 666.0,631.8 673.0,630.2 678.8,629.5" stroke-width="1.5"/> <polygon class="water-20-42" points="434.5,649.5 437.8,650.5 441.2,653.0 445.0,655.8 449.0,658.0 453.0,659.8 457.0,661.0 461.0,662.0 465.0,663.0 469.0,664.0 472.8,665.5 476.2,668.2 480.0,671.8 484.0,675.0 488.0,678.0 492.0,680.8 496.0,683.0 500.0,685.2 504.0,687.8 508.0,690.0 512.0,692.2 516.0,694.8 520.0,697.2 524.0,700.0 528.0,702.5 532.0,704.5 536.0,706.8 540.0,709.2 544.0,711.8 548.0,713.8 552.0,715.0 556.0,716.0 560.0,716.8 564.0,717.0 568.0,716.5 571.8,714.5 574.8,711.5 577.5,709.5 581.0,709.0 584.5,709.8 587.5,711.2 591.0,712.2 595.0,713.2 597.8,715.5 597.8,719.0 596.0,722.8 593.5,726.2 590.0,730.0 586.0,733.5 582.0,736.2 578.0,738.5 574.0,740.0 570.0,740.8 566.0,741.0 562.0,740.5 558.0,738.8 554.0,735.8 550.0,732.2 546.5,729.2 543.5,726.5 540.0,723.2 536.0,720.0 532.0,716.8 528.0,713.5 524.0,710.8 520.0,708.2 516.0,705.8 512.0,703.2 508.0,701.2 504.0,699.5 500.0,697.5 496.0,696.0 492.0,695.0 488.0,694.0 484.0,693.0 480.0,692.2 476.0,691.8 472.0,691.0 468.0,690.2 464.0,689.8 460.0,689.2 456.0,688.8 452.0,688.0 448.0,687.0 444.0,686.0 440.0,684.8 436.0,683.2 432.0,681.8 428.0,680.2 424.0,678.8 420.0,677.0 416.0,675.0 412.0,672.8 408.0,670.2 404.0,667.8 402.0,665.2 404.0,663.0 408.0,661.2 412.0,659.8 416.0,658.0 420.0,656.0 424.0,654.0 428.0,652.0 431.5,650.2" stroke-width="1.5"/>
+
+          <!-- 42-55 FT Deep Trenches -->
+          <polygon class="water-42-55" points="512.2,401.2 525.0,403.0 537.2,409.8 547.8,421.0 555.8,434.0 560.2,447.0 562.2,460.0 564.0,473.0 565.8,486.0 567.2,499.0 570.8,511.8 579.0,521.8 590.2,528.5 599.5,537.0 602.5,548.0 601.0,559.0 600.5,571.0 600.5,583.5 597.5,594.0 595.5,602.0 598.8,610.5 601.8,622.0 601.5,635.0 601.0,648.0 603.8,659.8 608.2,669.8 609.5,677.0 607.5,676.2 601.2,669.2 590.2,665.8 580.0,665.5 573.0,660.2 566.5,649.0 561.2,636.0 560.2,623.0 563.0,610.5 569.2,602.2 579.5,600.5 586.8,599.0 583.5,593.5 574.8,586.0 569.0,576.2 566.5,564.0 561.5,553.2 551.0,549.8 540.5,555.0 537.0,563.8 537.0,571.2 533.0,578.0 526.8,586.0 521.5,592.0 519.2,590.5 523.2,583.5 528.8,574.0 527.0,565.8 517.0,564.2 504.0,567.0 491.0,568.2 478.0,565.8 465.0,561.5 452.0,557.5 440.0,555.5 434.5,558.8 440.0,565.2 446.0,569.8 440.5,571.2 428.0,572.5 415.0,575.5 403.2,581.8 393.0,588.0 381.8,587.8 369.0,583.0 356.0,578.0 343.8,573.0 335.2,566.0 332.2,555.2 335.0,545.5 344.2,542.8 356.8,543.0 367.8,538.2 375.0,528.2 380.2,516.0 387.5,504.0 397.8,495.0 408.8,487.0 417.5,476.0 424.2,463.0 432.0,451.0 440.8,441.2 449.8,432.0 461.0,422.5 474.0,415.0 487.0,409.0 499.8,403.8" stroke-width="1.5"/> <polygon class="water-42-55" points="305.2,482.5 311.8,486.2 316.8,492.0 316.0,499.5 314.5,510.2 313.0,520.8 306.5,525.8 298.5,528.8 298.5,535.2 307.2,542.5 316.5,550.0 321.5,560.8 324.0,572.5 325.5,583.8 328.8,591.5 336.8,592.2 348.2,592.2 361.0,596.2 374.0,601.8 387.0,607.0 399.0,613.5 409.8,623.2 416.5,634.0 413.2,642.5 402.0,649.0 389.0,652.5 377.2,653.8 368.5,658.8 360.2,667.2 353.5,675.5 356.0,680.8 362.2,683.8 359.5,689.2 351.8,697.2 348.2,703.0 348.2,699.5 347.2,689.2 342.8,683.8 338.2,688.5 334.8,696.5 327.2,700.5 319.2,702.5 316.0,700.0 314.2,690.8 310.0,684.0 302.5,686.8 294.2,696.0 286.2,705.8 276.8,712.5 266.8,716.0 256.8,715.0 246.5,709.5 241.8,702.2 247.8,695.8 259.2,691.5 269.5,687.8 274.5,681.2 271.2,673.2 262.8,669.5 252.5,671.5 240.8,675.0 230.0,675.8 226.5,671.8 232.0,664.8 237.0,656.8 232.5,650.0 221.0,647.2 208.0,647.5 195.0,647.5 182.0,643.2 170.5,633.5 163.5,621.0 161.2,608.0 159.5,595.0 156.2,582.0 155.2,569.0 159.8,556.2 169.5,545.0 182.0,536.2 194.8,528.5 207.2,519.8 220.0,511.2 233.0,505.5 246.0,501.8 259.0,498.8 272.0,498.0 285.0,500.5 298.0,504.8 308.2,505.0 310.8,497.5 307.0,488.2 303.8,483.0" stroke-width="1.5"/>
+
+          <!-- Shoreline Crisp Contour Line -->
+          <polygon class="shore-outline" points="960,89 981,91 1002,92 1023,99 1044,109 1065,121 1084,139 1100,157 1118,178 1138,196 1159,205 1180,210 1201,217 1222,226 1243,239 1264,251 1285,253 1296,265 1304,280 1323,279 1337,271 1358,277 1379,275 1400,273 1421,269 1442,268 1463,270 1484,275 1505,281 1526,284 1547,290 1568,300 1588,319 1606,337 1627,346 1645,365 1651,386 1657,407 1661,428 1662,449 1659,470 1654,491 1645,512 1630,533 1609,547 1588,552 1567,554 1546,560 1525,566 1504,570 1483,571 1462,580 1441,587 1420,598 1399,607 1378,620 1357,627 1336,637 1315,644 1294,649 1273,657 1252,661 1231,664 1210,670 1189,676 1168,675 1147,688 1126,692 1105,697 1084,706 1063,714 1047,708 1037,723 1016,732 995,739 974,744 953,753 932,766 911,779 890,789 869,797 848,806 831,807 832,797 827,786 824,777 804,777 796,792 801,813 781,817 760,819 739,822 718,814 697,814 680,813 678,792 667,781 648,786 650,807 642,822 621,829 600,833 579,835 558,833 537,826 516,831 495,833 474,834 453,834 432,839 411,843 395,837 378,849 365,861 344,866 327,862 308,867 287,866 266,877 245,880 224,876 208,878 188,868 167,859 148,847 133,837 114,817 108,796 104,775 117,767 118,747 101,743 101,726 87,711 79,690 73,669 73,648 72,627 68,606 63,585 59,564 54,543 55,522 72,503 93,492 114,481 135,476 156,467 177,458 198,453 219,446 240,439 261,433 282,424 303,413 324,409 345,399 365,391 386,379 407,373 428,362 449,347 470,335 491,332 512,321 533,309 554,298 575,285 596,276 617,265 638,252 659,243 680,234 701,227 722,211 739,190 751,169 762,148 781,136 793,116 814,113 835,117 856,117 877,119 897,121 911,103 932,96 953,90" fill="none" stroke-width="2.5"/>
+
+          <!-- 55-70 FT THE DEEP HOLE (Spring Sinkhole) -->
+          <g id="deepHoleGraphic">
+            <ellipse class="water-55-70" cx="590" cy="690" rx="48" ry="44" stroke-width="3"/>
+            <ellipse cx="590" cy="690" rx="53" ry="49" fill="none" stroke="#EF4444" stroke-width="2" stroke-dasharray="6,4"/>
+            <!-- White crosshairs -->
+            <line x1="555" y1="690" x2="625" y2="690" stroke="#FFFFFF" stroke-width="1.5" opacity="0.8"/>
+            <line x1="590" y1="658" x2="590" y2="722" stroke="#FFFFFF" stroke-width="1.5" opacity="0.8"/>
+            <text x="590" y="694" fill="#FFFFFF" font-size="11" font-weight="bold" text-anchor="middle">70 FT</text>
+            <text x="590" y="710" fill="#F87171" font-size="9" font-weight="bold" text-anchor="middle">SPRING HOLE</text>
+          </g>
+        </g>
+
+        <!-- Physical Footprints (C-130, Tower, Tire Reef, Piers) -->
+        <g id="footprintsGroup">
+          <!-- Dock Piers -->
+          <line x1="105" y1="745" x2="80" y2="745" stroke="#854D0E" stroke-width="8" stroke-linecap="round"/> <line x1="320" y1="875" x2="320" y2="895" stroke="#854D0E" stroke-width="8" stroke-linecap="round"/> <line x1="405" y1="860" x2="405" y2="880" stroke="#854D0E" stroke-width="8" stroke-linecap="round"/> <line x1="670" y1="830" x2="670" y2="850" stroke="#854D0E" stroke-width="8" stroke-linecap="round"/> <line x1="765" y1="845" x2="765" y2="865" stroke="#854D0E" stroke-width="8" stroke-linecap="round"/> <line x1="820" y1="830" x2="820" y2="850" stroke="#854D0E" stroke-width="8" stroke-linecap="round"/> <line x1="955" y1="770" x2="955" y2="790" stroke="#854D0E" stroke-width="8" stroke-linecap="round"/> <line x1="1315" y1="250" x2="1315" y2="230" stroke="#854D0E" stroke-width="8" stroke-linecap="round"/>
+
+          <!-- C-130 Hercules Cargo Plane Footprint -->
+          <g transform="translate(315, 535)">
+            <line x1="-50" y1="0" x2="50" y2="0" stroke="#0F172A" stroke-width="10" stroke-linecap="round"/>
+            <line x1="-4" y1="-60" x2="-4" y2="60" stroke="#0F172A" stroke-width="7" stroke-linecap="round"/>
+            <line x1="38" y1="-18" x2="38" y2="18" stroke="#0F172A" stroke-width="4" stroke-linecap="round"/>
+            <!-- 4 Engines -->
+            <rect x="-10" y="-45" width="10" height="6" rx="1" fill="#EF4444"/>
+            <rect x="-10" y="-22" width="10" height="6" rx="1" fill="#EF4444"/>
+            <rect x="-10" y="16" width="10" height="6" rx="1" fill="#EF4444"/>
+            <rect x="-10" y="39" width="10" height="6" rx="1" fill="#EF4444"/>
+            <text x="0" y="-68" fill="#38BDF8" font-size="10" font-weight="bold" text-anchor="middle">C-130 HERCULES (132' WINGSPAN)</text>
+          </g>
+
+          <!-- Observation Tower Footprint -->
+          <g transform="translate(770, 590)">
+            <rect x="-12" y="-12" width="24" height="24" fill="none" stroke="#0F172A" stroke-width="2"/>
+            <line x1="-12" y1="-12" x2="12" y2="12" stroke="#0F172A" stroke-width="1.5"/>
+            <line x1="-12" y1="12" x2="12" y2="-12" stroke="#0F172A" stroke-width="1.5"/>
+          </g>
+
+          <!-- Tire Reef Concentric Rings -->
+          <g transform="translate(845, 415)">
+            <circle cx="0" cy="0" r="9" fill="none" stroke="#0F172A" stroke-width="1.5" stroke-dasharray="3,2"/>
+            <circle cx="0" cy="0" r="16" fill="none" stroke="#0F172A" stroke-width="1.5" stroke-dasharray="4,2"/>
+            <circle cx="0" cy="0" r="23" fill="none" stroke="#0F172A" stroke-width="1.5" stroke-dasharray="5,3"/>
+          </g>
+        </g>
+
+        <!-- Insets: Compass Rose, Scale Bar, Depth Legend -->
+        <g id="mapInsetsGroup">
+          <!-- Compass Rose (Northeast corner) -->
+          <g transform="translate(1700, 100)">
+            <circle cx="0" cy="0" r="42" fill="#FFFFFF" stroke="#0F172A" stroke-width="2"/>
+            <polygon points="0,-36 -7,0 0,-10 7,0" fill="#EF4444"/>
+            <polygon points="0,36 -7,0 0,10 7,0" fill="#0F172A"/>
+            <polygon points="-36,0 0,-7 -10,0 0,7" fill="#64748B"/>
+            <polygon points="36,0 0,-7 10,0 0,7" fill="#64748B"/>
+            <text x="0" y="-42" fill="#EF4444" font-size="14" font-weight="bold" text-anchor="middle">N</text>
+            <text x="0" y="52" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle">S</text>
+            <text x="50" y="5" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle">E</text>
+            <text x="-50" y="5" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle">W</text>
+            <text x="0" y="66" fill="#475569" font-size="9" font-weight="bold" text-anchor="middle">MAG VAR 2.5° E</text>
+          </g>
+
+          <!-- Distance Scale Bar (Bottom Left) -->
+          <g transform="translate(60, 1140)">
+            <rect x="0" y="-22" width="260" height="38" rx="5" fill="#FFFFFF" stroke="#0F172A" stroke-width="2"/>
+            <line x1="15" y1="-4" x2="245" y2="-4" stroke="#0F172A" stroke-width="3"/>
+            <line x1="15" y1="-9" x2="15" y2="1" stroke="#0F172A" stroke-width="3"/>
+            <line x1="130" y1="-7" x2="130" y2="-1" stroke="#0F172A" stroke-width="2"/>
+            <line x1="245" y1="-9" x2="245" y2="1" stroke="#0F172A" stroke-width="3"/>
+            <text x="15" y="-12" fill="#0F172A" font-size="10" font-weight="bold" text-anchor="middle">0</text>
+            <text x="130" y="-12" fill="#0F172A" font-size="10" font-weight="bold" text-anchor="middle">250 FT</text>
+            <text x="245" y="-12" fill="#0284C7" font-size="10" font-weight="bold" text-anchor="middle">500 FT</text>
+            <text x="130" y="11" fill="#475569" font-size="9" text-anchor="middle">Scale: 150 FT per grid square</text>
+          </g>
+
+          <!-- Bathymetry Depth Ramp (Bottom Center) -->
+          <g transform="translate(340, 1140)">
+            <rect x="0" y="-22" width="410" height="38" rx="5" fill="#FFFFFF" stroke="#0F172A" stroke-width="2"/>
+            <text x="15" y="0" fill="#0F172A" font-size="10" font-weight="bold">DEPTH:</text>
+            <rect x="65" y="-10" width="18" height="14" fill="#E0F2FE" stroke="#0F172A" stroke-width="1"/>
+            <text x="74" y="-13" fill="#0F172A" font-size="9" font-weight="bold" text-anchor="middle">0-10'</text>
+
+            <rect x="120" y="-10" width="18" height="14" fill="#BAE6FD" stroke="#0F172A" stroke-width="1"/>
+            <text x="129" y="-13" fill="#0F172A" font-size="9" font-weight="bold" text-anchor="middle">10-20'</text>
+
+            <rect x="175" y="-10" width="18" height="14" fill="#7DD3FC" stroke="#0F172A" stroke-width="1"/>
+            <text x="184" y="-13" fill="#0F172A" font-size="9" font-weight="bold" text-anchor="middle">20-30'</text>
+
+            <rect x="230" y="-10" width="18" height="14" fill="#38BDF8" stroke="#0F172A" stroke-width="1"/>
+            <text x="239" y="-13" fill="#0F172A" font-size="9" font-weight="bold" text-anchor="middle">30-42'</text>
+
+            <rect x="285" y="-10" width="18" height="14" fill="#0284C7" stroke="#0F172A" stroke-width="1"/>
+            <text x="294" y="-13" fill="#0F172A" font-size="9" font-weight="bold" text-anchor="middle">42-55'</text>
+
+            <rect x="340" y="-10" width="18" height="14" fill="#143C82" stroke="#0F172A" stroke-width="1"/>
+            <text x="349" y="-13" fill="#0F172A" font-size="9" font-weight="bold" text-anchor="middle">55-70'</text>
+          </g>
+        </g>
+
+        <!-- Navigation Guidelines Layer -->
+        <g id="navLinesLayer">
+          <!-- Rendered dynamically -->
+        </g>
+
+        <!-- Surface Swims Layer -->
+        <g id="surfaceSwimsLayer">
+          <!-- Rendered dynamically -->
+        </g>
+
+        <!-- Circuit Routes Layer -->
+        <g id="circuitsLayer">
+          <!-- Rendered dynamically -->
+        </g>
+
+        <!-- Attraction & Platform Badges Layer (Collision-Free) -->
+        <g id="badgesLayer">
+          <!-- Rendered dynamically -->
+        </g>
+
+      </svg>
+    </div>
+
+    <!-- Floating Attraction Inspector Modal -->
+    <div class="inspector" id="inspector">
+      <div class="inspector-header">
+        <div>
+          <span id="inspCategory" style="font-size:0.7rem; font-weight:700; color:var(--cyan); text-transform:uppercase; letter-spacing:0.5px;">WRECK</span>
+          <div class="inspector-title" id="inspName">C-130 Hercules Plane</div>
+        </div>
+        <button class="inspector-close" id="btnCloseInspector">&times;</button>
+      </div>
+
+      <div class="inspector-grid">
+        <div>
+          <div style="font-size:0.68rem; color:var(--text-muted);">DEPTH</div>
+          <div style="font-size:1.05rem; font-weight:800; color:var(--cyan);" id="inspDepth">26 - 38 FT</div>
+        </div>
+        <div>
+          <div style="font-size:0.68rem; color:var(--text-muted);">EST. VISIBILITY</div>
+          <div style="font-size:1.05rem; font-weight:800; color:var(--green);" id="inspViz">15 - 25 FT</div>
+        </div>
+        <div>
+          <div style="font-size:0.68rem; color:var(--text-muted);">BEST ENTRY</div>
+          <div style="font-size:0.78rem; font-weight:700; color:#E2E8F0;" id="inspEntry">NASA Dock (320')</div>
+        </div>
+        <div>
+          <div style="font-size:0.68rem; color:var(--text-muted);">PADI AIR NDL</div>
+          <div style="font-size:0.78rem; font-weight:700; color:#FBBF24;" id="inspNdl">140 MIN</div>
+        </div>
+      </div>
+
+      <div id="inspHazard" class="inspector-hazard">
+        ⚠️ Moderate Hazard: Penetration only for trained divers with guideline.
+      </div>
+
+      <p id="inspDesc" class="inspector-desc">
+        Park centerpiece! Colossal 132' wingspan military transport aircraft with cockpit, 4 turboprop engines, and open cargo hold.
+      </p>
+
+      <div class="inspector-actions">
+        <span style="font-size:0.75rem; color:var(--gold); font-weight:700;" id="inspStar">★ Staff Favorite Attraction</span>
+        <button class="btn" id="btnFocusPin" style="padding:4px 10px; font-size:0.75rem;">Focus Pin 🔍</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Sidebar Controls & Briefings (Desktop persistent / Mobile Bottom Sheet) -->
+  <div class="sidebar" id="sidebar">
+    <!-- Mobile Drag Handle -->
+    <div class="mobile-drag-handle" id="mobileDragHandle" title="Swipe or tap to expand drawer">
+      <div class="mobile-drag-bar"></div>
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <div class="mobile-nav-bar" id="mobileNavBar">
+      <button class="mob-nav-btn active" data-tab="tab-map">
+        <span class="icon">🗺️</span>
+        <span>Map</span>
+      </button>
+      <button class="mob-nav-btn" data-tab="tab-plan">
+        <span class="icon">🧭</span>
+        <span>Circuits</span>
+      </button>
+      <button class="mob-nav-btn" data-tab="tab-gas">
+        <span class="icon">🤿</span>
+        <span>Gas Calc</span>
+      </button>
+      <button class="mob-nav-btn" data-tab="tab-list">
+        <span class="icon">📋</span>
+        <span>List (47)</span>
+      </button>
+      <button class="mob-nav-btn" data-tab="tab-safety">
+        <span class="icon">🛡️</span>
+        <span>Safety</span>
+      </button>
+    </div>
+
+    <!-- Desktop Tabs -->
+    <div class="tabs" id="desktopTabs">
+      <button class="tab-btn active" data-tab="tab-plan">Circuits & Plan</button>
+      <button class="tab-btn" data-tab="tab-gas">Gas / NDL Calc</button>
+      <button class="tab-btn" data-tab="tab-list">Directory (47)</button>
+      <button class="tab-btn" data-tab="tab-safety">Safety Slate</button>
+    </div>
+
+    <div class="tab-content" id="tabContent">
+
+      <!-- TAB 1: CIRCUITS & PLAN -->
+      <div class="tab-pane active" id="tab-plan">
+        <div class="card" style="border-left:4px solid var(--gold);">
+          <div class="card-title" style="color:var(--gold);">Tony, Addie, & Ken Dive Plan</div>
+          <p>
+            Standard Aluminum 80 tanks (3,000 PSI). Rule of Thirds gas management. Select a pre-planned circuit below to visualize the route, depth profile, and turn-around rule.
+          </p>
+        </div>
+
+        <div id="circuitCardsContainer" style="display:flex; flex-direction:column; gap:10px;">
+          <!-- Filled by JS -->
+        </div>
+
+        <!-- Dynamic Waypoint Turn-By-Turn Navigation Slate -->
+        <div class="card" id="waypointCard" style="display:none; border-left:4px solid var(--cyan);">
+          <div class="card-title" id="waypointCardTitle" style="color:var(--cyan);">Turn-By-Turn Navigation</div>
+          <div id="waypointTableContainer">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: GAS MANAGEMENT & NDL CALCULATOR -->
+      <div class="tab-pane" id="tab-gas">
+        <div class="card" style="border-left:4px solid var(--cyan);">
+          <div class="card-title" style="color:var(--cyan);">AL80 Gas & NDL Planning Tool</div>
+          <p>
+            Standard AL80 cylinder (3,000 PSI / 77.4 cu ft). Real-time gas consumption, reserve tracking, and PADI air limits.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="calc-group">
+            <div class="calc-label">
+              <span>Diver Profile</span>
+              <span id="diverLabel" style="color:var(--cyan); font-weight:700;">Tony (0.65 cu ft/min)</span>
+            </div>
+            <select id="diverSelect" class="search-box" style="margin-bottom:0;">
+              <option value="0.65" selected>Tony (Standard: 0.65 cu ft/min)</option>
+              <option value="0.45">Addie (Relaxed / Efficient: 0.45 cu ft/min)</option>
+              <option value="0.60">Ken (Standard: 0.60 cu ft/min)</option>
+              <option value="0.80">Heavy Swimmer / Working: 0.80 cu ft/min</option>
+            </select>
+          </div>
+
+          <div class="calc-group">
+            <div class="calc-label">
+              <span>Planned Max Depth</span>
+              <span id="depthVal" style="color:var(--cyan); font-weight:700;">35 FT</span>
+            </div>
+            <input type="range" class="calc-slider" id="depthRange" min="15" max="70" step="1" value="35">
+          </div>
+
+          <div class="calc-group">
+            <div class="calc-label">
+              <span>Planned Bottom Time</span>
+              <span id="timeVal" style="color:var(--cyan); font-weight:700;">40 MIN</span>
+            </div>
+            <input type="range" class="calc-slider" id="timeRange" min="5" max="65" step="1" value="40">
+          </div>
+
+          <div class="calc-result-grid">
+            <div class="metric-card">
+              <div class="metric-val" id="resGasUsed" style="color:var(--orange);">1,840 PSI</div>
+              <div class="metric-lbl">Gas Consumed</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val" id="resGasRemaining" style="color:var(--green);">1,160 PSI</div>
+              <div class="metric-lbl">Surfacing Reserve</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val" id="resTurnPSI" style="color:var(--gold);">1,600 PSI</div>
+              <div class="metric-lbl">Turnaround PSI</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val" id="resNdlTime" style="color:var(--cyan);">140 MIN</div>
+              <div class="metric-lbl">PADI Air NDL Limit</div>
+            </div>
+          </div>
+
+          <div id="calcStatusBanner" style="margin-top:12px; padding:10px; border-radius:6px; font-size:0.8rem; text-align:center; background:rgba(16, 185, 129, 0.15); color:#34D399; border:1px solid #10B981;">
+            ✓ Safe Dive Profile: Surfacing with well over 800 PSI reserve.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Gas Reserve Rules for Tony, Addie, & Ken</div>
+          <p style="font-size:0.8rem; line-height:1.6;">
+            • <strong>Full Starting Fill:</strong> 3,000 PSI (77.4 cu ft working volume)<br>
+            • <strong>Rule of Thirds Turnaround:</strong> 1,500 – 1,600 PSI<br>
+            • <strong>Deep Basin Swims:</strong> Turn dive at 1,700 – 1,800 PSI<br>
+            • <strong>Safety Stop (15 FT):</strong> Minimum 800 PSI upon ascent arrival<br>
+            • <strong>Dock Surface Reserve:</strong> Never below 500 PSI under any circumstance
+          </p>
+        </div>
+      </div>
+
+      <!-- TAB 3: ATTRACTION DIRECTORY -->
+      <div class="tab-pane" id="tab-list">
+        <input type="text" class="search-box" id="searchBox" placeholder="Search by name, plane, bus, depth, platform...">
+        <div class="item-list" id="itemsList">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+
+      <!-- TAB 4: SAFETY SLATE -->
+      <div class="tab-pane" id="tab-safety">
+        <div class="card" style="border-left:4px solid var(--red);">
+          <div class="card-title" style="color:var(--red);">Emergency Procedures</div>
+          <p style="font-size:0.82rem; color:var(--text-white); margin-bottom:8px;">
+            <strong>EMS / 911 Address:</strong><br>
+            Mammoth Lake Scuba Park<br>
+            330 N. Dixie Dr, Lake Jackson / Clute, TX 77566
+          </p>
+          <p style="font-size:0.82rem; color:var(--text-white); margin-bottom:8px;">
+            <strong>On-Site Emergency Equipment:</strong><br>
+            NASA Dock Dive Shop. Oxygen unit, AED, First Aid trauma kit, spine board.
+          </p>
+          <p style="font-size:0.82rem; color:var(--text-white);">
+            <strong>DAN Emergency Hotline:</strong> +1-919-684-9111
+          </p>
+        </div>
+
+        <div class="card" style="border-left:4px solid var(--purple);">
+          <div class="card-title" style="color:var(--purple);">Deep Hole Protocol (65–70 FT)</div>
+          <p style="font-size:0.82rem; line-height:1.5;">
+            • <strong>Cold Spring Outflow:</strong> Thermocline drops sharply to ~68°F.<br>
+            • <strong>Zero Natural Light:</strong> Pitch black below 50 FT. High-intensity dive lights mandatory.<br>
+            • <strong>Strict NDL:</strong> PADI limit is 40 min at 70 FT. Strictly monitor bottom time.<br>
+            • <strong>Ascent:</strong> Staging stop at Platform 6 (22 FT), followed by 3-minute safety stop at 15 FT.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Quarry Diving Rules</div>
+          <p style="font-size:0.82rem; line-height:1.5;">
+            • <strong>Anti-Silt Kicking:</strong> Use frog kicks or modified flutter kicks exclusively. Silt bottom reduces visibility to zero instantly.<br>
+            • <strong>Under-Water Guidelines:</strong> Hold guidelines lightly between thumb and forefinger; do not pull.<br>
+            • <strong>Thermocline Notice:</strong> Primary temperature drop at 25–30 FT from ~84°F surface to 68°F.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">BWRAF Buddy Checklist</div>
+          <p style="font-size:0.82rem; line-height:1.5;">
+            <strong>B (BCD):</strong> Inflator & dump valves operational<br>
+            <strong>W (Weights):</strong> Right-hand quick release clear<br>
+            <strong>R (Releases):</strong> Shoulder & chest straps snug and locked<br>
+            <strong>A (Air):</strong> 3,000 PSI confirmed, gauge steady while breathing<br>
+            <strong>F (Final OK):</strong> Mask, fins, compass bearing verified
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Interactive Engine JavaScript -->
+<script>
+// Data payloads
+const CATALOG = [{"id": "nasa_dock", "name": "NASA Dock (Main Entry)", "x": 105, "y": 745, "depth": "4-8 FT", "viz": "6-12 FT", "category": "dock", "star": false, "hazard": "Low - Primary park entry", "desc": "Main entrance hub, check-in dive shop, air & nitrox fills, covered gear staging tables, hot showers, emergency O2 & AED, gear rinse basins. Primary entry for Circuits 1 & 2.", "best_entry": "Direct Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "p1", "name": "Platform 1", "x": 268, "y": 700, "depth": "20 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Training platform", "desc": "10x10 FT submerged wood/fiberglass training platform. West basin navigation crossroad linking NASA Dock to Flight Deck aircraft, shallow training shelf, and C-130 expedition line.", "best_entry": "NASA Dock: 145 FT @ 074°", "fin_kicks": "16 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "jet", "name": "Trainer / Fighter Jet", "x": 155, "y": 788, "depth": "22 FT", "viz": "10-15 FT", "category": "wreck", "star": true, "hazard": "Low - Open cockpit; watch sharp wing edges", "desc": "Military jet sitting upright on hard sand bottom. Intact cockpit, twin ejection seat frames, and swept wings. High-light training depth; diver favorite for Addie's warm-up photos.", "best_entry": "NASA Dock: 80 FT @ 140° or P1: 95 FT @ 218°", "fin_kicks": "10 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "weather", "name": "Weather Station", "x": 220, "y": 810, "depth": "24 FT", "viz": "10-14 FT", "category": "attraction", "star": false, "hazard": "Low - Clear steel frame", "desc": "Submerged meteorological tower array, anemometer cups, and sensor housing on the southwest training shelf.", "best_entry": "Platform 1: 120 FT @ 155°", "fin_kicks": "13 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p2", "name": "Platform 2", "x": 272, "y": 830, "depth": "22 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Training platform", "desc": "Submerged training platform on southern shelf. Excellent buoyancy practice spot at 22 FT before heading toward deeper westshelf wrecks.", "best_entry": "Platform 1: 130 FT @ 178°", "fin_kicks": "14 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "rockets", "name": "Rocket Farm", "x": 200, "y": 730, "depth": "25 FT", "viz": "10-15 FT", "category": "attraction", "star": false, "hazard": "Low - Stable upright cylinders", "desc": "Cluster of upright aerospace rocket booster mockups resting vertically on lake bottom. Eerie futuristic silhouette in morning light.", "best_entry": "Platform 1: 70 FT @ 225°", "fin_kicks": "8 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "shuttle", "name": "Space Shuttle Mockup", "x": 250, "y": 655, "depth": "28 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low/Mod - Do not penetrate enclosed nose", "desc": "Large replica orbiter airframe complete with delta wing outline, cockpit window frames, and vertical stabilizer fin. Popular photo destination.", "best_entry": "Platform 1: 50 FT @ 335°", "fin_kicks": "6 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "fish_boat", "name": "Fishing Boat", "x": 280, "y": 750, "depth": "28 FT", "viz": "10-16 FT", "category": "wreck", "star": false, "hazard": "Low - Open fiberglass hull", "desc": "Small recreational cabin cruiser wreck resting upright on gravel. Fish congregate inside open cuddy cabin.", "best_entry": "Platform 1: 55 FT @ 165°", "fin_kicks": "6 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "pirate", "name": "Pirate Ship Wreck", "x": 340, "y": 680, "depth": "30 FT", "viz": "10-15 FT", "category": "wreck", "star": false, "hazard": "Moderate - Overhead deck timbers; use caution", "desc": "Themed wooden vessel with bowsprit, mast stubs, and open gunwale deck. Great for navigation games and fish watching.", "best_entry": "Platform 1: 75 FT @ 075°", "fin_kicks": "8 kicks", "padi_ndl": "205 min"}, {"id": "p3", "name": "Platform 3", "x": 325, "y": 778, "depth": "20 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Training platform", "desc": "South training platform near Crab Key dock. Calm waters, good visibility, perfect for mask clearing and buoyancy checks.", "best_entry": "Crab Key Dock: 100 FT @ 355°", "fin_kicks": "11 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "crab_key", "name": "Crab Key Dock", "x": 320, "y": 875, "depth": "4-10 FT", "viz": "6-12 FT", "category": "dock", "star": false, "hazard": "Low - Shallow dock stairs", "desc": "South bank entry dock with picnic benches, gear staging, and shallow ramp entry directly to Platform 3.", "best_entry": "South Perimeter Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "p4", "name": "Platform 4", "x": 395, "y": 750, "depth": "18 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Shallow training platform", "desc": "Shallow 18 FT training platform along the south slope. Connects Turtle Bay dock to central lake routes.", "best_entry": "Turtle Bay Dock: 110 FT @ 350°", "fin_kicks": "12 kicks", "padi_ndl": "Unlimited"}, {"id": "turtle_bay", "name": "Turtle Bay Dock", "x": 405, "y": 860, "depth": "4-12 FT", "viz": "8-14 FT", "category": "dock", "star": false, "hazard": "Low - Sloped gravel entry", "desc": "Protected southern dock bay with frequent red-eared slider turtle sightings basking on perimeter logs.", "best_entry": "South Perimeter Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "p5", "name": "Platform 5", "x": 500, "y": 745, "depth": "20 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Training platform", "desc": "Mid-lake southern shelf training platform. Natural waypoint when transitioning from West Flight Deck to MidTown Basin.", "best_entry": "Turtle Bay Dock: 150 FT @ 045°", "fin_kicks": "16 kicks", "padi_ndl": "Unlimited"}, {"id": "boats_nw", "name": "Speedboat Fleet", "x": 175, "y": 505, "depth": "24-28 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low - Open runabouts", "desc": "Group of 3 fiberglass runabouts clustered together on flat limestone shelf. Excellent bass and bluegill habitat.", "best_entry": "NASA Dock: 250 FT @ 340°", "fin_kicks": "27 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "bug", "name": "Giant Centipede", "x": 275, "y": 465, "depth": "26 FT", "viz": "14-20 FT", "category": "attraction", "star": false, "hazard": "Low - Metal art sculpture", "desc": "Segmented welded steel centipede sculpture resting on the northwest bottom slope.", "best_entry": "C-130 Hercules: 80 FT @ 330°", "fin_kicks": "9 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "submarine", "name": "Submarine (WWII Mock)", "x": 375, "y": 420, "depth": "26-28 FT", "viz": "15-22 FT", "category": "wreck", "star": true, "hazard": "Low/Mod - External inspection only; tight hatch", "desc": "Full-length submarine replica complete with conning tower, periscope mast, bow planes, and hull torpedo tubes. Top attraction with incredible silhouette photography!", "best_entry": "NASA Dock: 380 FT @ 035° or C-130: 130 FT @ 030°", "fin_kicks": "14 kicks from C-130", "padi_ndl": "Unlimited (>205 min)"}, {"id": "c130", "name": "C-130 Hercules Cargo Plane", "x": 315, "y": 535, "depth": "26-38 FT", "viz": "15-25 FT", "category": "wreck", "star": true, "hazard": "Moderate - Penetration only for trained divers with guideline", "desc": "The crown jewel of Mammoth Lake! Massive four-engine turboprop military transport with colossal 132' wingspan. Cockpit, cargo bay swim-through, 4 engines, and high fish congregation.", "best_entry": "Surface Swim from NASA Dock: 320 FT @ 062° (35 kicks) or via Platform 1 guideline (170 FT @ 016°)", "fin_kicks": "19 kicks from P1", "padi_ndl": "140 min at deepest point (38 FT)"}, {"id": "mammoth", "name": "Columbian Mammoth", "x": 310, "y": 615, "depth": "32 FT", "viz": "12-18 FT", "category": "attraction", "star": false, "hazard": "Low - Large welded frame", "desc": "Life-sized steel mammoth sculpture honoring prehistoric mammoth fossils discovered during quarry excavation. Giant curved tusks and ribs.", "best_entry": "C-130 Hercules: 80 FT @ 180°", "fin_kicks": "9 kicks", "padi_ndl": "205 min"}, {"id": "egg", "name": "Giant Egg", "x": 345, "y": 650, "depth": "30 FT", "viz": "12-18 FT", "category": "attraction", "star": false, "hazard": "Low - Concrete dome with openings", "desc": "Submerged concrete egg structure with swim-through portal openings on gravel bottom.", "best_entry": "Mammoth: 50 FT @ 140°", "fin_kicks": "6 kicks", "padi_ndl": "205 min"}, {"id": "short_bus", "name": "Short Bus", "x": 425, "y": 530, "depth": "34 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low - Open windows & emergency exit", "desc": "Sunken yellow school short bus with interior seats intact. Easy swim-through for divers of all experience levels.", "best_entry": "C-130 Hercules: 110 FT @ 085°", "fin_kicks": "12 kicks", "padi_ndl": "160 min"}, {"id": "boat_stick", "name": "Boat on a Stick", "x": 445, "y": 625, "depth": "35 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low - Elevated pylon structure", "desc": "Recreational boat hull perched atop a vertical steel pylon several feet off the lake floor. Catfish often rest underneath.", "best_entry": "Short Bus: 95 FT @ 168°", "fin_kicks": "10 kicks", "padi_ndl": "160 min"}, {"id": "cruiser_mid", "name": "Cabin Cruiser", "x": 535, "y": 615, "depth": "34 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low - Open cabin", "desc": "Sunken 28 FT cruiser hull resting upright on the central basin ridge. Connects west attractions to the deep basin.", "best_entry": "Boat on a Stick: 90 FT @ 085°", "fin_kicks": "10 kicks", "padi_ndl": "160 min"}, {"id": "deep_hole", "name": "THE DEEP HOLE (Spring Pipe)", "x": 590, "y": 690, "depth": "65-70 FT", "viz": "5-10 FT", "category": "deep", "star": true, "hazard": "CRITICAL HAZARD - Cold natural spring, pitch black below 50 FT, rapid NDL consumption. High-intensity dive lights & redundant gas mandatory.", "desc": "The deepest point in Texas dive parks (70 FT max)! Submerged natural spring sinkhole with cold artesian flow (68°F thermocline). Marked by vertical discharge pipe structure. Tony & Ken advanced deep dive spot.", "best_entry": "Surface Swim from MidTown Dock: 160 FT @ 330° (17 kicks) or guideline from Platform 6 (60 FT @ 325°)", "fin_kicks": "17 kicks from MidTown", "padi_ndl": "40 min strictly monitored"}, {"id": "fire_truck", "name": "Fire Truck", "x": 675, "y": 590, "depth": "38 FT", "viz": "10-16 FT", "category": "wreck", "star": false, "hazard": "Low/Mod - Open cab & ladder brackets", "desc": "Full-size commercial fire engine with pump panel, hose bed, bumper winch, and open cab. Excellent photo subject.", "best_entry": "MidTown Dock: 240 FT @ 001°", "fin_kicks": "26 kicks", "padi_ndl": "140 min"}, {"id": "pickup", "name": "Pickup Truck", "x": 670, "y": 645, "depth": "36 FT", "viz": "10-16 FT", "category": "wreck", "star": false, "hazard": "Low - Open cab", "desc": "Submerged truck chassis resting on gravel floor south of the Fire Truck.", "best_entry": "Fire Truck: 55 FT @ 175°", "fin_kicks": "6 kicks", "padi_ndl": "150 min"}, {"id": "king_kong", "name": "King Kong Sculpture", "x": 718, "y": 700, "depth": "32 FT", "viz": "12-18 FT", "category": "attraction", "star": false, "hazard": "Low - Welded steel art piece", "desc": "Large metallic gorilla sculpture standing upright on concrete slab with raised arms.", "best_entry": "Pickup: 75 FT @ 125°", "fin_kicks": "8 kicks", "padi_ndl": "205 min"}, {"id": "p6", "name": "Platform 6", "x": 630, "y": 735, "depth": "22 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Training platform south of Deep Hole", "desc": "Central training platform. The primary safety & decompression staging platform for divers ascending from the Deep Hole.", "best_entry": "MidTown Dock: 100 FT @ 340°", "fin_kicks": "11 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p7", "name": "Platform 7", "x": 845, "y": 710, "depth": "24 FT", "viz": "10-15 FT", "category": "platform", "star": false, "hazard": "Low - Training platform", "desc": "Training platform east of King Kong on the south slope.", "best_entry": "Mermaid Beach: 120 FT @ 010°", "fin_kicks": "13 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "tower", "name": "Observation Tower", "x": 770, "y": 590, "depth": "38-42 FT", "viz": "12-18 FT", "category": "attraction", "star": false, "hazard": "Low - Steel lattice cross-braces", "desc": "Tall steel lattice tower structure. Tower apex rises through the thermocline from 42 FT basin floor up to ~25 FT depth.", "best_entry": "Fire Truck: 95 FT @ 090°", "fin_kicks": "10 kicks", "padi_ndl": "135 min"}, {"id": "tire_reef", "name": "Tire Reef & Jungle Gym", "x": 845, "y": 415, "depth": "38-44 FT", "viz": "14-20 FT", "category": "attraction", "star": true, "hazard": "Low - Open pyramid reef structure", "desc": "Massive artificial reef made of hundreds of bundled tires stacked with steel climbing gym. Highest fish density in Mammoth Lake (bass, crappie, catfish)!", "best_entry": "Tower: 190 FT @ 023°", "fin_kicks": "21 kicks", "padi_ndl": "135 min"}, {"id": "cargo", "name": "18-Wheeler & Cargo", "x": 985, "y": 305, "depth": "38-42 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Moderate - Do not penetrate enclosed trailer", "desc": "Full semi tractor and enclosed cargo box trailer resting in north cove trench.", "best_entry": "Tire Reef: 180 FT @ 055°", "fin_kicks": "20 kicks", "padi_ndl": "135 min"}, {"id": "satellite", "name": "Satellite Dish", "x": 1075, "y": 240, "depth": "28 FT", "viz": "14-20 FT", "category": "attraction", "star": false, "hazard": "Low - Parabolic steel mesh dish", "desc": "Large parabolic radar dish pointed upwards toward the surface. Highly reflective in sunlight.", "best_entry": "18-Wheeler: 110 FT @ 055°", "fin_kicks": "12 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "truck_stop", "name": "Truck Stop & Dumps", "x": 1035, "y": 515, "depth": "38-42 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low/Mod - Heavy machinery frames", "desc": "Collection of heavy commercial dump truck beds and mining machinery.", "best_entry": "Observation Tower: 275 FT @ 075°", "fin_kicks": "30 kicks", "padi_ndl": "135 min"}, {"id": "p8", "name": "Platform 8", "x": 955, "y": 625, "depth": "38 FT", "viz": "12-18 FT", "category": "platform", "star": false, "hazard": "Low - Deep skills platform", "desc": "Deep skills training platform in the central basin. Crucial hub connecting central wrecks to Thunder Bay railroad.", "best_entry": "Stingray City: 150 FT @ 360°", "fin_kicks": "17 kicks", "padi_ndl": "140 min"}, {"id": "midtown", "name": "MidTown Dock", "x": 670, "y": 830, "depth": "4-12 FT", "viz": "8-14 FT", "category": "dock", "star": false, "hazard": "Low - Dock steps & staging ramp", "desc": "Central south shore dock entry. Shortest surface swim access to Fire Truck (240 FT) and Deep Hole (160 FT). Covered shelter.", "best_entry": "South Perimeter Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "phil", "name": "Phil Station", "x": 765, "y": 845, "depth": "4-12 FT", "viz": "8-14 FT", "category": "dock", "star": false, "hazard": "Low - Dock stairs", "desc": "South shore dock with covered sun canopy and bench seating.", "best_entry": "South Perimeter Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "mermaid", "name": "Mermaid Beach", "x": 820, "y": 830, "depth": "2-8 FT", "viz": "6-12 FT", "category": "dock", "star": false, "hazard": "Low - Gentle sandy slope", "desc": "Gentle sloping natural sand beach entry. Ideal for wading, snorkelers, and gentle shore entries.", "best_entry": "South Perimeter Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "stingray", "name": "Stingray City", "x": 955, "y": 770, "depth": "10-18 FT", "viz": "8-14 FT", "category": "dock", "star": false, "hazard": "Low - Shelf dock", "desc": "South bank shelf dock entry point. Direct access to Platform 8 and central trench.", "best_entry": "South Perimeter Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "dock_thunder", "name": "Thunder Bay Dock", "x": 1315, "y": 250, "depth": "4-10 FT", "viz": "8-15 FT", "category": "dock", "star": false, "hazard": "Low - Primary northeast dock hub", "desc": "Northeast park entrance hub. Features covered shelter, picnic tables, parking, camping sites, and direct access to Thunder Bay Railroad wrecks.", "best_entry": "North Dixie Dr Entry Road", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "p9", "name": "Platform 9", "x": 1370, "y": 388, "depth": "30 FT", "viz": "12-18 FT", "category": "platform", "star": false, "hazard": "Low - East training platform", "desc": "East basin primary training platform. Crossroads connecting Thunder Bay Dock to the Caboose, School Buses, and Bucket Truck.", "best_entry": "Thunder Bay Dock: 150 FT @ 158°", "fin_kicks": "16 kicks", "padi_ndl": "205 min"}, {"id": "caboose", "name": "Railroad Caboose", "x": 1490, "y": 300, "depth": "30-34 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low/Mod - Open doors & windows for swim-through", "desc": "Authentic vintage steel railroad caboose with cupola observation roof. Open doorways and windows allow comfortable interior swim-throughs.", "best_entry": "Platform 9: 150 FT @ 054° or Surface Swim from Thunder Bay: 190 FT @ 108°", "fin_kicks": "16 kicks from P9", "padi_ndl": "160 min"}, {"id": "trains", "name": "Train Boxcars & Tanks", "x": 1155, "y": 410, "depth": "34-38 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Moderate - Heavy steel freight couplers", "desc": "Heavy freight railroad boxcars and cylindrical tanker cars resting in parallel tracks on gravel basin bed.", "best_entry": "Platform 9: 220 FT @ 265°", "fin_kicks": "24 kicks", "padi_ndl": "140 min"}, {"id": "bucket_truck", "name": "Bucket Utility Truck", "x": 1445, "y": 435, "depth": "32 FT", "viz": "14-20 FT", "category": "wreck", "star": true, "hazard": "Low - Elevated hydraulic bucket arm", "desc": "Commercial electrical boom truck with hydraulic bucket elevated into the water column. Staff and diver favorite for novelty photo shoots!", "best_entry": "Platform 9: 90 FT @ 155°", "fin_kicks": "10 kicks", "padi_ndl": "205 min"}, {"id": "school_buses", "name": "School Buses (x2)", "x": 1530, "y": 375, "depth": "30-36 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low - Clear open aisles & emergency exits", "desc": "Two full-size yellow school buses placed end-to-end on lakebed. Open windows, clear roof hatches, and long aisle swim-throughs.", "best_entry": "Platform 9: 175 FT @ 095°", "fin_kicks": "19 kicks", "padi_ndl": "160 min"}, {"id": "flatbed", "name": "Flatbed Truck", "x": 1215, "y": 575, "depth": "36 FT", "viz": "12-18 FT", "category": "wreck", "star": false, "hazard": "Low - Open flatbed deck", "desc": "Heavy commercial flatbed rig resting on the southeast slope.", "best_entry": "Platform 8: 260 FT @ 080°", "fin_kicks": "28 kicks", "padi_ndl": "150 min"}, {"id": "east_pipe", "name": "East Valve & Pipe", "x": 1565, "y": 510, "depth": "34 FT", "viz": "10-15 FT", "category": "attraction", "star": false, "hazard": "Low - Valve assembly", "desc": "Industrial quarry piping, valve fixture structure, and flange manifold on east basin slope.", "best_entry": "School Buses: 140 FT @ 165°", "fin_kicks": "15 kicks", "padi_ndl": "160 min"}];
+const SOLVED_BADGES = [{"id": "jet", "title": "Trainer / Fighter Jet", "dep": "22 FT", "viz": "10-15'", "type": "star", "cx": 154.4, "cy": 787.3, "bx": 52.0, "by": 823.9, "w": 175.6, "h": 41.0, "star": true, "desc": "Military jet sitting upright on hard sand bottom. Intact cockpit, twin ejection seat frames, and swept wings. High-light training depth; diver favorite for Addie's warm-up photos.", "category": "wreck", "hazard": "Low - Open cockpit; watch sharp wing edges", "best_entry": "NASA Dock: 80 FT @ 140° or P1: 95 FT @ 218°", "fin_kicks": "10 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "rockets", "title": "Rocket Farm", "dep": "25 FT", "viz": "10-15'", "type": "attraction", "cx": 199.8, "cy": 729.5, "bx": 97.3, "by": 704.6, "w": 175.6, "h": 38.0, "star": false, "desc": "Cluster of upright aerospace rocket booster mockups resting vertically on lake bottom. Eerie futuristic silhouette in morning light.", "category": "attraction", "hazard": "Low - Stable upright cylinders", "best_entry": "Platform 1: 70 FT @ 225°", "fin_kicks": "8 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "weather", "title": "Weather Station", "dep": "24 FT", "viz": "10-14'", "type": "attraction", "cx": 219.5, "cy": 810.0, "bx": 190.2, "by": 913.9, "w": 175.6, "h": 38.0, "star": false, "desc": "Submerged meteorological tower array, anemometer cups, and sensor housing on the southwest training shelf.", "category": "attraction", "hazard": "Low - Clear steel frame", "best_entry": "Platform 1: 120 FT @ 155°", "fin_kicks": "13 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "shuttle", "title": "Space Shuttle Mock", "dep": "28 FT", "viz": "12-18'", "type": "wreck", "cx": 249.5, "cy": 654.9, "bx": 147.1, "by": 581.0, "w": 175.6, "h": 41.0, "star": false, "desc": "Large replica orbiter airframe complete with delta wing outline, cockpit window frames, and vertical stabilizer fin. Popular photo destination.", "category": "wreck", "hazard": "Low/Mod - Do not penetrate enclosed nose", "best_entry": "Platform 1: 50 FT @ 335°", "fin_kicks": "6 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "fish_boat", "title": "Fishing Boat", "dep": "28 FT", "viz": "10-16'", "type": "wreck", "cx": 279.5, "cy": 750.0, "bx": 235.6, "by": 804.9, "w": 175.6, "h": 41.0, "star": false, "desc": "Small recreational cabin cruiser wreck resting upright on gravel. Fish congregate inside open cuddy cabin.", "category": "wreck", "hazard": "Low - Open fiberglass hull", "best_entry": "Platform 1: 55 FT @ 165°", "fin_kicks": "6 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "pirate", "title": "Pirate Ship Wreck", "dep": "30 FT", "viz": "10-15'", "type": "wreck", "cx": 339.5, "cy": 679.8, "bx": 427.3, "by": 682.7, "w": 175.6, "h": 41.0, "star": false, "desc": "Themed wooden vessel with bowsprit, mast stubs, and open gunwale deck. Great for navigation games and fish watching.", "category": "wreck", "hazard": "Moderate - Overhead deck timbers; use caution", "best_entry": "Platform 1: 75 FT @ 075°", "fin_kicks": "8 kicks", "padi_ndl": "205 min"}, {"id": "boats_nw", "title": "Speedboat Fleet", "dep": "24-28 FT", "viz": "12-18'", "type": "wreck", "cx": 174.9, "cy": 504.9, "bx": 72.4, "by": 468.3, "w": 193.2, "h": 41.0, "star": false, "desc": "Group of 3 fiberglass runabouts clustered together on flat limestone shelf. Excellent bass and bluegill habitat.", "category": "wreck", "hazard": "Low - Open runabouts", "best_entry": "NASA Dock: 250 FT @ 340°", "fin_kicks": "27 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "bug", "title": "Giant Centipede", "dep": "26 FT", "viz": "14-20'", "type": "attraction", "cx": 274.4, "cy": 464.6, "bx": 186.6, "by": 413.4, "w": 175.6, "h": 41.0, "star": false, "desc": "Segmented welded steel centipede sculpture resting on the northwest bottom slope.", "category": "attraction", "hazard": "Low - Metal art sculpture", "best_entry": "C-130 Hercules: 80 FT @ 330°", "fin_kicks": "9 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "submarine", "title": "Submarine (WWII Mock)", "dep": "26-28 FT", "viz": "15-22'", "type": "star", "cx": 374.6, "cy": 420.0, "bx": 411.2, "by": 357.8, "w": 204.9, "h": 41.0, "star": true, "desc": "Full-length submarine replica complete with conning tower, periscope mast, bow planes, and hull torpedo tubes. Top attraction with incredible silhouette photography!", "category": "wreck", "hazard": "Low/Mod - External inspection only; tight hatch", "best_entry": "NASA Dock: 380 FT @ 035° or C-130: 130 FT @ 030°", "fin_kicks": "14 kicks from C-130", "padi_ndl": "Unlimited (>205 min)"}, {"id": "c130", "title": "C-130 Hercules Plane", "dep": "26-38 FT", "viz": "15-25'", "type": "star", "cx": 314.6, "cy": 534.9, "bx": 219.5, "by": 533.4, "w": 193.2, "h": 38.0, "star": true, "desc": "The crown jewel of Mammoth Lake! Massive four-engine turboprop military transport with colossal 132' wingspan. Cockpit, cargo bay swim-through, 4 engines, and high fish congregation.", "category": "wreck", "hazard": "Moderate - Penetration only for trained divers with guideline", "best_entry": "Surface Swim from NASA Dock: 320 FT @ 062° (35 kicks) or via Platform 1 guideline (170 FT @ 016°)", "fin_kicks": "19 kicks from P1", "padi_ndl": "140 min at deepest point (38 FT)"}, {"id": "mammoth", "title": "Columbian Mammoth", "dep": "32 FT", "viz": "12-18'", "type": "attraction", "cx": 309.5, "cy": 614.6, "bx": 214.4, "by": 628.5, "w": 185.1, "h": 38.0, "star": false, "desc": "Life-sized steel mammoth sculpture honoring prehistoric mammoth fossils discovered during quarry excavation. Giant curved tusks and ribs.", "category": "attraction", "hazard": "Low - Large welded frame", "best_entry": "C-130 Hercules: 80 FT @ 180°", "fin_kicks": "9 kicks", "padi_ndl": "205 min"}, {"id": "egg", "title": "Giant Egg", "dep": "30 FT", "viz": "12-18'", "type": "attraction", "cx": 344.6, "cy": 649.8, "bx": 388.5, "by": 729.5, "w": 175.6, "h": 41.0, "star": false, "desc": "Submerged concrete egg structure with swim-through portal openings on gravel bottom.", "category": "attraction", "hazard": "Low - Concrete dome with openings", "best_entry": "Mammoth: 50 FT @ 140°", "fin_kicks": "6 kicks", "padi_ndl": "205 min"}, {"id": "short_bus", "title": "Short Bus", "dep": "34 FT", "viz": "12-18'", "type": "wreck", "cx": 424.4, "cy": 529.8, "bx": 504.9, "by": 453.7, "w": 175.6, "h": 38.0, "star": false, "desc": "Sunken yellow school short bus with interior seats intact. Easy swim-through for divers of all experience levels.", "category": "wreck", "hazard": "Low - Open windows & emergency exit", "best_entry": "C-130 Hercules: 110 FT @ 085°", "fin_kicks": "12 kicks", "padi_ndl": "160 min"}, {"id": "boat_stick", "title": "Boat on a Stick", "dep": "35 FT", "viz": "12-18'", "type": "wreck", "cx": 444.9, "cy": 624.9, "bx": 525.4, "by": 637.3, "w": 175.6, "h": 38.0, "star": false, "desc": "Recreational boat hull perched atop a vertical steel pylon several feet off the lake floor. Catfish often rest underneath.", "category": "wreck", "hazard": "Low - Elevated pylon structure", "best_entry": "Short Bus: 95 FT @ 168°", "fin_kicks": "10 kicks", "padi_ndl": "160 min"}, {"id": "cruiser_mid", "title": "Cabin Cruiser", "dep": "34 FT", "viz": "12-18'", "type": "wreck", "cx": 534.9, "cy": 614.6, "bx": 498.3, "by": 545.1, "w": 175.6, "h": 38.0, "star": false, "desc": "Sunken 28 FT cruiser hull resting upright on the central basin ridge. Connects west attractions to the deep basin.", "category": "wreck", "hazard": "Low - Open cabin", "best_entry": "Boat on a Stick: 90 FT @ 085°", "fin_kicks": "10 kicks", "padi_ndl": "160 min"}, {"id": "deep_hole", "title": "THE DEEP HOLE (Spring Pipe)", "dep": "65-70 FT", "viz": "5-10'", "type": "deep", "cx": 589.8, "cy": 690.0, "bx": 589.8, "by": 591.2, "w": 256.8, "h": 41.0, "star": true, "desc": "The deepest point in Texas dive parks (70 FT max)! Submerged natural spring sinkhole with cold artesian flow (68°F thermocline). Marked by vertical discharge pipe structure. Tony & Ken advanced deep dive spot.", "category": "deep", "hazard": "CRITICAL HAZARD - Cold natural spring, pitch black below 50 FT, rapid NDL consumption. High-intensity dive lights & redundant gas mandatory.", "best_entry": "Surface Swim from MidTown Dock: 160 FT @ 330° (17 kicks) or guideline from Platform 6 (60 FT @ 325°)", "fin_kicks": "17 kicks from MidTown", "padi_ndl": "40 min strictly monitored"}, {"id": "fire_truck", "title": "Fire Truck", "dep": "38 FT", "viz": "10-16'", "type": "wreck", "cx": 674.6, "cy": 589.8, "bx": 616.1, "by": 499.8, "w": 175.6, "h": 38.0, "star": false, "desc": "Full-size commercial fire engine with pump panel, hose bed, bumper winch, and open cab. Excellent photo subject.", "category": "wreck", "hazard": "Low/Mod - Open cab & ladder brackets", "best_entry": "MidTown Dock: 240 FT @ 001°", "fin_kicks": "26 kicks", "padi_ndl": "140 min"}, {"id": "pickup", "title": "Pickup Truck", "dep": "36 FT", "viz": "10-16'", "type": "wreck", "cx": 669.5, "cy": 644.6, "bx": 728.0, "by": 681.2, "w": 175.6, "h": 41.0, "star": false, "desc": "Submerged truck chassis resting on gravel floor south of the Fire Truck.", "category": "wreck", "hazard": "Low - Open cab", "best_entry": "Fire Truck: 55 FT @ 175°", "fin_kicks": "6 kicks", "padi_ndl": "150 min"}, {"id": "king_kong", "title": "King Kong Sculpture", "dep": "32 FT", "viz": "12-18'", "type": "attraction", "cx": 717.8, "cy": 699.5, "bx": 782.9, "by": 770.5, "w": 180.7, "h": 41.0, "star": false, "desc": "Large metallic gorilla sculpture standing upright on concrete slab with raised arms.", "category": "attraction", "hazard": "Low - Welded steel art piece", "best_entry": "Pickup: 75 FT @ 125°", "fin_kicks": "8 kicks", "padi_ndl": "205 min"}, {"id": "tower", "title": "Observation Tower", "dep": "38-42 FT", "viz": "12-18'", "type": "attraction", "cx": 769.8, "cy": 589.8, "bx": 850.2, "by": 549.5, "w": 193.2, "h": 38.0, "star": false, "desc": "Tall steel lattice tower structure. Tower apex rises through the thermocline from 42 FT basin floor up to ~25 FT depth.", "category": "attraction", "hazard": "Low - Steel lattice cross-braces", "best_entry": "Fire Truck: 95 FT @ 090°", "fin_kicks": "10 kicks", "padi_ndl": "135 min"}, {"id": "tire_reef", "title": "Tire Reef & Jungle Gym", "dep": "38-44 FT", "viz": "14-20'", "type": "star", "cx": 844.4, "cy": 414.9, "bx": 756.6, "by": 363.7, "w": 202.7, "h": 41.0, "star": true, "desc": "Massive artificial reef made of hundreds of bundled tires stacked with steel climbing gym. Highest fish density in Mammoth Lake (bass, crappie, catfish)!", "category": "attraction", "hazard": "Low - Open pyramid reef structure", "best_entry": "Tower: 190 FT @ 023°", "fin_kicks": "21 kicks", "padi_ndl": "135 min"}, {"id": "cargo", "title": "18-Wheeler & Cargo", "dep": "38-42 FT", "viz": "12-18'", "type": "wreck", "cx": 984.9, "cy": 304.4, "bx": 904.4, "by": 249.5, "w": 193.2, "h": 41.0, "star": false, "desc": "Full semi tractor and enclosed cargo box trailer resting in north cove trench.", "category": "wreck", "hazard": "Moderate - Do not penetrate enclosed trailer", "best_entry": "Tire Reef: 180 FT @ 055°", "fin_kicks": "20 kicks", "padi_ndl": "135 min"}, {"id": "satellite", "title": "Satellite Dish", "dep": "28 FT", "viz": "14-20'", "type": "attraction", "cx": 1074.9, "cy": 240.0, "bx": 1148.0, "by": 185.1, "w": 175.6, "h": 38.0, "star": false, "desc": "Large parabolic radar dish pointed upwards toward the surface. Highly reflective in sunlight.", "category": "attraction", "hazard": "Low - Parabolic steel mesh dish", "best_entry": "18-Wheeler: 110 FT @ 055°", "fin_kicks": "12 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "truck_stop", "title": "Truck Stop & Dumps", "dep": "38-42 FT", "viz": "12-18'", "type": "wreck", "cx": 1034.6, "cy": 514.4, "bx": 1107.8, "by": 558.3, "w": 193.2, "h": 41.0, "star": false, "desc": "Collection of heavy commercial dump truck beds and mining machinery.", "category": "wreck", "hazard": "Low/Mod - Heavy machinery frames", "best_entry": "Observation Tower: 275 FT @ 075°", "fin_kicks": "30 kicks", "padi_ndl": "135 min"}, {"id": "trains", "title": "Train Tankers & Cars", "dep": "34-38 FT", "viz": "12-18'", "type": "wreck", "cx": 1154.6, "cy": 409.8, "bx": 1066.8, "by": 358.5, "w": 193.2, "h": 38.0, "star": false, "desc": "Heavy freight railroad boxcars and cylindrical tanker cars resting in parallel tracks on gravel basin bed.", "category": "wreck", "hazard": "Moderate - Heavy steel freight couplers", "best_entry": "Platform 9: 220 FT @ 265°", "fin_kicks": "24 kicks", "padi_ndl": "140 min"}, {"id": "flatbed", "title": "Flatbed Truck", "dep": "36 FT", "viz": "12-18'", "type": "wreck", "cx": 1214.6, "cy": 574.4, "bx": 1280.5, "by": 625.6, "w": 175.6, "h": 38.0, "star": false, "desc": "Heavy commercial flatbed rig resting on the southeast slope.", "category": "wreck", "hazard": "Low - Open flatbed deck", "best_entry": "Platform 8: 260 FT @ 080°", "fin_kicks": "28 kicks", "padi_ndl": "150 min"}, {"id": "caboose", "title": "Railroad Caboose", "dep": "30-34 FT", "viz": "12-18'", "type": "wreck", "cx": 1489.8, "cy": 300.0, "bx": 1570.2, "by": 248.8, "w": 193.2, "h": 38.0, "star": false, "desc": "Authentic vintage steel railroad caboose with cupola observation roof. Open doorways and windows allow comfortable interior swim-throughs.", "category": "wreck", "hazard": "Low/Mod - Open doors & windows for swim-through", "best_entry": "Platform 9: 150 FT @ 054° or Surface Swim from Thunder Bay: 190 FT @ 108°", "fin_kicks": "16 kicks from P9", "padi_ndl": "160 min"}, {"id": "school_buses", "title": "School Buses (x2)", "dep": "30-36 FT", "viz": "12-18'", "type": "wreck", "cx": 1530.0, "cy": 374.6, "bx": 1617.8, "by": 403.9, "w": 193.2, "h": 41.0, "star": false, "desc": "Two full-size yellow school buses placed end-to-end on lakebed. Open windows, clear roof hatches, and long aisle swim-throughs.", "category": "wreck", "hazard": "Low - Clear open aisles & emergency exits", "best_entry": "Platform 9: 175 FT @ 095°", "fin_kicks": "19 kicks", "padi_ndl": "160 min"}, {"id": "bucket_truck", "title": "Bucket Utility Truck", "dep": "32 FT", "viz": "14-20'", "type": "star", "cx": 1444.4, "cy": 434.6, "bx": 1356.6, "by": 485.9, "w": 175.6, "h": 41.0, "star": true, "desc": "Commercial electrical boom truck with hydraulic bucket elevated into the water column. Staff and diver favorite for novelty photo shoots!", "category": "wreck", "hazard": "Low - Elevated hydraulic bucket arm", "best_entry": "Platform 9: 90 FT @ 155°", "fin_kicks": "10 kicks", "padi_ndl": "205 min"}, {"id": "east_pipe", "title": "East Valve & Pipe", "dep": "34 FT", "viz": "10-15'", "type": "attraction", "cx": 1564.4, "cy": 510.0, "bx": 1637.6, "by": 564.9, "w": 175.6, "h": 41.0, "star": false, "desc": "Industrial quarry piping, valve fixture structure, and flange manifold on east basin slope.", "category": "attraction", "hazard": "Low - Valve assembly", "best_entry": "School Buses: 140 FT @ 165°", "fin_kicks": "15 kicks", "padi_ndl": "160 min"}, {"id": "p1", "title": "Platform 1", "dep": "20 FT", "viz": "10-15'", "type": "platform", "cx": 267.8, "cy": 699.5, "bx": 231.2, "by": 666.6, "w": 137.6, "h": 22.7, "star": false, "desc": "10x10 FT submerged wood/fiberglass training platform. West basin navigation crossroad linking NASA Dock to Flight Deck aircraft, shallow training shelf, and C-130 expedition line.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "NASA Dock: 145 FT @ 074°", "fin_kicks": "16 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p2", "title": "Platform 2", "dep": "22 FT", "viz": "10-15'", "type": "platform", "cx": 271.5, "cy": 829.8, "bx": 220.2, "by": 843.7, "w": 137.6, "h": 22.7, "star": false, "desc": "Submerged training platform on southern shelf. Excellent buoyancy practice spot at 22 FT before heading toward deeper westshelf wrecks.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "Platform 1: 130 FT @ 178°", "fin_kicks": "14 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p3", "title": "Platform 3", "dep": "20 FT", "viz": "10-15'", "type": "platform", "cx": 324.9, "cy": 777.8, "bx": 324.9, "by": 766.8, "w": 137.6, "h": 22.7, "star": false, "desc": "South training platform near Crab Key dock. Calm waters, good visibility, perfect for mask clearing and buoyancy checks.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "Crab Key Dock: 100 FT @ 355°", "fin_kicks": "11 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p4", "title": "Platform 4", "dep": "18 FT", "viz": "10-15'", "type": "platform", "cx": 394.4, "cy": 750.0, "bx": 431.0, "by": 808.5, "w": 137.6, "h": 22.7, "star": false, "desc": "Shallow 18 FT training platform along the south slope. Connects Turtle Bay dock to central lake routes.", "category": "platform", "hazard": "Low - Shallow training platform", "best_entry": "Turtle Bay Dock: 110 FT @ 350°", "fin_kicks": "12 kicks", "padi_ndl": "Unlimited"}, {"id": "p5", "title": "Platform 5", "dep": "20 FT", "viz": "10-15'", "type": "platform", "cx": 499.8, "cy": 744.9, "bx": 499.8, "by": 777.1, "w": 137.6, "h": 22.7, "star": false, "desc": "Mid-lake southern shelf training platform. Natural waypoint when transitioning from West Flight Deck to MidTown Basin.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "Turtle Bay Dock: 150 FT @ 045°", "fin_kicks": "16 kicks", "padi_ndl": "Unlimited"}, {"id": "p6", "title": "Platform 6", "dep": "22 FT", "viz": "10-15'", "type": "platform", "cx": 630.0, "cy": 734.6, "bx": 593.4, "by": 746.3, "w": 137.6, "h": 22.7, "star": false, "desc": "Central training platform. The primary safety & decompression staging platform for divers ascending from the Deep Hole.", "category": "platform", "hazard": "Low - Training platform south of Deep Hole", "best_entry": "MidTown Dock: 100 FT @ 340°", "fin_kicks": "11 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p7", "title": "Platform 7", "dep": "24 FT", "viz": "10-15'", "type": "platform", "cx": 844.4, "cy": 709.8, "bx": 881.0, "by": 730.2, "w": 137.6, "h": 22.7, "star": false, "desc": "Training platform east of King Kong on the south slope.", "category": "platform", "hazard": "Low - Training platform", "best_entry": "Mermaid Beach: 120 FT @ 010°", "fin_kicks": "13 kicks", "padi_ndl": "Unlimited (>205 min)"}, {"id": "p8", "title": "Platform 8", "dep": "38 FT", "viz": "12-18'", "type": "platform", "cx": 954.9, "cy": 624.9, "bx": 998.8, "by": 657.8, "w": 137.6, "h": 22.7, "star": false, "desc": "Deep skills training platform in the central basin. Crucial hub connecting central wrecks to Thunder Bay railroad.", "category": "platform", "hazard": "Low - Deep skills platform", "best_entry": "Stingray City: 150 FT @ 360°", "fin_kicks": "17 kicks", "padi_ndl": "140 min"}, {"id": "p9", "title": "Platform 9", "dep": "30 FT", "viz": "12-18'", "type": "platform", "cx": 1369.8, "cy": 387.8, "bx": 1318.5, "by": 358.5, "w": 137.6, "h": 22.7, "star": false, "desc": "East basin primary training platform. Crossroads connecting Thunder Bay Dock to the Caboose, School Buses, and Bucket Truck.", "category": "platform", "hazard": "Low - East training platform", "best_entry": "Thunder Bay Dock: 150 FT @ 158°", "fin_kicks": "16 kicks", "padi_ndl": "205 min"}, {"id": "nasa_dock", "title": "NASA DOCK (MAIN ENTRY)", "dep": "4-8 FT", "viz": "6-12 FT", "type": "dock", "cx": 105, "cy": 745, "bx": 105, "by": 780, "w": 165, "h": 26, "star": false, "desc": "Main entrance hub, check-in dive shop, air & nitrox fills, covered gear staging tables, hot showers, emergency O2 & AED, gear rinse basins. Primary entry for Circuits 1 & 2.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "crab_key", "title": "CRAB KEY DOCK", "dep": "4-10 FT", "viz": "6-12 FT", "type": "dock", "cx": 320, "cy": 875, "bx": 320, "by": 908, "w": 130, "h": 26, "star": false, "desc": "South bank entry dock with picnic benches, gear staging, and shallow ramp entry directly to Platform 3.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "turtle_bay", "title": "TURTLE BAY DOCK", "dep": "4-12 FT", "viz": "8-14 FT", "type": "dock", "cx": 405, "cy": 860, "bx": 405, "by": 895, "w": 140, "h": 26, "star": false, "desc": "Protected southern dock bay with frequent red-eared slider turtle sightings basking on perimeter logs.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "midtown", "title": "MIDTOWN DOCK", "dep": "4-12 FT", "viz": "8-14 FT", "type": "dock", "cx": 670, "cy": 830, "bx": 670, "by": 865, "w": 130, "h": 26, "star": false, "desc": "Central south shore dock entry. Shortest surface swim access to Fire Truck (240 FT) and Deep Hole (160 FT). Covered shelter.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "phil", "title": "PHIL STATION", "dep": "4-12 FT", "viz": "8-14 FT", "type": "dock", "cx": 765, "cy": 845, "bx": 765, "by": 880, "w": 120, "h": 26, "star": false, "desc": "South shore dock with covered sun canopy and bench seating.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "mermaid", "title": "MERMAID BEACH", "dep": "2-8 FT", "viz": "6-12 FT", "type": "dock", "cx": 820, "cy": 830, "bx": 820, "by": 865, "w": 130, "h": 26, "star": false, "desc": "Gentle sloping natural sand beach entry. Ideal for wading, snorkelers, and gentle shore entries.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "stingray", "title": "STINGRAY CITY", "dep": "10-18 FT", "viz": "8-14 FT", "type": "dock", "cx": 955, "cy": 770, "bx": 955, "by": 805, "w": 130, "h": 26, "star": false, "desc": "South bank shelf dock entry point. Direct access to Platform 8 and central trench.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}, {"id": "dock_thunder", "title": "THUNDER BAY DOCK", "dep": "4-10 FT", "viz": "8-15 FT", "type": "dock", "cx": 1315, "cy": 250, "bx": 1315, "by": 215, "w": 165, "h": 26, "star": false, "desc": "Northeast park entrance hub. Features covered shelter, picnic tables, parking, camping sites, and direct access to Thunder Bay Railroad wrecks.", "category": "dock", "hazard": "Low - Entry dock", "best_entry": "Shore Access", "fin_kicks": "0 kicks", "padi_ndl": "Unlimited"}];
+const CIRCUITS = [{"id": "c1", "num": "Circuit 1", "title": "Flight Deck & Shallows (Addie-Friendly Warm-Up)", "color": "#10B981", "max_depth": "28 FT", "avg_depth": "22 FT", "est_time": "45 - 52 MIN", "turn_psi": "1,600 PSI", "entry": "NASA Dock (West Entry)", "waypoints": [{"id": "nasa_dock", "name": "NASA Dock", "x": 105, "y": 745, "depth": "4-8 FT"}, {"id": "p1", "name": "Platform 1", "x": 268, "y": 700, "depth": "20 FT"}, {"id": "jet", "name": "Trainer Jet", "x": 155, "y": 788, "depth": "22 FT"}, {"id": "rockets", "name": "Rocket Farm", "x": 200, "y": 730, "depth": "25 FT"}, {"id": "shuttle", "name": "Space Shuttle", "x": 250, "y": 655, "depth": "28 FT"}, {"id": "submarine", "name": "Submarine", "x": 375, "y": 420, "depth": "28 FT"}, {"id": "p2", "name": "Platform 2", "x": 272, "y": 830, "depth": "22 FT"}, {"id": "nasa_dock", "name": "NASA Dock Exit", "x": 105, "y": 745, "depth": "4-8 FT"}], "legs": [{"from": "NASA Dock", "to": "Platform 1", "hdg": "074°", "dist": "145 FT", "kicks": "16 kicks"}, {"from": "Platform 1", "to": "Trainer Jet", "hdg": "218°", "dist": "95 FT", "kicks": "10 kicks"}, {"from": "Trainer Jet", "to": "Rocket Farm", "hdg": "045°", "dist": "70 FT", "kicks": "8 kicks"}, {"from": "Rocket Farm", "to": "Space Shuttle", "hdg": "033°", "dist": "90 FT", "kicks": "10 kicks"}, {"from": "Space Shuttle", "to": "Submarine", "hdg": "028°", "dist": "265 FT", "kicks": "29 kicks"}, {"from": "Submarine", "to": "Platform 2", "hdg": "194°", "dist": "420 FT", "kicks": "46 kicks"}, {"from": "Platform 2", "to": "NASA Dock", "hdg": "300°", "dist": "185 FT", "kicks": "20 kicks"}], "desc": "Perfect first dive of the trip! High ambient natural light, gentle depths comfortably inside PADI NDL, thrilling aircraft and submarine hulls. Excellent photo opportunities with relaxed gas consumption."}, {"id": "c2", "num": "Circuit 2", "title": "C-130 Hercules Expedition (Wreck Trek)", "color": "#06B6D4", "max_depth": "38 FT", "avg_depth": "30 FT", "est_time": "40 - 46 MIN", "turn_psi": "1,600 PSI", "entry": "NASA Dock (West Entry)", "waypoints": [{"id": "nasa_dock", "name": "NASA Dock", "x": 105, "y": 745, "depth": "4-8 FT"}, {"id": "p1", "name": "Platform 1", "x": 268, "y": 700, "depth": "20 FT"}, {"id": "c130", "name": "C-130 Hercules", "x": 315, "y": 535, "depth": "26-38 FT"}, {"id": "short_bus", "name": "Short Bus", "x": 425, "y": 530, "depth": "34 FT"}, {"id": "boat_stick", "name": "Boat on a Stick", "x": 445, "y": 625, "depth": "35 FT"}, {"id": "mammoth", "name": "Mammoth", "x": 310, "y": 615, "depth": "32 FT"}, {"id": "p3", "name": "Platform 3", "x": 325, "y": 778, "depth": "20 FT"}, {"id": "nasa_dock", "name": "NASA Dock Exit", "x": 105, "y": 745, "depth": "4-8 FT"}], "legs": [{"from": "NASA Dock", "to": "Platform 1", "hdg": "074°", "dist": "145 FT", "kicks": "16 kicks"}, {"from": "Platform 1", "to": "C-130 Hercules", "hdg": "016°", "dist": "170 FT", "kicks": "19 kicks"}, {"from": "C-130 Hercules", "to": "Short Bus", "hdg": "087°", "dist": "110 FT", "kicks": "12 kicks"}, {"from": "Short Bus", "to": "Boat on a Stick", "hdg": "168°", "dist": "95 FT", "kicks": "10 kicks"}, {"from": "Boat on a Stick", "to": "Mammoth", "hdg": "265°", "dist": "135 FT", "kicks": "15 kicks"}, {"from": "Mammoth", "to": "Platform 3", "hdg": "175°", "dist": "165 FT", "kicks": "18 kicks"}, {"from": "Platform 3", "to": "NASA Dock", "hdg": "278°", "dist": "220 FT", "kicks": "24 kicks"}], "desc": "The flagship Mammoth Lake tour! Explore the colossal 132' wingspan C-130 Hercules cargo aircraft, open cargo hold, cockpit, 4 engines, followed by vehicles and prehistoric mammoth sculpture."}, {"id": "c3", "num": "Circuit 3", "title": "Tower & Tire Reef (Central Deep Basin)", "color": "#F59E0B", "max_depth": "44 FT (Optional 70' Deep Hole)", "avg_depth": "35 FT", "est_time": "36 - 42 MIN", "turn_psi": "1,700 PSI", "entry": "MidTown Dock or NASA Dock", "waypoints": [{"id": "midtown", "name": "MidTown Dock", "x": 670, "y": 830, "depth": "4-12 FT"}, {"id": "fire_truck", "name": "Fire Truck", "x": 675, "y": 590, "depth": "38 FT"}, {"id": "tower", "name": "Observation Tower", "x": 770, "y": 590, "depth": "40 FT"}, {"id": "tire_reef", "name": "Tire Reef", "x": 845, "y": 415, "depth": "42 FT"}, {"id": "p8", "name": "Platform 8", "x": 955, "y": 625, "depth": "38 FT"}, {"id": "deep_hole", "name": "Deep Hole Rim", "x": 590, "y": 690, "depth": "44-70 FT"}, {"id": "midtown", "name": "MidTown Dock Exit", "x": 670, "y": 830, "depth": "4-12 FT"}], "legs": [{"from": "MidTown Dock", "to": "Fire Truck", "hdg": "001°", "dist": "240 FT", "kicks": "26 kicks"}, {"from": "Fire Truck", "to": "Observation Tower", "hdg": "090°", "dist": "95 FT", "kicks": "10 kicks"}, {"from": "Observation Tower", "to": "Tire Reef", "hdg": "023°", "dist": "190 FT", "kicks": "21 kicks"}, {"from": "Tire Reef", "to": "Platform 8", "hdg": "152°", "dist": "235 FT", "kicks": "26 kicks"}, {"from": "Platform 8", "to": "Deep Hole Rim", "hdg": "259°", "dist": "370 FT", "kicks": "41 kicks"}, {"from": "Deep Hole Rim", "to": "MidTown Dock", "hdg": "150°", "dist": "160 FT", "kicks": "17 kicks"}], "desc": "Highest fish population in the park on Tire Reef! Observation Tower structure rises through the thermocline. Adjacent to the 70 FT Deep Hole cold spring (high-intensity lights mandatory below 50 FT)."}, {"id": "c4", "num": "Circuit 4", "title": "Thunder Bay Railroad & School Buses", "color": "#8B5CF6", "max_depth": "36 FT", "avg_depth": "28 FT", "est_time": "42 - 48 MIN", "turn_psi": "1,600 PSI", "entry": "Thunder Bay Dock (Northeast Entry)", "waypoints": [{"id": "dock_thunder", "name": "Thunder Bay Dock", "x": 1315, "y": 250, "depth": "4-10 FT"}, {"id": "p9", "name": "Platform 9", "x": 1370, "y": 388, "depth": "30 FT"}, {"id": "caboose", "name": "Rail Caboose", "x": 1490, "y": 300, "depth": "32 FT"}, {"id": "school_buses", "name": "School Buses", "x": 1530, "y": 375, "depth": "34 FT"}, {"id": "bucket_truck", "name": "Bucket Truck", "x": 1445, "y": 435, "depth": "32 FT"}, {"id": "trains", "name": "Train Tankers", "x": 1155, "y": 410, "depth": "36 FT"}, {"id": "dock_thunder", "name": "Thunder Bay Exit", "x": 1315, "y": 250, "depth": "4-10 FT"}], "legs": [{"from": "Thunder Bay Dock", "to": "Platform 9", "hdg": "158°", "dist": "150 FT", "kicks": "16 kicks"}, {"from": "Platform 9", "to": "Rail Caboose", "hdg": "054°", "dist": "150 FT", "kicks": "16 kicks"}, {"from": "Rail Caboose", "to": "School Buses", "hdg": "152°", "dist": "85 FT", "kicks": "9 kicks"}, {"from": "School Buses", "to": "Bucket Truck", "hdg": "215°", "dist": "105 FT", "kicks": "11 kicks"}, {"from": "Bucket Truck", "to": "Train Tankers", "hdg": "275°", "dist": "290 FT", "kicks": "32 kicks"}, {"from": "Train Tankers", "to": "Thunder Bay Dock", "hdg": "045°", "dist": "225 FT", "kicks": "25 kicks"}], "desc": "East basin vehicle playground! Swim through open school bus aisles, examine elevated electrical bucket utility boom truck, and tour the vintage red caboose."}];
+const NAV_LEGS = [{"from": [105, 745], "to": [268, 700], "hdg": "074°", "dist": "145'", "kicks": "16k"}, {"from": [268, 700], "to": [155, 788], "hdg": "218°", "dist": "95'", "kicks": "10k"}, {"from": [268, 700], "to": [250, 655], "hdg": "030°", "dist": "45'", "kicks": "5k"}, {"from": [268, 700], "to": [375, 420], "hdg": "025°", "dist": "310'", "kicks": "34k"}, {"from": [375, 420], "to": [315, 535], "hdg": "210°", "dist": "130'", "kicks": "14k"}, {"from": [315, 535], "to": [425, 530], "hdg": "085°", "dist": "110'", "kicks": "12k"}, {"from": [315, 535], "to": [770, 590], "hdg": "098°", "dist": "510'", "kicks": "56k"}, {"from": [770, 590], "to": [590, 690], "hdg": "240°", "dist": "210'", "kicks": "23k"}, {"from": [770, 590], "to": [845, 415], "hdg": "022°", "dist": "205'", "kicks": "22k"}, {"from": [770, 590], "to": [955, 625], "hdg": "105°", "dist": "210'", "kicks": "23k"}, {"from": [955, 625], "to": [1370, 388], "hdg": "060°", "dist": "480'", "kicks": "52k"}, {"from": [1315, 250], "to": [1370, 388], "hdg": "158°", "dist": "155'", "kicks": "17k"}, {"from": [1370, 388], "to": [1490, 300], "hdg": "058°", "dist": "145'", "kicks": "16k"}, {"from": [1370, 388], "to": [1445, 435], "hdg": "155°", "dist": "90'", "kicks": "10k"}, {"from": [1370, 388], "to": [1530, 375], "hdg": "095°", "dist": "175'", "kicks": "19k"}, {"from": [500, 745], "to": [630, 735], "hdg": "095°", "dist": "140'", "kicks": "15k"}, {"from": [630, 735], "to": [845, 710], "hdg": "085°", "dist": "230'", "kicks": "25k"}];
+const SURFACE_SWIMS = [{"from": [105, 745], "to": [315, 535], "label": "SURF SWIM: 062° • 320'"}, {"from": [670, 830], "to": [590, 690], "label": "SURF SWIM: 330° • 160'"}, {"from": [1315, 250], "to": [1490, 300], "label": "SURF SWIM: 108° • 190'"}];
+
+// DOM References
+const svg = document.getElementById('diveMapSvg');
+const svgContainer = document.getElementById('svgContainer');
+const badgesLayer = document.getElementById('badgesLayer');
+const navLinesLayer = document.getElementById('navLinesLayer');
+const surfaceSwimsLayer = document.getElementById('surfaceSwimsLayer');
+const circuitsLayer = document.getElementById('circuitsLayer');
+const bathyGroup = document.getElementById('bathyGroup');
+const inspector = document.getElementById('inspector');
+const itemsList = document.getElementById('itemsList');
+const circuitCardsContainer = document.getElementById('circuitCardsContainer');
+const waypointCard = document.getElementById('waypointCard');
+const waypointTableContainer = document.getElementById('waypointTableContainer');
+const sidebar = document.getElementById('sidebar');
+
+// State
+let currentFilter = 'all';
+let selectedPinId = null;
+let activeCircuitId = null;
+let showNavLines = true;
+let showSurfaceSwims = true;
+let showBathy = true;
+let badgeMode = 'cards'; // 'cards' or 'pins'
+let currentTheme = 'dark'; // 'dark' or 'light'
+let userToggledBadgeMode = false;
+let mobileSheetState = 'minimized'; // 'minimized', 'half', 'full'
+
+// ViewBox State (Lake coordinate space 1800 x 1200)
+let viewBox = { x: 0, y: 0, w: 1800, h: 1200 };
+let isPanning = false;
+let startPoint = { x: 0, y: 0 };
+
+function updateSvgViewBox() {
+  svg.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
+}
+
+// Environment Detection & Adaptation Engine
+function detectEnvironment() {
+  const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches;
+  const isSmallScreen = window.innerWidth <= 900;
+  const isMobile = isSmallScreen || (isTouch && window.innerWidth <= 1024);
+
+  document.body.classList.toggle('env-mobile', isMobile);
+  document.body.classList.toggle('env-desktop', !isMobile);
+  document.body.classList.toggle('is-touch', isTouch);
+
+  // Auto-optimize badge mode for screen environment on initial load
+  if (!userToggledBadgeMode) {
+    if (isMobile) {
+      badgeMode = 'pins';
+      document.body.classList.remove('mode-cards');
+      document.body.classList.add('mode-pins');
+      document.getElementById('btnBadgeMode').textContent = 'Badges: Pins';
+    } else {
+      badgeMode = 'cards';
+      document.body.classList.remove('mode-pins');
+      document.body.classList.add('mode-cards');
+      document.getElementById('btnBadgeMode').textContent = 'Badges: Cards';
+    }
+  }
+
+  // Adjust mobile drawer state
+  if (isMobile) {
+    updateMobileSheet();
+  } else {
+    sidebar.classList.remove('sheet-half', 'sheet-full');
+  }
+}
+
+function updateMobileSheet() {
+  sidebar.classList.remove('sheet-half', 'sheet-full');
+  if (mobileSheetState === 'half') {
+    sidebar.classList.add('sheet-half');
+  } else if (mobileSheetState === 'full') {
+    sidebar.classList.add('sheet-full');
+  }
+}
+
+// 1. Render Collision-Free Badges Layer
+function renderBadges() {
+  badgesLayer.innerHTML = '';
+
+  SOLVED_BADGES.forEach(b => {
+    // Category filtering
+    if (currentFilter === 'star' && !b.star) return;
+    if (currentFilter === 'wreck' && b.category !== 'wreck') return;
+    if (currentFilter === 'platform' && b.category !== 'platform') return;
+    if (currentFilter === 'dock' && b.category !== 'dock') return;
+    if (currentFilter === 'deep' && b.category !== 'deep') return;
+
+    let accent = '#1D4ED8'; // Wrecks / Attractions: Royal Blue
+    let icon = '●';
+    if (b.star) { accent = '#D97706'; icon = '★'; }
+    else if (b.category === 'platform') { accent = '#047857'; icon = '■'; }
+    else if (b.category === 'dock') { accent = '#C2410C'; icon = '⚓'; }
+    else if (b.category === 'deep') { accent = '#6D28D9'; icon = '▲'; }
+
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('class', 'badge-g');
+    g.setAttribute('id', 'badge-' + b.id);
+    g.setAttribute('data-id', b.id);
+
+    // Native browser hover tooltip
+    const titleEl = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+    titleEl.textContent = `${b.title} (${b.dep}) - ${b.category.toUpperCase()}`;
+    g.appendChild(titleEl);
+
+    // Leader Line from target to badge center
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('class', 'leader-line');
+    line.setAttribute('x1', b.cx);
+    line.setAttribute('y1', b.cy);
+    line.setAttribute('x2', b.bx);
+    line.setAttribute('y2', b.by);
+    line.setAttribute('stroke', '#0F172A');
+    line.setAttribute('stroke-width', '1.8');
+    line.setAttribute('stroke-linecap', 'round');
+    g.appendChild(line);
+
+    // Touch hit area (44x44px minimum for mobile WCAG AAA)
+    const touchHit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    touchHit.setAttribute('cx', b.cx);
+    touchHit.setAttribute('cy', b.cy);
+    touchHit.setAttribute('r', 22);
+    touchHit.setAttribute('fill', 'transparent');
+    touchHit.setAttribute('pointer-events', 'all');
+    g.appendChild(touchHit);
+
+    // Target Pin Dot
+    const targetG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    targetG.setAttribute('class', 'target-pin');
+
+    if (b.star || b.category === 'deep') {
+      const pulse = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      pulse.setAttribute('cx', b.cx);
+      pulse.setAttribute('cy', b.cy);
+      pulse.setAttribute('r', 11);
+      pulse.setAttribute('fill', 'none');
+      pulse.setAttribute('stroke', accent);
+      pulse.setAttribute('stroke-width', '1.5');
+      pulse.setAttribute('opacity', '0.6');
+      targetG.appendChild(pulse);
+    }
+
+    const dotOuter = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    dotOuter.setAttribute('class', 'target-outer');
+    dotOuter.setAttribute('cx', b.cx);
+    dotOuter.setAttribute('cy', b.cy);
+    dotOuter.setAttribute('r', 6);
+    dotOuter.setAttribute('fill', '#FFFFFF');
+    dotOuter.setAttribute('stroke', '#0F172A');
+    dotOuter.setAttribute('stroke-width', '2');
+    targetG.appendChild(dotOuter);
+
+    const dotInner = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    dotInner.setAttribute('cx', b.cx);
+    dotInner.setAttribute('cy', b.cy);
+    dotInner.setAttribute('r', 3.5);
+    dotInner.setAttribute('fill', accent);
+    targetG.appendChild(dotInner);
+
+    g.appendChild(targetG);
+
+    // Solved Badge Card
+    const rx = b.bx - b.w / 2;
+    const ry = b.by - b.h / 2;
+
+    const cardG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    cardG.setAttribute('class', 'badge-card');
+
+    if (b.category === 'platform') {
+      // Solid Green Platform Pill
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('x', rx);
+      rect.setAttribute('y', ry);
+      rect.setAttribute('width', b.w);
+      rect.setAttribute('height', b.h);
+      rect.setAttribute('rx', 5);
+      rect.setAttribute('fill', '#047857');
+      rect.setAttribute('stroke', '#0F172A');
+      rect.setAttribute('stroke-width', '2');
+      rect.setAttribute('filter', 'url(#badge-shadow)');
+      cardG.appendChild(rect);
+
+      const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      txt.setAttribute('x', b.bx);
+      txt.setAttribute('y', b.by + 5);
+      txt.setAttribute('fill', '#FFFFFF');
+      txt.setAttribute('font-size', '12px');
+      txt.setAttribute('font-weight', 'bold');
+      txt.setAttribute('text-anchor', 'middle');
+      txt.textContent = `■ ${b.title} (${b.dep})`;
+      cardG.appendChild(txt);
+    } else if (b.category === 'dock') {
+      // Solid Orange Dock Pill
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('x', rx);
+      rect.setAttribute('y', ry);
+      rect.setAttribute('width', b.w);
+      rect.setAttribute('height', b.h);
+      rect.setAttribute('rx', 5);
+      rect.setAttribute('fill', '#C2410C');
+      rect.setAttribute('stroke', '#0F172A');
+      rect.setAttribute('stroke-width', '2');
+      rect.setAttribute('filter', 'url(#badge-shadow)');
+      cardG.appendChild(rect);
+
+      const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      txt.setAttribute('x', b.bx);
+      txt.setAttribute('y', b.by + 5);
+      txt.setAttribute('fill', '#FFFFFF');
+      txt.setAttribute('font-size', '12px');
+      txt.setAttribute('font-weight', 'bold');
+      txt.setAttribute('text-anchor', 'middle');
+      txt.textContent = `⚓ ${b.title}`;
+      cardG.appendChild(txt);
+    } else {
+      // High-Contrast White Card Badge
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('x', rx);
+      rect.setAttribute('y', ry);
+      rect.setAttribute('width', b.w);
+      rect.setAttribute('height', b.h);
+      rect.setAttribute('rx', 5);
+      rect.setAttribute('fill', '#FFFFFF');
+      rect.setAttribute('stroke', '#0F172A');
+      rect.setAttribute('stroke-width', '2');
+      rect.setAttribute('filter', 'url(#badge-shadow)');
+      cardG.appendChild(rect);
+
+      // Left Accent Strip
+      const stripe = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      stripe.setAttribute('d', `M ${rx+3} ${ry} L ${rx+6} ${ry} L ${rx+6} ${ry+b.h} L ${rx+3} ${ry+b.h} A 3 3 0 0 1 ${rx} ${ry+b.h-3} L ${rx} ${ry+3} A 3 3 0 0 1 ${rx+3} ${ry} Z`);
+      stripe.setAttribute('fill', accent);
+      cardG.appendChild(stripe);
+
+      // Icon & Title
+      const iconTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      iconTxt.setAttribute('x', rx + 12);
+      iconTxt.setAttribute('y', ry + 16);
+      iconTxt.setAttribute('fill', accent);
+      iconTxt.setAttribute('font-size', '13px');
+      iconTxt.setAttribute('font-weight', 'bold');
+      iconTxt.textContent = icon;
+      cardG.appendChild(iconTxt);
+
+      const titleTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      titleTxt.setAttribute('x', rx + 26);
+      titleTxt.setAttribute('y', ry + 16);
+      titleTxt.setAttribute('fill', '#0F172A');
+      titleTxt.setAttribute('font-size', '12px');
+      titleTxt.setAttribute('font-weight', 'bold');
+      titleTxt.textContent = b.title;
+      cardG.appendChild(titleTxt);
+
+      // Metadata line (Depth & Viz)
+      const metaTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      metaTxt.setAttribute('x', rx + 12);
+      metaTxt.setAttribute('y', ry + 30);
+      metaTxt.setAttribute('fill', '#1E3A8A');
+      metaTxt.setAttribute('font-size', '10px');
+      metaTxt.setAttribute('font-weight', 'bold');
+      metaTxt.textContent = `DEPTH: ${b.dep}  •  VIZ: ${b.viz}`;
+      cardG.appendChild(metaTxt);
+    }
+
+    g.appendChild(cardG);
+
+    // Interactions
+    g.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openInspector(b.id);
+    });
+
+    badgesLayer.appendChild(g);
+  });
+}
+
+// 2. Render Navigation Guidelines & Surface Swims
+function renderNavLines() {
+  navLinesLayer.innerHTML = '';
+  if (!showNavLines) return;
+
+  NAV_LEGS.forEach(leg => {
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', leg.from[0]);
+    line.setAttribute('y1', leg.from[1]);
+    line.setAttribute('x2', leg.to[0]);
+    line.setAttribute('y2', leg.to[1]);
+    line.setAttribute('stroke', '#38BDF8');
+    line.setAttribute('stroke-width', '1.6');
+    line.setAttribute('stroke-dasharray', '5,3');
+    line.setAttribute('opacity', '0.65');
+    navLinesLayer.appendChild(line);
+
+    // Bearing & Distance Tag
+    const mx = (leg.from[0] + leg.to[0]) / 2;
+    const my = (leg.from[1] + leg.to[1]) / 2;
+
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    bg.setAttribute('x', mx - 38);
+    bg.setAttribute('y', my - 8);
+    bg.setAttribute('width', 76);
+    bg.setAttribute('height', 16);
+    bg.setAttribute('rx', 3);
+    bg.setAttribute('fill', '#0F172A');
+    bg.setAttribute('stroke', '#38BDF8');
+    bg.setAttribute('stroke-width', '1');
+    g.appendChild(bg);
+
+    const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    txt.setAttribute('x', mx);
+    txt.setAttribute('y', my + 4);
+    txt.setAttribute('text-anchor', 'middle');
+    txt.setAttribute('font-size', '9px');
+    txt.setAttribute('font-weight', 'bold');
+    txt.setAttribute('fill', '#38BDF8');
+    txt.textContent = `${leg.hdg} • ${leg.dist}`;
+    g.appendChild(txt);
+
+    navLinesLayer.appendChild(g);
+  });
+}
+
+function renderSurfaceSwims() {
+  surfaceSwimsLayer.innerHTML = '';
+  if (!showSurfaceSwims) return;
+
+  SURFACE_SWIMS.forEach(s => {
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', s.from[0]);
+    line.setAttribute('y1', s.from[1]);
+    line.setAttribute('x2', s.to[0]);
+    line.setAttribute('y2', s.to[1]);
+    line.setAttribute('stroke', '#EA580C');
+    line.setAttribute('stroke-width', '2.5');
+    line.setAttribute('stroke-dasharray', '7,4');
+    line.setAttribute('opacity', '0.85');
+    surfaceSwimsLayer.appendChild(line);
+
+    const mx = (s.from[0] + s.to[0]) / 2;
+    const my = (s.from[1] + s.to[1]) / 2;
+
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    bg.setAttribute('x', mx - 75);
+    bg.setAttribute('y', my - 10);
+    bg.setAttribute('width', 150);
+    bg.setAttribute('height', 20);
+    bg.setAttribute('rx', 4);
+    bg.setAttribute('fill', '#FFFFFF');
+    bg.setAttribute('stroke', '#EA580C');
+    bg.setAttribute('stroke-width', '2');
+    g.appendChild(bg);
+
+    const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    txt.setAttribute('x', mx);
+    txt.setAttribute('y', my + 4);
+    txt.setAttribute('text-anchor', 'middle');
+    txt.setAttribute('font-size', '9.5px');
+    txt.setAttribute('font-weight', 'bold');
+    txt.setAttribute('fill', '#EA580C');
+    txt.textContent = s.label;
+    g.appendChild(txt);
+
+    surfaceSwimsLayer.appendChild(g);
+  });
+}
+
+// 3. Render Tailored Circuits
+function selectCircuit(circuitId) {
+  activeCircuitId = circuitId;
+  circuitsLayer.innerHTML = '';
+
+  document.querySelectorAll('.c-pill').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-circuit') === circuitId);
+  });
+
+  document.querySelectorAll('.circuit-card').forEach(card => {
+    card.classList.toggle('active', card.getAttribute('data-id') === circuitId);
+  });
+
+  if (!circuitId) {
+    // Reset dimming
+    document.querySelectorAll('.badge-g').forEach(b => {
+      b.classList.remove('dimmed');
+      b.classList.remove('highlighted');
+    });
+    waypointCard.style.display = 'none';
+    return;
+  }
+
+  const c = CIRCUITS.find(circ => circ.id === circuitId);
+  if (!c) return;
+
+  // Waypoints coordinates
+  const pts = c.waypoints.map(wp => `${wp.x},${wp.y}`).join(' ');
+
+  // Glow line
+  const glowPoly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+  glowPoly.setAttribute('points', pts);
+  glowPoly.setAttribute('stroke', c.color);
+  glowPoly.setAttribute('stroke-width', '8');
+  glowPoly.setAttribute('fill', 'none');
+  glowPoly.setAttribute('opacity', '0.35');
+  glowPoly.setAttribute('stroke-linecap', 'round');
+  glowPoly.setAttribute('stroke-linejoin', 'round');
+  circuitsLayer.appendChild(glowPoly);
+
+  // Animated dashed path
+  const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+  poly.setAttribute('points', pts);
+  poly.setAttribute('stroke', c.color);
+  poly.setAttribute('stroke-width', '4.5');
+  poly.setAttribute('fill', 'none');
+  poly.setAttribute('stroke-linecap', 'round');
+  poly.setAttribute('stroke-linejoin', 'round');
+  poly.setAttribute('class', 'circuit-path');
+  poly.setAttribute('marker-end', `url(#arrow-${c.id})`);
+  circuitsLayer.appendChild(poly);
+
+  // Waypoint Numbers & Highlight Badges
+  const visitedIds = new Set(c.waypoints.map(w => w.id));
+
+  document.querySelectorAll('.badge-g').forEach(bg => {
+    const id = bg.getAttribute('data-id');
+    if (visitedIds.has(id)) {
+      bg.classList.add('highlighted');
+      bg.classList.remove('dimmed');
+    } else {
+      bg.classList.add('dimmed');
+      bg.classList.remove('highlighted');
+    }
+  });
+
+  // Numbered stop pills along path
+  c.waypoints.forEach((wp, idx) => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    const r = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    r.setAttribute('cx', wp.x);
+    r.setAttribute('cy', wp.y);
+    r.setAttribute('r', 11);
+    r.setAttribute('fill', c.color);
+    r.setAttribute('stroke', '#0F172A');
+    r.setAttribute('stroke-width', '2');
+    g.appendChild(r);
+
+    const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    txt.setAttribute('x', wp.x);
+    txt.setAttribute('y', wp.y + 4);
+    txt.setAttribute('text-anchor', 'middle');
+    txt.setAttribute('font-size', '10px');
+    txt.setAttribute('font-weight', 'bold');
+    txt.setAttribute('fill', '#070D18');
+    txt.textContent = idx + 1;
+    g.appendChild(txt);
+
+    circuitsLayer.appendChild(g);
+  });
+
+  // Switch to Plan tab and populate turn-by-turn navigation table
+  switchToTab('tab-plan');
+  renderTurnByTurnTable(c);
+
+  // Smoothly zoom map to frame circuit
+  zoomToCircuit(c);
+}
+
+function renderTurnByTurnTable(c) {
+  waypointCard.style.display = 'block';
+  waypointCardTitle.textContent = `${c.num} Navigation Breakdown`;
+  waypointCardTitle.style.color = c.color;
+
+  let rows = c.legs.map((leg, i) => `
+    <tr>
+      <td style="font-weight:700; color:${c.color};">Leg ${i+1}</td>
+      <td><strong>${leg.from}</strong> &rarr; ${leg.to}</td>
+      <td style="color:var(--cyan); font-weight:700;">${leg.hdg}</td>
+      <td>${leg.dist}</td>
+      <td>${leg.kicks}</td>
+    </tr>
+  `).join('');
+
+  waypointTableContainer.innerHTML = `
+    <table class="waypoint-table">
+      <thead>
+        <tr>
+          <th>Leg</th>
+          <th>Waypoint Route</th>
+          <th>Heading</th>
+          <th>Distance</th>
+          <th>Fin Kicks</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows}
+      </tbody>
+    </table>
+  `;
+}
+
+function zoomToCircuit(c) {
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  c.waypoints.forEach(wp => {
+    if (wp.x < minX) minX = wp.x;
+    if (wp.x > maxX) maxX = wp.x;
+    if (wp.y < minY) minY = wp.y;
+    if (wp.y > maxY) maxY = wp.y;
+  });
+
+  const pad = 120;
+  const targetW = Math.max(500, maxX - minX + pad * 2);
+  const targetH = Math.max(350, maxY - minY + pad * 2);
+  const targetX = (minX + maxX) / 2 - targetW / 2;
+  const targetY = (minY + maxY) / 2 - targetH / 2;
+
+  animateViewBox(targetX, targetY, targetW, targetH);
+}
+
+// 4. Attraction Inspector Modal
+function openInspector(id) {
+  selectedPinId = id;
+  const item = CATALOG.find(it => it.id === id) || SOLVED_BADGES.find(b => b.id === id);
+  if (!item) return;
+
+  document.getElementById('inspCategory').textContent = (item.category || item.type).toUpperCase();
+  document.getElementById('inspName').textContent = item.name || item.title;
+  document.getElementById('inspDepth').textContent = item.depth || item.dep;
+  document.getElementById('inspViz').textContent = item.viz;
+  document.getElementById('inspEntry').textContent = item.best_entry || 'Nearby Dock';
+  document.getElementById('inspNdl').textContent = item.padi_ndl || 'Table Lookup';
+  document.getElementById('inspDesc').textContent = item.desc;
+
+  const hazEl = document.getElementById('inspHazard');
+  if (item.hazard && item.hazard !== 'None') {
+    hazEl.style.display = 'block';
+    hazEl.textContent = '⚠️ ' + item.hazard;
+  } else {
+    hazEl.style.display = 'none';
+  }
+
+  const starEl = document.getElementById('inspStar');
+  if (item.star) {
+    starEl.style.display = 'inline';
+    starEl.textContent = '★ Staff Favorite Attraction';
+  } else {
+    starEl.style.display = 'none';
+  }
+
+  inspector.classList.add('show');
+
+  // Highlight list item in directory
+  document.querySelectorAll('.dir-item').forEach(el => {
+    el.classList.toggle('selected', el.getAttribute('data-id') === id);
+  });
+}
+
+document.getElementById('btnCloseInspector').addEventListener('click', () => {
+  inspector.classList.remove('show');
+});
+
+document.getElementById('btnFocusPin').addEventListener('click', () => {
+  if (!selectedPinId) return;
+  const item = CATALOG.find(it => it.id === selectedPinId) || SOLVED_BADGES.find(b => b.id === selectedPinId);
+  if (!item) return;
+  const ix = item.x !== undefined ? item.x : item.cx;
+  const iy = item.y !== undefined ? item.y : item.cy;
+  const targetW = 550;
+  const targetH = 370;
+  const targetX = ix - targetW / 2;
+  const targetY = iy - targetH / 2;
+  animateViewBox(targetX, targetY, targetW, targetH);
+});
+
+// 5. Populate Directory List
+function populateList() {
+  itemsList.innerHTML = '';
+  const q = document.getElementById('searchBox').value.toLowerCase();
+
+  CATALOG.forEach(item => {
+    if (q && !item.name.toLowerCase().includes(q) && !item.desc.toLowerCase().includes(q)) {
+      return;
+    }
+
+    const div = document.createElement('div');
+    div.className = 'dir-item' + (selectedPinId === item.id ? ' selected' : '');
+    div.setAttribute('data-id', item.id);
+
+    let starPrefix = item.star ? '<span style="color:var(--gold);">★ </span>' : '';
+    let catColor = item.category === 'platform' ? 'var(--green)' : (item.category === 'dock' ? 'var(--orange)' : (item.category === 'deep' ? 'var(--purple)' : 'var(--cyan)'));
+
+    div.innerHTML = `
+      <div>
+        <div style="font-size:0.84rem; font-weight:700;">${starPrefix}${item.name}</div>
+        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">
+          <span style="color:${catColor};">● ${item.category.toUpperCase()}</span> &bull; Viz: ${item.viz}
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <span style="font-size:0.82rem; font-weight:700; color:var(--cyan);">${item.depth}</span>
+      </div>
+    `;
+
+    div.addEventListener('click', () => {
+      openInspector(item.id);
+      const targetW = 550;
+      const targetH = 370;
+      animateViewBox(item.x - targetW/2, item.y - targetH/2, targetW, targetH);
+      if (document.body.classList.contains('env-mobile')) {
+        mobileSheetState = 'minimized';
+        updateMobileSheet();
+      }
+    });
+
+    itemsList.appendChild(div);
+  });
+}
+
+// 6. Populate Circuit Cards
+function populateCircuitCards() {
+  circuitCardsContainer.innerHTML = '';
+
+  CIRCUITS.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'circuit-card';
+    card.setAttribute('data-id', c.id);
+    card.style.borderLeft = `4px solid ${c.color}`;
+
+    const routeStr = c.waypoints.map(w => w.name).join(' &rarr; ');
+
+    card.innerHTML = `
+      <div class="card-title" style="color:${c.color};">${c.num}: ${c.title}</div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.78rem;">
+        <span style="color:var(--gold); font-weight:700;">MAX: ${c.max_depth}</span>
+        <span style="color:var(--cyan); font-weight:700;">AVG: ${c.avg_depth}</span>
+        <span style="color:var(--green); font-weight:700;">EST: ${c.est_time}</span>
+      </div>
+      <p style="font-size:0.78rem; margin-bottom:6px;"><strong>Turn PSI:</strong> ${c.turn_psi} | <strong>Entry:</strong> ${c.entry}</p>
+      <p style="font-size:0.76rem; color:#E2E8F0; margin-bottom:8px;"><strong>Route:</strong> ${routeStr}</p>
+      <p style="font-size:0.74rem; color:var(--text-muted);">${c.desc}</p>
+      <button class="btn" style="margin-top:8px; width:100%; justify-content:center; padding:6px; font-size:0.76rem; border-color:${c.color};">
+        Activate Route on Map
+      </button>
+    `;
+
+    card.addEventListener('click', () => {
+      selectCircuit(c.id);
+      if (document.body.classList.contains('env-mobile')) {
+        mobileSheetState = 'half';
+        updateMobileSheet();
+      }
+    });
+
+    circuitCardsContainer.appendChild(card);
+  });
+}
+
+// 7. Gas Management & NDL Calculator
+function updateGasCalc() {
+  const sac = parseFloat(document.getElementById('diverSelect').value);
+  const depth = parseInt(document.getElementById('depthRange').value);
+  const time = parseInt(document.getElementById('timeRange').value);
+
+  document.getElementById('depthVal').textContent = depth + ' FT';
+  document.getElementById('timeVal').textContent = time + ' MIN';
+
+  // Physics: ATA = (Depth / 33) + 1
+  const ata = (depth / 33.0) + 1.0;
+  // RMV = SAC * ATA (cu ft / min)
+  const rmv = sac * ata;
+  // Standard Aluminum 80: 77.4 cu ft at 3000 PSI -> 38.76 PSI per cu ft
+  const psiPerCuFt = 3000.0 / 77.4;
+  const totalCuFt = rmv * time;
+  const totalPSI = Math.round(totalCuFt * psiPerCuFt);
+  const remainingPSI = 3000 - totalPSI;
+  const turnPSI = 1600;
+
+  // PADI No-Decompression Limits table lookup
+  let ndl = 205;
+  if (depth <= 35) ndl = 205;
+  else if (depth <= 40) ndl = 140;
+  else if (depth <= 50) ndl = 80;
+  else if (depth <= 60) ndl = 55;
+  else if (depth <= 70) ndl = 40;
+
+  document.getElementById('resGasUsed').textContent = totalPSI.toLocaleString() + ' PSI';
+  document.getElementById('resGasRemaining').textContent = Math.max(0, remainingPSI).toLocaleString() + ' PSI';
+  document.getElementById('resTurnPSI').textContent = turnPSI.toLocaleString() + ' PSI';
+  document.getElementById('resNdlTime').textContent = (depth <= 20 ? 'Unlimited' : ndl + ' MIN');
+
+  const banner = document.getElementById('calcStatusBanner');
+  if (remainingPSI < 500) {
+    banner.style.background = 'rgba(239, 68, 68, 0.2)';
+    banner.style.borderColor = 'var(--red)';
+    banner.style.color = 'var(--red)';
+    banner.textContent = '⚠️ CRITICAL DANGER: Surfacing reserve below 500 PSI! Reduce bottom time or depth.';
+  } else if (remainingPSI < 800) {
+    banner.style.background = 'rgba(245, 158, 11, 0.2)';
+    banner.style.borderColor = 'var(--gold)';
+    banner.style.color = '#FBBF24';
+    banner.textContent = '⚡ CAUTION: Approaching minimum safety reserve (800 PSI). Turn dive earlier.';
+  } else if (time > ndl) {
+    banner.style.background = 'rgba(239, 68, 68, 0.2)';
+    banner.style.borderColor = 'var(--red)';
+    banner.style.color = 'var(--red)';
+    banner.textContent = '⚠️ DECOMPRESSION WARNING: Planned bottom time exceeds PADI No-Decompression Limit!';
+  } else {
+    banner.style.background = 'rgba(16, 185, 129, 0.15)';
+    banner.style.borderColor = '#10B981';
+    banner.style.color = '#34D399';
+    banner.textContent = `✓ Safe Dive Profile: Surfacing with ${remainingPSI.toLocaleString()} PSI reserve (> 800 PSI safety stop reserve).`;
+  }
+}
+
+// 8. Pan & Zoom Engine
+function animateViewBox(targetX, targetY, targetW, targetH) {
+  const startX = viewBox.x, startY = viewBox.y, startW = viewBox.w, startH = viewBox.h;
+  const duration = 400;
+  const startTime = performance.now();
+
+  function step(now) {
+    const progress = Math.min(1, (now - startTime) / duration);
+    const ease = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress;
+
+    viewBox.x = startX + (targetX - startX) * ease;
+    viewBox.y = startY + (targetY - startY) * ease;
+    viewBox.w = startW + (targetW - startW) * ease;
+    viewBox.h = startH + (targetH - startH) * ease;
+    updateSvgViewBox();
+
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+svg.addEventListener('mousedown', (e) => {
+  if (e.target.closest('.badge-g')) return;
+  isPanning = true;
+  startPoint = { x: e.clientX, y: e.clientY };
+});
+
+window.addEventListener('mousemove', (e) => {
+  if (!isPanning) return;
+  const dx = (e.clientX - startPoint.x) * (viewBox.w / svg.clientWidth);
+  const dy = (e.clientY - startPoint.y) * (viewBox.h / svg.clientHeight);
+  viewBox.x = Math.max(-300, Math.min(1800, viewBox.x - dx));
+  viewBox.y = Math.max(-200, Math.min(1200, viewBox.y - dy));
+  startPoint = { x: e.clientX, y: e.clientY };
+  updateSvgViewBox();
+});
+
+window.addEventListener('mouseup', () => {
+  isPanning = false;
+});
+
+// Scroll wheel zoom centered at cursor
+svg.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const zoomFactor = e.deltaY > 0 ? 1.15 : 0.85;
+  const rect = svg.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+
+  const svgX = viewBox.x + (mouseX / rect.width) * viewBox.w;
+  const svgY = viewBox.y + (mouseY / rect.height) * viewBox.h;
+
+  const newW = Math.min(2400, Math.max(300, viewBox.w * zoomFactor));
+  const newH = Math.min(1600, Math.max(200, viewBox.h * zoomFactor));
+
+  viewBox.x = Math.max(-300, Math.min(1800, svgX - (mouseX / rect.width) * newW));
+  viewBox.y = Math.max(-200, Math.min(1200, svgY - (mouseY / rect.height) * newH));
+  viewBox.w = newW;
+  viewBox.h = newH;
+  updateSvgViewBox();
+}, { passive: false });
+
+// Touch pinch & pan for mobile
+let initialDistance = 0;
+let initialViewBoxW = 0;
+
+svg.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 1) {
+    isPanning = true;
+    startPoint = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  } else if (e.touches.length === 2) {
+    isPanning = false;
+    initialDistance = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+    initialViewBoxW = viewBox.w;
+  }
+}, { passive: true });
+
+svg.addEventListener('touchmove', (e) => {
+  if (isPanning && e.touches.length === 1) {
+    const dx = (e.touches[0].clientX - startPoint.x) * (viewBox.w / svg.clientWidth);
+    const dy = (e.touches[0].clientY - startPoint.y) * (viewBox.h / svg.clientHeight);
+    viewBox.x = Math.max(-300, Math.min(1800, viewBox.x - dx));
+    viewBox.y = Math.max(-200, Math.min(1200, viewBox.y - dy));
+    startPoint = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    updateSvgViewBox();
+  } else if (e.touches.length === 2) {
+    const currentDist = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+    if (initialDistance > 0) {
+      const scale = initialDistance / currentDist;
+      viewBox.w = Math.min(2400, Math.max(300, initialViewBoxW * scale));
+      viewBox.h = viewBox.w * (1200 / 1800);
+      updateSvgViewBox();
+    }
+  }
+}, { passive: true });
+
+svg.addEventListener('touchend', () => {
+  isPanning = false;
+  initialDistance = 0;
+});
+
+// Zoom buttons
+document.getElementById('zoomIn').addEventListener('click', () => {
+  viewBox.x += viewBox.w * 0.1;
+  viewBox.y += viewBox.h * 0.1;
+  viewBox.w *= 0.8;
+  viewBox.h *= 0.8;
+  updateSvgViewBox();
+});
+
+document.getElementById('zoomOut').addEventListener('click', () => {
+  viewBox.w = Math.min(2400, viewBox.w * 1.25);
+  viewBox.h = Math.min(1600, viewBox.h * 1.25);
+  viewBox.x = Math.max(-200, viewBox.x - viewBox.w * 0.1);
+  viewBox.y = Math.max(-150, viewBox.y - viewBox.h * 0.1);
+  updateSvgViewBox();
+});
+
+document.getElementById('zoomFit').addEventListener('click', () => {
+  animateViewBox(0, 0, 1800, 1200);
+});
+
+document.getElementById('btnResetView').addEventListener('click', () => {
+  animateViewBox(0, 0, 1800, 1200);
+  selectCircuit(null);
+  inspector.classList.remove('show');
+});
+
+// Toolbar Layer Toggles
+document.getElementById('btnToggleNav').addEventListener('click', (e) => {
+  showNavLines = !showNavLines;
+  e.currentTarget.classList.toggle('active', showNavLines);
+  renderNavLines();
+});
+
+document.getElementById('btnToggleSwims').addEventListener('click', (e) => {
+  showSurfaceSwims = !showSurfaceSwims;
+  e.currentTarget.classList.toggle('active', showSurfaceSwims);
+  renderSurfaceSwims();
+});
+
+document.getElementById('btnToggleBathy').addEventListener('click', (e) => {
+  showBathy = !showBathy;
+  e.currentTarget.classList.toggle('active', showBathy);
+  bathyGroup.style.display = showBathy ? 'block' : 'none';
+});
+
+// Badge Mode Toggle (Cards vs Compact Pins)
+document.getElementById('btnBadgeMode').addEventListener('click', (e) => {
+  userToggledBadgeMode = true;
+  if (badgeMode === 'cards') {
+    badgeMode = 'pins';
+    document.body.classList.remove('mode-cards');
+    document.body.classList.add('mode-pins');
+    e.currentTarget.textContent = 'Badges: Pins';
+  } else {
+    badgeMode = 'cards';
+    document.body.classList.remove('mode-pins');
+    document.body.classList.add('mode-cards');
+    e.currentTarget.textContent = 'Badges: Cards';
+  }
+});
+
+// Theme Toggle (Dark vs Light)
+document.getElementById('btnTheme').addEventListener('click', (e) => {
+  if (currentTheme === 'dark') {
+    currentTheme = 'light';
+    document.body.classList.remove('theme-dark');
+    document.body.classList.add('theme-light');
+    e.currentTarget.textContent = 'Theme: Light';
+  } else {
+    currentTheme = 'dark';
+    document.body.classList.remove('theme-light');
+    document.body.classList.add('theme-dark');
+    e.currentTarget.textContent = 'Theme: Dark';
+  }
+});
+
+// Print Slate
+document.getElementById('btnPrint').addEventListener('click', () => {
+  window.print();
+});
+
+// Circuit buttons
+document.querySelectorAll('.c-pill[data-circuit]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectCircuit(btn.getAttribute('data-circuit'));
+  });
+});
+
+document.getElementById('btnClearCircuit').addEventListener('click', () => {
+  selectCircuit(null);
+});
+
+// Toolbar filter chips
+document.querySelectorAll('.map-toolbar .tb-btn[data-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.map-toolbar .tb-btn[data-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.getAttribute('data-filter');
+    renderBadges();
+  });
+});
+
+// Tab Switching Helper
+function switchToTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.toggle('active', t.getAttribute('data-tab') === tabId));
+  document.querySelectorAll('.mob-nav-btn').forEach(t => t.classList.toggle('active', t.getAttribute('data-tab') === tabId));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.id === tabId));
+}
+
+// Desktop Tab Handlers
+document.querySelectorAll('.tab-btn').forEach(tab => {
+  tab.addEventListener('click', () => {
+    switchToTab(tab.getAttribute('data-tab'));
+  });
+});
+
+// Mobile Bottom Navigation Bar Handlers
+document.querySelectorAll('.mob-nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    if (targetTab === 'tab-map') {
+      // Minimize drawer to reveal full map
+      mobileSheetState = 'minimized';
+      updateMobileSheet();
+      document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    } else {
+      switchToTab(targetTab);
+      // Open drawer to half sheet (or full if already half)
+      if (mobileSheetState === 'minimized') {
+        mobileSheetState = 'half';
+      } else if (mobileSheetState === 'half' && btn.classList.contains('active')) {
+        mobileSheetState = 'full';
+      } else {
+        mobileSheetState = 'half';
+      }
+      updateMobileSheet();
+    }
+  });
+});
+
+// Mobile Drag Handle Click
+document.getElementById('mobileDragHandle').addEventListener('click', () => {
+  if (mobileSheetState === 'minimized') {
+    mobileSheetState = 'half';
+  } else if (mobileSheetState === 'half') {
+    mobileSheetState = 'full';
+  } else {
+    mobileSheetState = 'minimized';
+  }
+  updateMobileSheet();
+});
+
+// Search & Calculator listeners
+document.getElementById('searchBox').addEventListener('input', populateList);
+document.getElementById('diverSelect').addEventListener('change', (e) => {
+  const txt = e.target.options[e.target.selectedIndex].text;
+  document.getElementById('diverLabel').textContent = txt;
+  updateGasCalc();
+});
+document.getElementById('depthRange').addEventListener('input', updateGasCalc);
+document.getElementById('timeRange').addEventListener('input', updateGasCalc);
+
+// Window Resize & Orientation Change listener
+window.addEventListener('resize', detectEnvironment);
+window.addEventListener('orientationchange', detectEnvironment);
+
+// Initialize Everything
+detectEnvironment();
+renderBadges();
+renderNavLines();
+renderSurfaceSwims();
+populateList();
+populateCircuitCards();
+updateGasCalc();
+updateSvgViewBox();
+</script>
+</body>
+</html>
